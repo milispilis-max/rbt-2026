@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>RBT Exam Prep 2026 — Bilingüe / Bilingual</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f0;color:#1a1a1a;min-height:100vh}
+.app-header{background:#1a1a2e;color:#fff;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.app-header h1{font-size:18px;font-weight:600;letter-spacing:.3px}
+.app-header p{font-size:11px;color:#aaa;margin-top:2px}
+.badge-3rd{background:#f5a623;color:#1a1a1a;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px}
+.nav{display:flex;background:#fff;border-bottom:1px solid #e5e5e0;overflow-x:auto}
+.nav button{flex:1;min-width:80px;padding:12px 8px;border:none;background:transparent;color:#666;font-size:12px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
+.nav button.active{color:#1a1a2e;border-bottom-color:#1a1a2e;font-weight:600}
+.nav button:hover:not(.active){background:#f9f9f6}
+.container{max-width:760px;margin:0 auto;padding:1rem}
+
+/* TABS */
+.tab-section{display:none}
+.tab-section.active{display:block}
+
+/* DOMAIN FILTER */
+.domain-filter{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem}
+.d-btn{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #ddd;background:#fff;color:#555;cursor:pointer;transition:all .15s}
+.d-btn.on{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.d-btn:hover:not(.on){background:#f0f0eb}
+
+/* STATS BAR */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1rem}
+.stat-box{background:#fff;border-radius:10px;padding:10px;text-align:center;border:1px solid #e5e5e0}
+.stat-n{font-size:22px;font-weight:700;color:#1a1a2e}
+.stat-l{font-size:10px;color:#888;margin-top:2px}
+
+/* PROGRESS */
+.prog-wrap{background:#e5e5e0;border-radius:4px;height:6px;margin-bottom:1rem;overflow:hidden}
+.prog-fill{height:6px;background:#1a1a2e;border-radius:4px;transition:width .4s}
+
+/* QUIZ CARD */
+.quiz-card{background:#fff;border-radius:14px;border:1px solid #e5e5e0;padding:1.5rem;margin-bottom:1rem}
+.q-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.q-domain-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;background:#fff3cd;color:#856404}
+.q-count{font-size:12px;color:#aaa}
+.q-weight{font-size:10px;color:#aaa;margin-left:6px}
+.q-en{font-size:16px;font-weight:600;color:#1a1a2e;line-height:1.5;margin-bottom:8px}
+.q-es{font-size:13px;color:#666;font-style:italic;line-height:1.5;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px dashed #e5e5e0}
+.opts{display:flex;flex-direction:column;gap:8px;margin-bottom:1rem}
+.opt{padding:11px 14px;border-radius:10px;border:1px solid #ddd;background:#f9f9f6;color:#1a1a1a;font-size:13px;cursor:pointer;text-align:left;line-height:1.5;transition:all .15s}
+.opt:hover:not(.locked){border-color:#1a1a2e;background:#fff}
+.opt.correct{background:#d4edda;border-color:#28a745;color:#155724;font-weight:500}
+.opt.wrong{background:#f8d7da;border-color:#dc3545;color:#721c24}
+.opt.reveal{background:#d4edda;border-color:#28a745;color:#155724}
+.opt.locked{cursor:default}
+.exp-box{background:#f0f4ff;border-left:3px solid #1a1a2e;border-radius:6px;padding:12px 14px;font-size:13px;color:#333;line-height:1.6;margin-bottom:1rem;display:none}
+.exp-box.show{display:block}
+.exp-box em{color:#555;display:block;margin-top:8px;font-style:italic}
+.q-footer{display:flex;justify-content:space-between;align-items:center}
+.result-msg{font-size:13px;font-weight:600}
+.result-msg.ok{color:#28a745}
+.result-msg.bad{color:#dc3545}
+.btn{padding:9px 22px;border-radius:8px;border:1px solid #1a1a2e;background:#1a1a2e;color:#fff;font-size:13px;cursor:pointer;font-weight:500;transition:all .15s}
+.btn:hover{background:#2d2d4e}
+.btn.outline{background:#fff;color:#1a1a2e}
+.btn.outline:hover{background:#f5f5f0}
+.btn.danger{background:#dc3545;border-color:#dc3545}
+
+/* DAILY SIM */
+.sim-hero{background:linear-gradient(135deg,#1a1a2e,#2d2d4e);color:#fff;border-radius:14px;padding:1.5rem;margin-bottom:1rem;text-align:center}
+.sim-hero h2{font-size:20px;font-weight:700;margin-bottom:6px}
+.sim-hero p{font-size:13px;color:#ccc;margin-bottom:1.25rem}
+.sim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:1rem}
+.sim-domain-card{background:#fff;border-radius:10px;border:1px solid #e5e5e0;padding:12px;text-align:center;cursor:pointer;transition:all .15s}
+.sim-domain-card:hover{border-color:#1a1a2e;background:#f5f5f0}
+.sim-domain-card .sd-pct{font-size:18px;font-weight:700;color:#1a1a2e}
+.sim-domain-card .sd-name{font-size:10px;color:#888;margin-top:2px;line-height:1.3}
+.sim-domain-card .sd-bar{height:4px;background:#e5e5e0;border-radius:2px;margin-top:8px;overflow:hidden}
+.sim-domain-card .sd-bar-fill{height:4px;background:#1a1a2e;border-radius:2px}
+.session-header{background:#fff;border-radius:10px;border:1px solid #e5e5e0;padding:12px 16px;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center}
+.session-title{font-size:14px;font-weight:600;color:#1a1a2e}
+.session-sub{font-size:11px;color:#888;margin-top:2px}
+.timer{font-size:14px;font-weight:700;color:#1a1a2e;background:#f5f5f0;padding:4px 12px;border-radius:20px}
+
+/* RESULTS MODAL */
+.results-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center}
+.results-overlay.show{display:flex}
+.results-modal{background:#fff;border-radius:16px;padding:2rem;max-width:440px;width:90%;text-align:center}
+.results-circle{width:100px;height:100px;border-radius:50%;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;border:6px solid}
+.results-circle.pass{color:#28a745;border-color:#28a745;background:#d4edda}
+.results-circle.fail{color:#dc3545;border-color:#dc3545;background:#f8d7da}
+.results-modal h2{font-size:20px;font-weight:700;margin-bottom:6px}
+.results-modal p{font-size:13px;color:#666;margin-bottom:1.25rem;line-height:1.5}
+.res-breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.25rem}
+.res-box{background:#f5f5f0;border-radius:8px;padding:10px;text-align:center}
+.res-box .rn{font-size:18px;font-weight:700;color:#1a1a2e}
+.res-box .rl{font-size:10px;color:#888}
+.btn-row{display:flex;gap:8px;justify-content:center}
+
+/* FLASHCARDS */
+.flash-nav-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.flash-counter{font-size:13px;color:#666;background:#fff;padding:5px 14px;border-radius:20px;border:1px solid #e5e5e0}
+.flip-card-wrap{perspective:1000px;margin-bottom:1rem;cursor:pointer;min-height:220px}
+.flip-card-inner{position:relative;width:100%;transition:transform .5s;transform-style:preserve-3d;min-height:220px}
+.flip-card-wrap.flipped .flip-card-inner{transform:rotateY(180deg)}
+.card-face{position:absolute;width:100%;min-height:220px;backface-visibility:hidden;border-radius:14px;border:1px solid #e5e5e0;padding:1.5rem;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.card-front{background:#1a1a2e;color:#fff}
+.card-back{background:#fff;transform:rotateY(180deg)}
+.card-front .cf-domain{font-size:10px;background:rgba(255,255,255,.2);padding:3px 10px;border-radius:20px;margin-bottom:.75rem;font-weight:600}
+.card-front .cf-en{font-size:20px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.card-front .cf-es{font-size:14px;color:rgba(255,255,255,.7);font-style:italic}
+.card-front .cf-hint{font-size:11px;color:rgba(255,255,255,.4);margin-top:1rem}
+.card-back .cb-def-en{font-size:14px;color:#1a1a1a;line-height:1.6;margin-bottom:12px}
+.card-back .cb-def-es{font-size:13px;color:#666;font-style:italic;line-height:1.6;border-top:1px dashed #ddd;padding-top:12px;margin-top:4px}
+.card-back .cb-domain{font-size:10px;background:#fff3cd;color:#856404;padding:3px 10px;border-radius:20px;margin-bottom:.75rem;font-weight:600}
+.flash-controls{display:flex;gap:8px;justify-content:center}
+
+/* GLOSSARY */
+.glos-search{width:100%;padding:10px 14px;border-radius:10px;border:1px solid #ddd;font-size:14px;background:#fff;margin-bottom:1rem;outline:none}
+.glos-search:focus{border-color:#1a1a2e}
+.glos-item{background:#fff;border-radius:10px;border:1px solid #e5e5e0;padding:14px;margin-bottom:8px}
+.gi-term-en{font-size:14px;font-weight:700;color:#1a1a2e}
+.gi-term-es{font-size:12px;color:#2d6a4f;font-weight:600;margin-bottom:6px}
+.gi-def-en{font-size:13px;color:#333;line-height:1.55;margin-bottom:4px}
+.gi-def-es{font-size:12px;color:#666;line-height:1.55;font-style:italic}
+.gi-tag{font-size:10px;padding:2px 8px;border-radius:10px;background:#e8f4fd;color:#0c5460;display:inline-block;margin-top:8px;font-weight:600}
+
+/* PROGRESS TRACKER */
+.progress-section h2{font-size:16px;font-weight:700;color:#1a1a2e;margin-bottom:1rem}
+.domain-prog-item{background:#fff;border-radius:10px;border:1px solid #e5e5e0;padding:14px;margin-bottom:8px}
+.dpi-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.dpi-name{font-size:13px;font-weight:600;color:#1a1a2e}
+.dpi-pct{font-size:13px;font-weight:700;color:#1a1a2e}
+.dpi-bar{height:6px;background:#e5e5e0;border-radius:3px;overflow:hidden}
+.dpi-fill{height:6px;background:#1a1a2e;border-radius:3px;transition:width .5s}
+.dpi-sub{font-size:11px;color:#888;margin-top:4px}
+.achievement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:1rem}
+.ach{background:#fff;border-radius:10px;border:1px solid #e5e5e0;padding:12px;text-align:center}
+.ach-icon{font-size:24px;margin-bottom:4px}
+.ach-name{font-size:11px;font-weight:600;color:#1a1a2e}
+.ach-desc{font-size:10px;color:#888;margin-top:2px}
+.ach.locked{opacity:.4}
+
+/* UTIL */
+.hidden{display:none!important}
+.mt1{margin-top:1rem}
+.center{text-align:center}
+@media(max-width:500px){
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .sim-hero{padding:1rem}
+  .app-header h1{font-size:15px}
+}
+
+/* ===== iOS / MOBILE FIXES ===== */
+* { -webkit-tap-highlight-color: transparent; }
+button, .opt { 
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  touch-action: manipulation;
+}
+input { font-size: 16px !important; } /* prevents iOS zoom */
+
+@media(max-width:600px){
+  /* Bottom nav on mobile */
+  .nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #fff;
+    border-top: 1px solid #e5e5e0;
+    border-bottom: none;
+    z-index: 200;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    box-shadow: 0 -2px 10px rgba(0,0,0,.08);
+  }
+  .nav button { font-size: 10px; padding: 10px 4px 8px; min-height: 52px; flex-direction: column; display: flex; align-items: center; }
+  .nav button::before { font-size: 20px; display: block; margin-bottom: 2px; }
+  .nav button:nth-child(1)::before { content: '📅'; }
+  .nav button:nth-child(2)::before { content: '❓'; }
+  .nav button:nth-child(3)::before { content: '🃏'; }
+  .nav button:nth-child(4)::before { content: '📖'; }
+  .nav button:nth-child(5)::before { content: '📊'; }
+
+  /* Push content above bottom nav */
+  .container { padding-bottom: calc(80px + env(safe-area-inset-bottom, 0)) !important; }
+
+  /* Sticky header */
+  .app-header {
+    position: sticky; top: 0; z-index: 100;
+    padding-top: max(12px, env(safe-area-inset-top));
+  }
+
+  /* Smaller text adjustments */
+  .app-header h1 { font-size: 15px; }
+  .app-header p { font-size: 10px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .stat-n { font-size: 18px; }
+  .stat-l { font-size: 10px; }
+  .quiz-card { padding: 1rem; }
+  .q-en { font-size: 15px; line-height: 1.4; }
+  .q-es { font-size: 12px; }
+  .opt { font-size: 13px; padding: 13px 12px; min-height: 50px; }
+  .btn { font-size: 14px; padding: 13px 16px; min-height: 50px; }
+  .btn-next { padding: 13px 20px; font-size: 14px; min-height: 50px; }
+  .q-domain-badge { font-size: 10px; }
+  .sim-hero { padding: 1rem; }
+  .sim-hero h2 { font-size: 17px; }
+  .sim-grid { grid-template-columns: repeat(2, 1fr); }
+  .sim-domain-card { padding: 10px; }
+  .flash-front-en { font-size: 18px; }
+  .flash-front-es { font-size: 13px; }
+  .flash-nav button { min-height: 50px; padding: 12px 20px; }
+  .flash-card { min-height: 190px; padding: 1.25rem; }
+  .flip-card-wrap, .flip-card-inner, .card-face { min-height: 200px; }
+  .session-header { flex-direction: column; gap: 6px; align-items: flex-start; }
+  .domain-filter { gap: 5px; }
+  .d-btn { font-size: 11px; padding: 5px 10px; min-height: 36px; }
+  .achievement-grid { grid-template-columns: repeat(2, 1fr); }
+  .sim-hero button { padding: 13px 16px; min-height: 50px; }
+  
+  /* Results modal slides from bottom */
+  .results-overlay { align-items: flex-end; }
+  .results-modal {
+    border-radius: 20px 20px 0 0;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0));
+    max-height: 88vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .res-breakdown { grid-template-columns: repeat(3,1fr); gap: 6px; }
+  .btn-row { flex-direction: column; }
+  .btn-row .btn { width: 100%; }
+  
+  /* Glosario */
+  .glos-search { font-size: 16px !important; }
+  .glos-item { padding: 12px; }
+  .glos-term-en { font-size: 14px; }
+  .glos-def-en, .glos-def-es { font-size: 12px; }
+
+  /* Progress */
+  .domain-prog-item { padding: 12px; }
+  .dpi-name { font-size: 12px; }
+}
+
+@media(max-width:380px){
+  .q-en { font-size: 14px; }
+  .opt { font-size: 12px; }
+  .stats-row { gap: 5px; }
+  .stat-n { font-size: 16px; }
+}
+
+
+/* iOS flip card fix */
+.flip-card-inner { -webkit-transform-style: preserve-3d; transform-style: preserve-3d; }
+.card-face { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+.flip-card-wrap.flipped .flip-card-inner { -webkit-transform: rotateY(180deg); transform: rotateY(180deg); }
+
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div>
+    <h1>🧠 RBT Exam Prep 2026</h1>
+    <p>Registered Behavior Technician · 3rd Edition TCO · Bilingüe</p>
+  </div>
+  <span class="badge-3rd">3rd Ed. 2026</span>
+</div>
+
+<div class="nav">
+  <button class="active" onclick="showTab('sim')">📅 Simulador</button>
+  <button onclick="showTab('quiz')">❓ Quiz</button>
+  <button onclick="showTab('flash')">🃏 Flashcards</button>
+  <button onclick="showTab('glos')">📖 Glosario</button>
+  <button onclick="showTab('prog')">📊 Progreso</button>
+</div>
+
+<!-- ==================== SIMULADOR ==================== -->
+<div id="tab-sim" class="tab-section active">
+  <div class="container">
+    <div id="sim-home">
+      <div class="sim-hero">
+        <h2>Simulador de Examen Diario</h2>
+        <p>Practica 25 preguntas por sesión · Simula el examen real · 90 minutos disponibles<br>
+        <em style="font-size:11px;color:#bbb">Daily Exam Simulator · 25 questions per session · Real exam format</em></p>
+        <button class="btn" onclick="startFullSim()">▶ Iniciar Simulacro Completo (25 preguntas)</button>
+      </div>
+      <p style="font-size:12px;color:#888;margin-bottom:.75rem;font-weight:600">PRACTICAR POR DOMINIO / PRACTICE BY DOMAIN:</p>
+      <div class="sim-grid" id="sim-domain-grid"></div>
+      <p style="font-size:11px;color:#aaa;text-align:center;margin-top:.5rem">El examen real: 85 preguntas (75 puntuadas) · 90 min · Pearson VUE<br>Real exam: 85 questions (75 scored) · 90 min · Pearson VUE</p>
+    </div>
+    <div id="sim-active" class="hidden">
+      <div class="session-header">
+        <div>
+          <div class="session-title" id="sim-title">Simulacro Completo</div>
+          <div class="session-sub" id="sim-sub">25 preguntas · mezcla de todos los dominios</div>
+        </div>
+        <div class="timer" id="sim-timer">90:00</div>
+      </div>
+      <div class="prog-wrap"><div class="prog-fill" id="sim-prog" style="width:0%"></div></div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-n" id="sim-correct">0</div><div class="stat-l">✓ Correctas</div></div>
+        <div class="stat-box"><div class="stat-n" id="sim-wrong">0</div><div class="stat-l">✗ Incorrectas</div></div>
+        <div class="stat-box"><div class="stat-n" id="sim-left">25</div><div class="stat-l">Restantes</div></div>
+        <div class="stat-box"><div class="stat-n" id="sim-pct">—</div><div class="stat-l">Puntaje</div></div>
+      </div>
+      <div class="quiz-card" id="sim-card-area"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== QUIZ LIBRE ==================== -->
+<div id="tab-quiz" class="tab-section">
+  <div class="container">
+    <div class="domain-filter" id="quiz-filter"></div>
+    <div class="prog-wrap"><div class="prog-fill" id="quiz-prog" style="width:0%"></div></div>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-n" id="qz-correct">0</div><div class="stat-l">✓ Correctas</div></div>
+      <div class="stat-box"><div class="stat-n" id="qz-wrong">0</div><div class="stat-l">✗ Incorrectas</div></div>
+      <div class="stat-box"><div class="stat-n" id="qz-streak">0</div><div class="stat-l">🔥 Racha</div></div>
+      <div class="stat-box"><div class="stat-n" id="qz-pct">—</div><div class="stat-l">% Acierto</div></div>
+    </div>
+    <div class="quiz-card" id="quiz-card-area"></div>
+    <div style="text-align:right;margin-top:.5rem">
+      <button class="btn outline" onclick="resetQuiz()">↺ Reiniciar Quiz</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== FLASHCARDS ==================== -->
+<div id="tab-flash" class="tab-section">
+  <div class="container">
+    <div class="domain-filter" id="flash-filter"></div>
+    <div class="flash-nav-row">
+      <button class="btn outline" onclick="flashMove(-1)">← Anterior</button>
+      <span class="flash-counter" id="flash-counter">1 / 40</span>
+      <button class="btn outline" onclick="flashMove(1)">Siguiente →</button>
+    </div>
+    <div class="flip-card-wrap" id="flip-wrap" onclick="doFlip()">
+      <div class="flip-card-inner" id="flip-inner">
+        <div class="card-face card-front">
+          <span class="cf-domain" id="cf-domain">A. Measurement</span>
+          <div class="cf-en" id="cf-en">Term</div>
+          <div class="cf-es" id="cf-es">Término</div>
+          <div class="cf-hint">Toca para ver definición · Tap to see definition</div>
+        </div>
+        <div class="card-face card-back">
+          <span class="cb-domain" id="cb-domain">Domain</span>
+          <div class="cb-def-en" id="cb-en">Definition in English.</div>
+          <div class="cb-def-es" id="cb-es">Definición en español.</div>
+        </div>
+      </div>
+    </div>
+    <div class="flash-controls">
+      <button class="btn outline" onclick="shuffleFlash()">🔀 Mezclar</button>
+      <button class="btn" onclick="flashMove(1)">Siguiente →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== GLOSARIO ==================== -->
+<div id="tab-glos" class="tab-section">
+  <div class="container">
+    <input class="glos-search" placeholder="🔍 Buscar término / Search term..." oninput="filterGlos(this.value)" id="glos-input">
+    <div class="domain-filter" id="glos-filter"></div>
+    <div id="glos-list"></div>
+  </div>
+</div>
+
+<!-- ==================== PROGRESO ==================== -->
+<div id="tab-prog" class="tab-section">
+  <div class="container progress-section">
+    <h2>📊 Mi Progreso / My Progress</h2>
+    <div id="prog-domains"></div>
+    <div style="margin-top:1.5rem">
+      <h2>🏆 Logros / Achievements</h2>
+      <div class="achievement-grid" id="achievements"></div>
+    </div>
+    <div style="margin-top:1.5rem;text-align:center">
+      <button class="btn danger" onclick="if(confirm('¿Borrar todo el progreso? / Delete all progress?'))resetProgress()">🗑 Resetear progreso</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS MODAL -->
+<div class="results-overlay" id="results-overlay">
+  <div class="results-modal">
+    <div class="results-circle" id="res-circle">0%</div>
+    <h2 id="res-title">Resultado</h2>
+    <p id="res-msg"></p>
+    <div class="res-breakdown">
+      <div class="res-box"><div class="rn" id="res-correct">0</div><div class="rl">Correctas ✓</div></div>
+      <div class="res-box"><div class="rn" id="res-wrong">0</div><div class="rl">Incorrectas ✗</div></div>
+      <div class="res-box"><div class="rn" id="res-time">—</div><div class="rl">Tiempo</div></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn outline" onclick="closeResults()">Ver revisión</button>
+      <button class="btn" onclick="newSim()">Nueva sesión</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA — 110 QUESTIONS
+// ============================================================
+const QUESTIONS = [
+// === A. MEASUREMENT (22 questions) ===
+{id:1,domain:"A. Measurement",weight:17,
+ en:"Which measurement procedure records whether a behavior occurred at ANY point during an interval?",
+ es:"¿Qué procedimiento registra si una conducta ocurrió en CUALQUIER momento del intervalo?",
+ opts:["Whole-interval recording","Momentary time sampling","Partial-interval recording","Frequency recording"],ans:2,
+ exp_en:"Partial-interval recording (PIR) scores the interval as '+' if the behavior occurs at any moment. It tends to OVERESTIMATE behavior frequency.",
+ exp_es:"El registro de intervalo parcial marca '+' si la conducta ocurre en cualquier momento. Tiende a SOBREESTIMAR la frecuencia."},
+
+{id:2,domain:"A. Measurement",weight:17,
+ en:"Momentary time sampling records whether behavior is occurring:",
+ es:"El muestreo de tiempo momentáneo registra si la conducta ocurre:",
+ opts:["At any point during the interval","Throughout the entire interval","At the exact moment the interval ends","More than three times per interval"],ans:2,
+ exp_en:"MTS only checks behavior at the precise moment the interval ends. It tends to UNDERESTIMATE brief behaviors.",
+ exp_es:"El MTS solo verifica la conducta al momento exacto en que termina el intervalo. Tiende a SUBESTIMAR conductas breves."},
+
+{id:3,domain:"A. Measurement",weight:17,
+ en:"Whole-interval recording scores the interval '+' when:",
+ es:"El registro de intervalo completo marca '+' cuando:",
+ opts:["The behavior occurs once during the interval","The behavior occurs at the end of the interval","The behavior lasts throughout the ENTIRE interval","The behavior does not occur"],ans:2,
+ exp_en:"Whole-interval recording requires the behavior to persist the ENTIRE interval. It tends to UNDERESTIMATE behavior.",
+ exp_es:"El intervalo completo requiere que la conducta persista TODO el intervalo. Tiende a SUBESTIMAR la conducta."},
+
+{id:4,domain:"A. Measurement",weight:17,
+ en:"An RBT counts every instance of a student hitting. This is:",
+ es:"Un RBT cuenta cada vez que un estudiante golpea. Esto es:",
+ opts:["Duration recording","Frequency (event) recording","Momentary time sampling","Permanent product recording"],ans:1,
+ exp_en:"Frequency (event) recording counts every discrete occurrence of a behavior. Best for behaviors with a clear beginning and end.",
+ exp_es:"El registro de frecuencia cuenta cada ocurrencia discreta. Ideal para conductas con inicio y fin claros."},
+
+{id:5,domain:"A. Measurement",weight:17,
+ en:"Latency recording measures the time between:",
+ es:"El registro de latencia mide el tiempo entre:",
+ opts:["Two consecutive responses","Start and end of a behavior","The cue/SD and the beginning of the response","Session start and first behavior"],ans:2,
+ exp_en:"Latency = time from the discriminative stimulus (cue) to the onset of the response. Example: how long after 'sit down' the student begins to sit.",
+ exp_es:"Latencia = tiempo desde el estímulo discriminativo (señal) hasta el inicio de la respuesta. Ej: cuánto tarda el estudiante en sentarse después de 'siéntate'."},
+
+{id:6,domain:"A. Measurement",weight:17,
+ en:"Inter-Response Time (IRT) measures:",
+ es:"El Tiempo Entre Respuestas (IRT) mide:",
+ opts:["How long a behavior lasts","The time between the end of one response and the start of the next","The time from the cue to the start of the behavior","The number of responses per minute"],ans:1,
+ exp_en:"IRT = elapsed time between consecutive responses. Used when studying response pacing or rate.",
+ exp_es:"IRT = tiempo entre respuestas consecutivas. Útil al estudiar el ritmo o la tasa de respuesta."},
+
+{id:7,domain:"A. Measurement",weight:17,
+ en:"Duration recording is MOST appropriate for:",
+ es:"El registro de duración es MÁS apropiado para:",
+ opts:["Behaviors with no clear beginning or end","Discrete behaviors that happen quickly","Behaviors that last for a noticeable period of time","Counting how many products are produced"],ans:2,
+ exp_en:"Duration measures how long a behavior lasts from onset to offset. Best for ongoing behaviors like tantrum duration or time on task.",
+ exp_es:"La duración mide cuánto dura una conducta. Ideal para conductas continuas como rabietas o tiempo en tarea."},
+
+{id:8,domain:"A. Measurement",weight:17,
+ en:"Which measurement method does NOT require the observer to watch continuously?",
+ es:"¿Qué método NO requiere que el observador observe continuamente?",
+ opts:["Frequency recording","Duration recording","Momentary time sampling","Latency recording"],ans:2,
+ exp_en:"MTS only requires observation at the end of each interval, freeing the observer between checks. This makes it efficient for busy settings.",
+ exp_es:"El MTS solo requiere observación al final de cada intervalo, liberando al observador entre verificaciones. Eficiente en entornos ocupados."},
+
+{id:9,domain:"A. Measurement",weight:17,
+ en:"A behavior was observed 10 times during a 20-minute session. The RATE per minute is:",
+ es:"Una conducta se observó 10 veces en una sesión de 20 minutos. La TASA por minuto es:",
+ opts:["0.25","0.5","1","2"],ans:1,
+ exp_en:"Rate = frequency ÷ time. 10 ÷ 20 = 0.5 responses per minute. Rate accounts for session length differences.",
+ exp_es:"Tasa = frecuencia ÷ tiempo. 10 ÷ 20 = 0.5 respuestas por minuto. La tasa toma en cuenta diferencias de duración de sesión."},
+
+{id:10,domain:"A. Measurement",weight:17,
+ en:"Permanent product recording measures:",
+ es:"El registro de producto permanente mide:",
+ opts:["Behavior during its occurrence","The lasting outcome or result of a behavior","The time between behaviors","Whether behavior occurred at the end of an interval"],ans:1,
+ exp_en:"Permanent product records the physical outcome of behavior (e.g., number of worksheets completed, dishes washed) without requiring direct observation.",
+ exp_es:"El producto permanente registra el resultado físico de la conducta (ej: hojas de trabajo completadas, platos lavados) sin observación directa."},
+
+{id:11,domain:"A. Measurement",weight:17,
+ en:"Interobserver Agreement (IOA) is important because:",
+ es:"El Acuerdo entre Observadores (IOA) es importante porque:",
+ opts:["It replaces data collection","It measures whether two observers collect data consistently on the same behavior","It shows whether behavior is improving","It decides reinforcement schedules"],ans:1,
+ exp_en:"High IOA confirms that data is reliable and the behavior definition is clear. Low IOA signals the need for retraining or clearer definitions.",
+ exp_es:"Un IOA alto confirma que los datos son confiables y la definición de conducta es clara. Un IOA bajo indica necesidad de entrenamiento o definiciones más claras."},
+
+{id:12,domain:"A. Measurement",weight:17,
+ en:"On a line graph, the X-axis typically represents:",
+ es:"En una gráfica de línea, el eje X típicamente representa:",
+ opts:["The measurement of behavior","Sessions or time","The type of reinforcement","The observer's name"],ans:1,
+ exp_en:"X-axis = time/sessions. Y-axis = behavior measurement. This is the standard ABA line graph format.",
+ exp_es:"Eje X = tiempo/sesiones. Eje Y = medición de conducta. Este es el formato estándar de gráficas en ABA."},
+
+{id:13,domain:"A. Measurement",weight:17,
+ en:"A cumulative record graph:",
+ es:"Un gráfico de registro acumulativo:",
+ opts:["Goes up and down as behavior changes","Never decreases — it only goes flat or rises","Always shows an increasing trend","Resets to zero each session"],ans:1,
+ exp_en:"Cumulative graphs add each session's data on top of the previous total. They can flatten (no behavior) but NEVER decrease.",
+ exp_es:"Los gráficos acumulativos suman cada sesión sobre el total anterior. Pueden aplanarse (sin conducta) pero NUNCA disminuyen."},
+
+{id:14,domain:"A. Measurement",weight:17,
+ en:"Which measurement method tends to OVERESTIMATE behavior?",
+ es:"¿Qué método tiende a SOBREESTIMAR la conducta?",
+ opts:["Whole-interval recording","Momentary time sampling","Partial-interval recording","Duration recording"],ans:2,
+ exp_en:"Partial-interval recording (PIR) scores '+' even if behavior occurred for only a moment. This inflates the apparent frequency.",
+ exp_es:"El intervalo parcial marca '+' aunque la conducta ocurra solo un momento. Esto infla la frecuencia aparente."},
+
+{id:15,domain:"A. Measurement",weight:17,
+ en:"An RBT observes whether a child is sitting at their desk at the end of every 5-minute interval. This is:",
+ es:"Un RBT observa si un niño está sentado al final de cada intervalo de 5 minutos. Esto es:",
+ opts:["Whole-interval recording","Partial-interval recording","Momentary time sampling","Duration recording"],ans:2,
+ exp_en:"Checking only at the end of each interval = Momentary Time Sampling. The word 'at the end' is the key cue.",
+ exp_es:"Verificar solo al final de cada intervalo = Muestreo de Tiempo Momentáneo. 'Al final' es la clave."},
+
+{id:16,domain:"A. Measurement",weight:17,
+ en:"Which graph type NEVER shows a decrease in data points?",
+ es:"¿Qué tipo de gráfica NUNCA muestra disminución en los puntos de datos?",
+ opts:["Bar graph","Line graph","Cumulative record","Scatter plot"],ans:2,
+ exp_en:"Cumulative records only go up or flat — never down — because they track the total sum of responses over time.",
+ exp_es:"Los registros acumulativos solo suben o se aplanan — nunca bajan — porque rastrean la suma total de respuestas con el tiempo."},
+
+{id:17,domain:"A. Measurement",weight:17,
+ en:"A scatter plot in ABA is used to:",
+ es:"Un gráfico de dispersión en ABA se usa para:",
+ opts:["Show behavior change over sessions","Identify patterns in when problem behaviors occur throughout the day","Calculate interobserver agreement","Graph the rate of skill acquisition"],ans:1,
+ exp_en:"Scatter plots show when (time of day) problem behaviors are more or less likely to occur, helping identify antecedent patterns.",
+ exp_es:"Los gráficos de dispersión muestran cuándo (hora del día) las conductas problema son más o menos probables, ayudando a identificar patrones de antecedente."},
+
+{id:18,domain:"A. Measurement",weight:17,
+ en:"An RBT should write behavior definitions in terms that are:",
+ es:"Un RBT debe escribir las definiciones de conducta en términos que sean:",
+ opts:["Interpretive and subjective","Observable and measurable","General and broad","Based on the client's feelings"],ans:1,
+ exp_en:"All behavior definitions must be observable (can be seen or heard) and measurable (can be counted or timed). Example: 'hits with open hand' NOT 'is aggressive'.",
+ exp_es:"Las definiciones deben ser observables (se pueden ver o escuchar) y medibles (se pueden contar o cronometrar). Ej: 'golpea con mano abierta' NO 'es agresivo'."},
+
+{id:19,domain:"A. Measurement",weight:17,
+ en:"Which statement is an OBSERVATION (not an inference)?",
+ es:"¿Cuál enunciado es una OBSERVACIÓN (no una inferencia)?",
+ opts:["The client was frustrated","The client wanted attention","The client slapped the table with an open hand twice","The client felt overwhelmed"],ans:2,
+ exp_en:"'Slapped the table with an open hand twice' describes exactly what was seen. 'Frustrated', 'wanted', 'overwhelmed' are interpretations.",
+ exp_es:"'Golpeó la mesa con la mano abierta dos veces' describe exactamente lo que se vio. 'Frustrado', 'quería', 'abrumado' son interpretaciones."},
+
+{id:20,domain:"A. Measurement",weight:17,
+ en:"Which measurement procedure is MOST accurate for capturing every occurrence of a behavior?",
+ es:"¿Qué procedimiento de medición es MÁS preciso para capturar cada ocurrencia de una conducta?",
+ opts:["Momentary time sampling","Partial-interval recording","Continuous measurement (frequency/duration)","Whole-interval recording"],ans:2,
+ exp_en:"Continuous measurement (frequency, duration, latency, IRT) records every instance. Interval methods are approximations.",
+ exp_es:"La medición continua (frecuencia, duración, latencia, IRT) registra cada instancia. Los métodos de intervalo son aproximaciones."},
+
+{id:21,domain:"A. Measurement",weight:17,
+ en:"When comparing data across sessions of different lengths, which measure is preferred?",
+ es:"Para comparar datos entre sesiones de diferente duración, ¿qué medida se prefiere?",
+ opts:["Frequency (count)","Rate (responses per minute)","Duration","Latency"],ans:1,
+ exp_en:"Rate (count ÷ time) accounts for session length differences. A behavior occurring 10 times in 20 min is different from 10 times in 60 min.",
+ exp_es:"La tasa (conteo ÷ tiempo) compensa las diferencias de duración. 10 ocurrencias en 20 min es diferente a 10 en 60 min."},
+
+{id:22,domain:"A. Measurement",weight:17,
+ en:"After a behavior intervention is implemented, an RBT plots a new data point that is lower than the previous phase. This suggests:",
+ es:"Tras implementar una intervención, un RBT grafica un punto menor que la fase anterior. Esto sugiere:",
+ opts:["The cumulative record is incorrect","The behavior may be decreasing — a possible treatment effect","The graph needs to be restarted","The behavior definition changed"],ans:1,
+ exp_en:"A downward trend in a behavior reduction program suggests the intervention may be working. The BCBA interprets this — the RBT reports accurately.",
+ exp_es:"Una tendencia descendente en un programa de reducción sugiere que la intervención puede estar funcionando. El BCBA interpreta — el RBT reporta con precisión."},
+
+// === B. ASSESSMENT (14 questions) ===
+{id:23,domain:"B. Assessment",weight:13,
+ en:"Which preference assessment presents ONE item at a time and records approach or avoidance?",
+ es:"¿Qué evaluación de preferencia presenta UN artículo a la vez?",
+ opts:["Paired-stimulus (PS)","MSWO","Single-stimulus (SS)","Free-operant (FO)"],ans:2,
+ exp_en:"Single-stimulus: one item presented, RBT notes approach or avoidance. Simple but time-consuming and doesn't show relative preference.",
+ exp_es:"Estímulo único: un artículo, el RBT nota acercamiento o evitación. Simple pero lento y no muestra preferencia relativa."},
+
+{id:24,domain:"B. Assessment",weight:13,
+ en:"In MSWO (Multiple Stimulus Without Replacement), items that are selected first are considered:",
+ es:"En el MSWO, los artículos seleccionados primero se consideran:",
+ opts:["Punishers","Lowest-preference items","Highest-preference items","Neutral stimuli"],ans:2,
+ exp_en:"In MSWO, the first items selected across trials are ranked as most preferred, making them strong reinforcer candidates.",
+ exp_es:"En el MSWO, los artículos seleccionados primero en los ensayos se clasifican como de mayor preferencia, siendo fuertes candidatos como reforzadores."},
+
+{id:25,domain:"B. Assessment",weight:13,
+ en:"ABC recording stands for:",
+ es:"El registro ABC significa:",
+ opts:["Antecedent, Behavior, Consequence","Applied Behavior Conditions","Assessment, Baseline, Criterion","Accuracy, Behavior, Compliance"],ans:0,
+ exp_en:"ABC = Antecedent (what happened BEFORE), Behavior (what the person DID), Consequence (what happened AFTER). Core tool for functional assessment.",
+ exp_es:"ABC = Antecedente (qué pasó ANTES), Conducta (qué HIZO la persona), Consecuencia (qué pasó DESPUÉS). Herramienta central para evaluación funcional."},
+
+{id:26,domain:"B. Assessment",weight:13,
+ en:"The four functions of behavior in ABA are:",
+ es:"Las cuatro funciones de la conducta en ABA son:",
+ opts:["Attention, Escape, Tangibles, Automatic","Antecedent, Behavior, Consequence, Schedule","DTT, NET, Shaping, Chaining","Positive, Negative, Neutral, Variable"],ans:0,
+ exp_en:"AETA: Attention, Escape/Avoidance, Tangible access, Automatic (sensory). Every problem behavior is maintained by one or more of these.",
+ exp_es:"AETA: Atención, Escape/Evitación, Acceso a tangibles, Automático (sensorial). Toda conducta problema se mantiene por una o más de estas."},
+
+{id:27,domain:"B. Assessment",weight:13,
+ en:"A free-operant preference assessment involves:",
+ es:"Una evaluación de preferencia de operante libre implica:",
+ opts:["Presenting items one at a time","Presenting pairs of items","Observing which items the client approaches in their natural environment","Removing chosen items from the array"],ans:2,
+ exp_en:"Free-operant: items are available in the environment and the observer records which the client approaches and for how long — naturalistic and low-effort.",
+ exp_es:"Operante libre: los artículos están disponibles y el observador registra a cuáles se acerca el cliente y por cuánto tiempo — naturalista y de bajo esfuerzo."},
+
+{id:28,domain:"B. Assessment",weight:13,
+ en:"The purpose of a preference assessment is to identify:",
+ es:"El propósito de una evaluación de preferencia es identificar:",
+ opts:["The function of a behavior","Items or activities that MAY function as reinforcers","The client's diagnostic category","Which behavior program to use"],ans:1,
+ exp_en:"Preference ≠ reinforcer. A preference assessment identifies what the client likes. A reinforcer assessment confirms what actually increases behavior.",
+ exp_es:"Preferencia ≠ reforzador. La evaluación de preferencia identifica qué le gusta al cliente. La evaluación de reforzador confirma qué realmente aumenta la conducta."},
+
+{id:29,domain:"B. Assessment",weight:13,
+ en:"A scatter plot is used to identify:",
+ es:"Un gráfico de dispersión se usa para identificar:",
+ opts:["Rate of skill acquisition","Patterns in WHEN problem behaviors occur","Preference hierarchy","IOA percentage"],ans:1,
+ exp_en:"Scatter plots grid behavior across time of day and day of week, revealing patterns that suggest environmental triggers.",
+ exp_es:"Los gráficos de dispersión mapean la conducta por hora del día y día de la semana, revelando patrones que sugieren disparadores ambientales."},
+
+{id:30,domain:"B. Assessment",weight:13,
+ en:"During a paired-stimulus preference assessment, to avoid position bias the RBT should:",
+ es:"Durante una evaluación de estímulo pareado, para evitar el sesgo de posición el RBT debe:",
+ opts:["Always place the preferred item on the right","Randomly vary the position of items across trials","Keep all items in the same position","Remove items from the left side first"],ans:1,
+ exp_en:"Randomly varying positions across trials prevents the client from simply choosing items by location rather than actual preference.",
+ exp_es:"Variar las posiciones aleatoriamente entre ensayos evita que el cliente elija artículos por ubicación en lugar de preferencia real."},
+
+{id:31,domain:"B. Assessment",weight:13,
+ en:"An RBT's role during a functional assessment is to:",
+ es:"El rol del RBT durante una evaluación funcional es:",
+ opts:["Determine the function of behavior independently","Design the FBA protocol","Collect data as directed by the supervising BCBA","Modify the assessment based on their own judgment"],ans:2,
+ exp_en:"RBTs implement and collect — they do NOT design, interpret, or modify assessments. All assessment design is the BCBA's responsibility.",
+ exp_es:"Los RBTs implementan y recopilan — NO diseñan, interpretan ni modifican evaluaciones. Todo diseño de evaluación es responsabilidad del BCBA."},
+
+{id:32,domain:"B. Assessment",weight:13,
+ en:"A preference assessment result showing that an item is 'high preference' means:",
+ es:"Un resultado de evaluación de preferencia que muestra que un artículo es 'de alta preferencia' significa:",
+ opts:["It is definitely an effective reinforcer","The client has chosen it frequently — it is a CANDIDATE reinforcer","It should always be used as reinforcement","It functions as a punisher for other behaviors"],ans:1,
+ exp_en:"High preference ≠ guaranteed reinforcer. An item must actually increase the future probability of behavior to be called a reinforcer.",
+ exp_es:"Alta preferencia ≠ reforzador garantizado. Un artículo debe realmente aumentar la probabilidad futura de conducta para llamarse reforzador."},
+
+{id:33,domain:"B. Assessment",weight:13,
+ en:"During an ABC observation, you note: 'Teacher said sit down (A) → student ran away (B) → teacher chased student (C)'. The LIKELY function is:",
+ es:"Durante una observación ABC: 'Maestra dijo siéntate (A) → estudiante corrió (B) → maestra persiguió al estudiante (C)'. La función PROBABLE es:",
+ opts:["Access to tangibles","Automatic/sensory","Attention","Escape"],ans:2,
+ exp_en:"The student received attention (chase) as a consequence — this suggests the behavior may be maintained by attention.",
+ exp_es:"El estudiante recibió atención (persecución) como consecuencia — esto sugiere que la conducta puede ser mantenida por atención."},
+
+{id:34,domain:"B. Assessment",weight:13,
+ en:"Which assessment method allows the RBT to observe behavior in real-time and record what happens before and after?",
+ es:"¿Qué método de evaluación permite al RBT observar la conducta en tiempo real y registrar qué ocurre antes y después?",
+ opts:["MSWO preference assessment","ABC narrative recording","Functional analysis","Rating scale"],ans:1,
+ exp_en:"ABC narrative recording captures antecedent, behavior, and consequence in real-time, allowing pattern analysis across multiple observations.",
+ exp_es:"El registro narrativo ABC captura antecedente, conducta y consecuencia en tiempo real, permitiendo análisis de patrones en múltiples observaciones."},
+
+{id:35,domain:"B. Assessment",weight:13,
+ en:"The difference between a preference assessment and a reinforcer assessment is:",
+ es:"La diferencia entre una evaluación de preferencia y una de reforzador es:",
+ opts:["They are the same thing","Preference identifies what the client likes; reinforcer assessment tests if it actually INCREASES behavior","Reinforcer assessments use intervals; preference uses frequency","Preference is done by BCBAs; reinforcer by RBTs"],ans:1,
+ exp_en:"Preference assessment = what the client approaches/likes. Reinforcer assessment = what actually strengthens behavior when delivered as a consequence.",
+ exp_es:"Evaluación de preferencia = a qué se acerca/qué le gusta. Evaluación de reforzador = qué realmente fortalece la conducta cuando se entrega como consecuencia."},
+
+{id:36,domain:"B. Assessment",weight:13,
+ en:"Curriculum-based assessment in ABA is primarily used to:",
+ es:"La evaluación basada en currículo en ABA se usa principalmente para:",
+ opts:["Identify problem behavior functions","Determine current skill levels to guide skill acquisition programming","Measure the rate of problem behavior","Select reinforcers"],ans:1,
+ exp_en:"Curriculum-based assessment identifies what skills the client has and what they need to learn next, forming the basis for the skill acquisition plan.",
+ exp_es:"La evaluación basada en currículo identifica qué habilidades tiene el cliente y qué necesita aprender, formando la base del plan de adquisición de habilidades."},
+
+// === C. SKILL ACQUISITION (34 questions) ===
+{id:37,domain:"C. Skill Acquisition",weight:32,
+ en:"The correct sequence in Discrete Trial Teaching (DTT) is:",
+ es:"La secuencia correcta en la Enseñanza de Ensayo Discreto (DTT) es:",
+ opts:["Response → SD → Consequence","SD → Response → Consequence → Inter-trial interval","Prompt → SD → Response → Reinforcement","Consequence → Response → SD"],ans:1,
+ exp_en:"DTT: SD (instruction/cue) → Response (learner's behavior) → Consequence (reinforcement or error correction) → ITI (brief pause before next trial).",
+ exp_es:"DTT: ED (instrucción/señal) → Respuesta (conducta del aprendiz) → Consecuencia (reforzamiento o corrección) → ITI (pausa breve antes del siguiente ensayo)."},
+
+{id:38,domain:"C. Skill Acquisition",weight:32,
+ en:"Natural Environment Teaching (NET) differs from DTT because:",
+ es:"La Enseñanza en Entorno Natural (NET) difiere del DTT porque:",
+ opts:["NET uses more physical prompts","NET embeds instruction within natural activities and follows the learner's motivation","NET is always done one-on-one at a table","NET does not use reinforcement"],ans:1,
+ exp_en:"NET uses the learner's interests and naturally occurring situations to teach — promoting generalization. DTT is more structured and mass-trial based.",
+ exp_es:"NET usa los intereses del aprendiz y situaciones naturales para enseñar — promoviendo la generalización. DTT es más estructurado con múltiples ensayos."},
+
+{id:39,domain:"C. Skill Acquisition",weight:32,
+ en:"Most-to-least (MTL) prompting:",
+ es:"La ayuda de más a menos (MTL):",
+ opts:["Starts with no prompt and adds assistance only if needed","Starts with the most intrusive prompt and gradually fades assistance","Delivers a prompt only after a set time delay","Presents the stimulus and waits for a spontaneous response"],ans:1,
+ exp_en:"MTL begins with maximum assistance (e.g., full physical guidance) and systematically reduces it as the learner demonstrates competence.",
+ exp_es:"MTL comienza con la máxima asistencia (ej: guía física completa) y la reduce sistemáticamente a medida que el aprendiz demuestra competencia."},
+
+{id:40,domain:"C. Skill Acquisition",weight:32,
+ en:"Least-to-most (LTM) prompting:",
+ es:"La ayuda de menos a más (LTM):",
+ opts:["Starts with full physical guidance","Starts with the least intrusive prompt and increases only if the learner doesn't respond","Uses time delay before adding prompts","Is the same as errorless learning"],ans:1,
+ exp_en:"LTM gives the learner an opportunity to respond independently first. If no response, prompts are added in increasing levels of intrusiveness.",
+ exp_es:"LTM da al aprendiz la oportunidad de responder independientemente primero. Sin respuesta, se añaden ayudas en niveles crecientes de intrusividad."},
+
+{id:41,domain:"C. Skill Acquisition",weight:32,
+ en:"Errorless learning involves:",
+ es:"El aprendizaje sin error implica:",
+ opts:["Allowing errors to occur and then correcting them","Providing immediate most-to-least prompting to prevent incorrect responses","Using no prompts at all","Waiting for the learner to make the first response independently"],ans:1,
+ exp_en:"Errorless learning uses immediate, intensive prompting (MTL) to prevent errors from occurring. Errors are learning opportunities but also reinforce incorrect responses.",
+ exp_es:"El aprendizaje sin error usa ayuda inmediata e intensiva (MTL) para prevenir errores. Los errores son oportunidades de aprendizaje pero también refuerzan respuestas incorrectas."},
+
+{id:42,domain:"C. Skill Acquisition",weight:32,
+ en:"Time delay prompting involves:",
+ es:"La ayuda con demora de tiempo implica:",
+ opts:["Adding prompts immediately after the SD","Waiting a set number of seconds before providing a prompt","Using physical guidance before any other prompt","Providing the prompt only after an error"],ans:1,
+ exp_en:"Time delay inserts a waiting period (e.g., 3-5 seconds) between the SD and the prompt to encourage independent responding.",
+ exp_es:"La demora de tiempo inserta un período de espera (ej: 3-5 segundos) entre el ED y la ayuda para alentar respuestas independientes."},
+
+{id:43,domain:"C. Skill Acquisition",weight:32,
+ en:"Prompt fading is critical because:",
+ es:"El retiro de ayuda es fundamental porque:",
+ opts:["It makes sessions faster","It prevents the learner from becoming dependent on prompts","It is required by law for all ABA programs","It eliminates the need for reinforcement"],ans:1,
+ exp_en:"Without fading, learners may become prompt-dependent — only performing the behavior when prompted, never independently.",
+ exp_es:"Sin retiro, los aprendices pueden volverse dependientes de las ayudas — realizando la conducta solo cuando se les ayuda, nunca de forma independiente."},
+
+{id:44,domain:"C. Skill Acquisition",weight:32,
+ en:"Shaping is defined as:",
+ es:"El moldeamiento se define como:",
+ opts:["Breaking a task into sequential steps","Reinforcing successive approximations toward a target behavior","Presenting stimuli in pairs","Teaching in the natural environment"],ans:1,
+ exp_en:"Shaping reinforces behaviors that are progressively closer to the final target. Each 'step up' is reinforced; previous approximations are placed on extinction.",
+ exp_es:"El moldeamiento refuerza conductas progresivamente más cercanas al objetivo final. Cada 'avance' se refuerza; las aproximaciones anteriores se ponen en extinción."},
+
+{id:45,domain:"C. Skill Acquisition",weight:32,
+ en:"Task analysis involves:",
+ es:"El análisis de tarea implica:",
+ opts:["Observing behavior to identify its function","Breaking a complex skill into small, sequential teachable steps","Testing whether a stimulus is a reinforcer","Comparing behavior across two observers"],ans:1,
+ exp_en:"Task analysis (TA) breaks multi-step skills into individual components that can be taught one at a time. Example: handwashing has ~15 steps.",
+ exp_es:"El análisis de tarea (TA) divide habilidades complejas en componentes individuales que se pueden enseñar uno a la vez. Ej: lavarse las manos tiene ~15 pasos."},
+
+{id:46,domain:"C. Skill Acquisition",weight:32,
+ en:"In backward chaining:",
+ es:"En el encadenamiento hacia atrás:",
+ opts:["The first step is taught first","The last step is taught first; all preceding steps are prompted or completed for the learner","All steps are taught simultaneously","Steps are taught in random order"],ans:1,
+ exp_en:"Backward chaining: teach the LAST step first, allowing the learner to always complete the chain and receive natural reinforcement at the end.",
+ exp_es:"Encadenamiento hacia atrás: enseñar el ÚLTIMO paso primero, permitiendo al aprendiz siempre completar la cadena y recibir reforzamiento natural al final."},
+
+{id:47,domain:"C. Skill Acquisition",weight:32,
+ en:"In forward chaining:",
+ es:"En el encadenamiento hacia adelante:",
+ opts:["The last step is taught first","The first step is taught first; subsequent steps are prompted or completed for the learner","All steps are taught at once","Steps are randomized each session"],ans:1,
+ exp_en:"Forward chaining: teach STEP 1 first; once mastered, add STEP 2, and so on. The learner builds the chain from the beginning.",
+ exp_es:"Encadenamiento hacia adelante: enseñar el PASO 1 primero; una vez dominado, agregar el PASO 2, y así sucesivamente. El aprendiz construye la cadena desde el inicio."},
+
+{id:48,domain:"C. Skill Acquisition",weight:32,
+ en:"A MAND is a verbal operant that:",
+ es:"Un MANDO es un operante verbal que:",
+ opts:["Labels or describes something in the environment","Is a request controlled by a motivating operation — the speaker gets what they ask for","Repeats what was just heard","Is controlled by prior verbal behavior"],ans:1,
+ exp_en:"Mand = request. Controlled by a motivating operation (MO). Example: child says 'water' when thirsty and receives water.",
+ exp_es:"Mando = solicitud. Controlado por una operación motivadora (OM). Ej: el niño dice 'agua' cuando tiene sed y recibe agua."},
+
+{id:49,domain:"C. Skill Acquisition",weight:32,
+ en:"A TACT is a verbal operant that:",
+ es:"Un TACTO es un operante verbal que:",
+ opts:["Makes a request","Labels or names something in the environment, controlled by a non-verbal stimulus","Repeats what was heard","Responds to prior verbal behavior"],ans:1,
+ exp_en:"Tact = label/name. Controlled by non-verbal stimuli. Example: pointing at a dog and saying 'dog' — no request, no repetition.",
+ exp_es:"Tacto = etiqueta/nombre. Controlado por estímulos no verbales. Ej: señalar un perro y decir 'perro' — sin solicitar, sin repetir."},
+
+{id:50,domain:"C. Skill Acquisition",weight:32,
+ en:"An ECHOIC verbal operant involves:",
+ es:"Un operante verbal ECOICO implica:",
+ opts:["Labeling the environment","Requesting items","Repeating what was just heard — controlled by prior verbal stimulus","Responding to prior non-verbal stimuli"],ans:2,
+ exp_en:"Echoic = vocal imitation. The speaker repeats (echoes) the verbal behavior they just heard. Example: therapist says 'ball,' child says 'ball'.",
+ exp_es:"Ecoico = imitación vocal. El hablante repite (hace eco de) la conducta verbal que acaba de escuchar. Ej: terapeuta dice 'pelota', niño dice 'pelota'."},
+
+{id:51,domain:"C. Skill Acquisition",weight:32,
+ en:"An INTRAVERBAL response is controlled by:",
+ es:"Una respuesta INTRAVERBAL es controlada por:",
+ opts:["A non-verbal stimulus in the environment","Prior verbal behavior","A motivating operation","A physical prompt"],ans:1,
+ exp_en:"Intraverbal = verbal response to prior verbal behavior, without correspondence. Example: 'What do you eat for breakfast?' → 'Cereal'.",
+ exp_es:"Intraverbal = respuesta verbal a conducta verbal previa, sin correspondencia. Ej: '¿Qué comes en el desayuno?' → 'Cereal'."},
+
+{id:52,domain:"C. Skill Acquisition",weight:32,
+ en:"Generalization of a learned skill is BEST promoted by:",
+ es:"La generalización de una habilidad aprendida se promueve MEJOR mediante:",
+ opts:["Training only in one setting with one instructor","Using the same materials every session","Teaching across multiple settings, people, and materials","Reducing reinforcement immediately after mastery"],ans:2,
+ exp_en:"Programming generalization requires teaching in varied conditions. If a skill is only trained in one setting, it may not transfer.",
+ exp_es:"Programar la generalización requiere enseñar en condiciones variadas. Si una habilidad se entrena solo en un entorno, puede no transferirse."},
+
+{id:53,domain:"C. Skill Acquisition",weight:32,
+ en:"Maintenance probes are conducted to:",
+ es:"Las pruebas de mantenimiento se realizan para:",
+ opts:["Teach new skills","Verify that previously mastered skills are retained over time","Increase the difficulty of the task","Measure the rate of new skill acquisition"],ans:1,
+ exp_en:"Maintenance probes check whether skills mastered during training remain in the learner's repertoire after training has ended.",
+ exp_es:"Las pruebas de mantenimiento verifican si las habilidades dominadas durante el entrenamiento permanecen en el repertorio del aprendiz después de que el entrenamiento termina."},
+
+{id:54,domain:"C. Skill Acquisition",weight:32,
+ en:"If an RBT notices that the skill acquisition plan is not working as expected, they should:",
+ es:"Si un RBT nota que el plan de adquisición de habilidades no funciona como se esperaba, debe:",
+ opts:["Modify the plan based on their own experience","Continue implementing the plan exactly as written and report concerns to the BCBA","Stop the program until the BCBA is available","Use a different teaching method that seems more effective"],ans:1,
+ exp_en:"RBTs implement exactly as written. If something seems wrong, they REPORT it to the BCBA — they do NOT modify the plan themselves.",
+ exp_es:"Los RBTs implementan exactamente como se escribe. Si algo parece mal, lo REPORTAN al BCBA — ellos NO modifican el plan por sí mismos."},
+
+{id:55,domain:"C. Skill Acquisition",weight:32,
+ en:"Reinforcement is defined as a consequence that:",
+ es:"El reforzamiento se define como una consecuencia que:",
+ opts:["Follows a behavior and decreases its future frequency","Follows a behavior and INCREASES its future probability","Punishes an inappropriate behavior","Is delivered on a fixed schedule regardless of behavior"],ans:1,
+ exp_en:"Reinforcement = consequence → INCREASES behavior. If it decreases behavior, it is punishment. This is defined by function, not form.",
+ exp_es:"Reforzamiento = consecuencia → AUMENTA la conducta. Si disminuye la conducta, es castigo. Se define por función, no por forma."},
+
+{id:56,domain:"C. Skill Acquisition",weight:32,
+ en:"Positive reinforcement involves:",
+ es:"El reforzamiento positivo implica:",
+ opts:["Removing something aversive after a behavior","Adding something desirable after a behavior to increase it","Decreasing a behavior by adding something unpleasant","Delivering praise regardless of behavior"],ans:1,
+ exp_en:"Positive reinforcement adds (+) a stimulus (e.g., praise, token, food) following behavior, increasing future probability.",
+ exp_es:"El reforzamiento positivo agrega (+) un estímulo (ej: elogio, ficha, comida) después de la conducta, aumentando la probabilidad futura."},
+
+{id:57,domain:"C. Skill Acquisition",weight:32,
+ en:"Negative reinforcement involves:",
+ es:"El reforzamiento negativo implica:",
+ opts:["Punishing a behavior by adding an aversive stimulus","Removing something aversive after a behavior to INCREASE it","Decreasing behavior by withholding reinforcement","Using physical prompts to guide behavior"],ans:1,
+ exp_en:"Negative reinforcement removes (-) an aversive stimulus following behavior, increasing future probability. Example: escaping a loud noise by putting on headphones.",
+ exp_es:"El reforzamiento negativo retira (-) un estímulo aversivo después de la conducta, aumentando la probabilidad futura. Ej: escapar de un ruido fuerte poniendo audífonos."},
+
+{id:58,domain:"C. Skill Acquisition",weight:32,
+ en:"A fixed ratio (FR) reinforcement schedule delivers reinforcement:",
+ es:"Un programa de reforzamiento de razón fija (RF) entrega reforzamiento:",
+ opts:["After a set amount of time regardless of responses","After every set NUMBER of responses","After a variable number of responses","After unpredictable time intervals"],ans:1,
+ exp_en:"FR: reinforce after a fixed number of responses. FR1 = every response. FR5 = every 5 responses. Produces a post-reinforcement pause.",
+ exp_es:"RF: reforzar después de un número fijo de respuestas. RF1 = cada respuesta. RF5 = cada 5 respuestas. Produce una pausa post-reforzamiento."},
+
+{id:59,domain:"C. Skill Acquisition",weight:32,
+ en:"A variable ratio (VR) reinforcement schedule is associated with:",
+ es:"Un programa de razón variable (RV) está asociado con:",
+ opts:["A post-reinforcement pause","Slow, steady responding","High and steady rates of responding — very resistant to extinction","Responding only at the end of the interval"],ans:2,
+ exp_en:"VR schedules produce the highest and most persistent rates of responding. Example: slot machines — you never know which pull will win.",
+ exp_es:"Los programas RV producen las tasas más altas y persistentes de respuesta. Ej: máquinas tragamonedas — nunca sabes qué intento ganará."},
+
+{id:60,domain:"C. Skill Acquisition",weight:32,
+ en:"When first teaching a new skill, reinforcement should be delivered:",
+ es:"Al enseñar una nueva habilidad por primera vez, el reforzamiento debe entregarse:",
+ opts:["On a variable schedule","Only for perfect responses","Continuously (every correct response) — on a CRF schedule","After every 5 correct responses"],ans:2,
+ exp_en:"Continuous reinforcement (CRF/FR1) during initial skill acquisition strengthens the behavior most efficiently. Schedule is thinned as skills are mastered.",
+ exp_es:"El reforzamiento continuo (CRF/RF1) durante la adquisición inicial fortalece la conducta de manera más eficiente. El programa se adelgaza a medida que se dominan las habilidades."},
+
+{id:61,domain:"C. Skill Acquisition",weight:32,
+ en:"An RBT receives a trial-by-trial data sheet. This means they record:",
+ es:"Un RBT recibe una hoja de datos ensayo por ensayo. Esto significa que registran:",
+ opts:["The total number of correct responses at the end of the session","The percentage of intervals with behavior","Whether behavior occurred at the end of each interval","The outcome (correct/incorrect) of EACH individual trial"],ans:3,
+ exp_en:"Trial-by-trial recording captures every discrete teaching trial — marking + or - for each. Provides the most detail about learning.",
+ exp_es:"El registro ensayo por ensayo captura cada ensayo de enseñanza discreto — marcando + o - para cada uno. Proporciona el mayor detalle sobre el aprendizaje."},
+
+{id:62,domain:"C. Skill Acquisition",weight:32,
+ en:"Listener responding involves:",
+ es:"La respuesta del oyente implica:",
+ opts:["Saying words in response to verbal stimuli","Following instructions or responding to verbal cues without speaking","Imitating motor behaviors","Requesting items using language"],ans:1,
+ exp_en:"Listener responding (receptive language) = understanding and responding to what others say without producing verbal behavior. Example: 'Touch the ball' → child touches ball.",
+ exp_es:"Respuesta del oyente (lenguaje receptivo) = entender y responder a lo que otros dicen sin producir conducta verbal. Ej: 'Toca la pelota' → el niño toca la pelota."},
+
+{id:63,domain:"C. Skill Acquisition",weight:32,
+ en:"Motor imitation training teaches a client to:",
+ es:"El entrenamiento de imitación motora enseña a un cliente a:",
+ opts:["Repeat words that are said to them","Copy the physical movements of a model","Label objects in the environment","Make requests for preferred items"],ans:1,
+ exp_en:"Motor imitation: the client copies the physical action demonstrated by a therapist. Example: therapist claps → client claps.",
+ exp_es:"Imitación motora: el cliente copia la acción física demostrada por un terapeuta. Ej: terapeuta aplaude → el cliente aplaude."},
+
+{id:64,domain:"C. Skill Acquisition",weight:32,
+ en:"Procedural fidelity in skill acquisition means:",
+ es:"La fidelidad de procedimiento en adquisición de habilidades significa:",
+ opts:["Collecting data on every behavior","Implementing the teaching procedure EXACTLY as written in the plan","Modifying the plan based on client preference","Using the least amount of reinforcement possible"],ans:1,
+ exp_en:"Procedural fidelity = implementing exactly as designed. If the RBT changes the procedure, data becomes meaningless and learning may be compromised.",
+ exp_es:"Fidelidad de procedimiento = implementar exactamente como se diseñó. Si el RBT cambia el procedimiento, los datos se vuelven sin sentido y el aprendizaje puede verse afectado."},
+
+{id:65,domain:"C. Skill Acquisition",weight:32,
+ en:"A child has mastered touching their nose on command in the clinic. During the next step, the RBT practices the same skill at the park with a different instructor. This is called:",
+ es:"Un niño domina tocarse la nariz en la clínica. Luego, el RBT practica la misma habilidad en el parque con un instructor diferente. Esto se llama:",
+ opts:["Maintenance probe","Shaping","Generalization training","Backward chaining"],ans:2,
+ exp_en:"Generalization training extends the skill to new settings, instructors, and materials. Essential for real-world application.",
+ exp_es:"El entrenamiento de generalización extiende la habilidad a nuevos entornos, instructores y materiales. Esencial para la aplicación en el mundo real."},
+
+{id:66,domain:"C. Skill Acquisition",weight:32,
+ en:"A motivating operation (MO) is defined as:",
+ es:"Una operación motivadora (OM) se define como:",
+ opts:["A prompt that signals reinforcement","An environmental condition that temporarily alters the value of a reinforcer and related behavior","The discriminative stimulus for a behavior","A schedule of reinforcement"],ans:1,
+ exp_en:"MO alters how much the learner wants something AND increases/decreases behavior related to that thing. Deprivation is an establishing operation; satiation is an abolishing operation.",
+ exp_es:"La OM altera cuánto el aprendiz desea algo Y aumenta/disminuye la conducta relacionada. La privación es una operación de establecimiento; la saciedad es una de abolición."},
+
+{id:67,domain:"C. Skill Acquisition",weight:32,
+ en:"An SD (discriminative stimulus) signals that:",
+ es:"Un ED (estímulo discriminativo) señala que:",
+ opts:["A punisher is available","A reinforcer is available for a specific behavior","The session is over","No reinforcement is available"],ans:1,
+ exp_en:"SD = a stimulus that signals that reinforcement is available if the learner engages in the correct behavior. S-delta = signals reinforcement is NOT available.",
+ exp_es:"ED = un estímulo que señala que el reforzamiento está disponible si el aprendiz realiza la conducta correcta. S-delta = señala que el reforzamiento NO está disponible."},
+
+{id:68,domain:"C. Skill Acquisition",weight:32,
+ en:"Token economies work by:",
+ es:"Las economías de fichas funcionan:",
+ opts:["Delivering primary reinforcers after every response","Giving tokens (conditioned reinforcers) that can be exchanged for backup reinforcers","Removing tokens after problem behavior","Using natural environmental reinforcement only"],ans:1,
+ exp_en:"Tokens are conditioned reinforcers. They are earned for target behaviors and exchanged for preferred items/activities (backup reinforcers).",
+ exp_es:"Las fichas son reforzadores condicionados. Se ganan por conductas objetivo y se intercambian por artículos/actividades preferidas (reforzadores de apoyo)."},
+
+{id:69,domain:"C. Skill Acquisition",weight:32,
+ en:"When an RBT provides a prompt and the client responds correctly, the RBT should:",
+ es:"Cuando un RBT proporciona una ayuda y el cliente responde correctamente, el RBT debe:",
+ opts:["Provide NO reinforcement because the response was prompted","Provide full reinforcement — same as an unprompted correct response","Provide partial reinforcement only","Withhold reinforcement until an independent response is given"],ans:1,
+ exp_en:"Prompted correct responses still receive reinforcement — especially early in training. Reinforcing prompted responses builds the behavior.",
+ exp_es:"Las respuestas correctas con ayuda aún reciben reforzamiento — especialmente al inicio del entrenamiento. Reforzar respuestas con ayuda construye la conducta."},
+
+{id:70,domain:"C. Skill Acquisition",weight:32,
+ en:"The inter-trial interval (ITI) in DTT is:",
+ es:"El intervalo entre ensayos (ITI) en DTT es:",
+ opts:["The time between the SD and the response","A brief pause between the end of one trial and the start of the next","The time it takes for the learner to respond","The time spent on maintenance probes"],ans:1,
+ exp_en:"ITI = brief pause (1-5 seconds) between trials. Provides a boundary between discrete trials and prevents confusion between consecutive SDs.",
+ exp_es:"ITI = pausa breve (1-5 segundos) entre ensayos. Proporciona un límite entre ensayos discretos y previene confusión entre EDs consecutivos."},
+
+// === D. BEHAVIOR REDUCTION (18 questions) ===
+{id:71,domain:"D. Behavior Reduction",weight:17,
+ en:"DRO (Differential Reinforcement of Other behavior) delivers reinforcement when:",
+ es:"El DRO entrega reforzamiento cuando:",
+ opts:["An alternative behavior occurs","An incompatible behavior occurs","The target behavior does NOT occur during an interval","Behavior rate drops below a threshold"],ans:2,
+ exp_en:"DRO: reinforce the ABSENCE of the target behavior. If the behavior occurs during the interval, the timer resets and no reinforcement is delivered.",
+ exp_es:"DRO: reforzar la AUSENCIA de la conducta objetivo. Si ocurre la conducta durante el intervalo, el temporizador se reinicia y no se entrega reforzamiento."},
+
+{id:72,domain:"D. Behavior Reduction",weight:17,
+ en:"DRA (Differential Reinforcement of Alternative behavior) involves:",
+ es:"El DRA implica:",
+ opts:["Reinforcing the absence of behavior","Reinforcing a behavior that is physically incompatible with the problem behavior","Reinforcing a functionally equivalent alternative to the problem behavior","Reinforcing a lower rate of the problem behavior"],ans:2,
+ exp_en:"DRA reinforces an alternative behavior that serves the SAME function as the problem behavior. Example: teaching 'break please' instead of aggression for escape.",
+ exp_es:"DRA refuerza una conducta alternativa que sirve la MISMA función que la conducta problema. Ej: enseñar 'descanso por favor' en lugar de agresión para escapar."},
+
+{id:73,domain:"D. Behavior Reduction",weight:17,
+ en:"DRI (Differential Reinforcement of Incompatible behavior) reinforces a behavior that:",
+ es:"El DRI refuerza una conducta que:",
+ opts:["Serves the same function as the problem behavior","Cannot occur at the same time as the problem behavior","Occurs less frequently","Is appropriate but not incompatible"],ans:1,
+ exp_en:"Incompatible = physically impossible to do simultaneously. Hands in lap is incompatible with hitting; sitting is incompatible with running away.",
+ exp_es:"Incompatible = físicamente imposible realizarlo simultáneamente. Manos en el regazo es incompatible con golpear; sentarse es incompatible con correr."},
+
+{id:74,domain:"D. Behavior Reduction",weight:17,
+ en:"DRL (Differential Reinforcement of Low rates) reinforces behavior when:",
+ es:"El DRL refuerza la conducta cuando:",
+ opts:["Behavior is completely absent","Behavior occurs at or below a set criterion rate","Behavior is incompatible with the problem behavior","The alternative behavior occurs"],ans:1,
+ exp_en:"DRL is used for behaviors that aren't harmful but occur too often. Reinforce when frequency is at or below the criterion. Example: talking out of turn.",
+ exp_es:"El DRL se usa para conductas que no son dañinas pero ocurren con demasiada frecuencia. Reforzar cuando la frecuencia está en o por debajo del criterio. Ej: hablar sin turno."},
+
+{id:75,domain:"D. Behavior Reduction",weight:17,
+ en:"Extinction in ABA means:",
+ es:"La extinción en ABA significa:",
+ opts:["Punishing the target behavior","No longer delivering the reinforcer that was maintaining the behavior","Removing the client from the environment","Blocking the behavior from occurring"],ans:1,
+ exp_en:"Extinction = withholding the maintaining reinforcer. The behavior no longer 'works.' Over time, it decreases.",
+ exp_es:"Extinción = retirar el reforzador que mantenía la conducta. La conducta ya no 'funciona'. Con el tiempo, disminuye."},
+
+{id:76,domain:"D. Behavior Reduction",weight:17,
+ en:"An extinction burst is best described as:",
+ es:"Un estallido de extinción se describe mejor como:",
+ opts:["A permanent increase in behavior after extinction","A temporary increase in frequency, intensity, or duration when extinction is first applied","A decrease in behavior following reinforcement","A period where behavior stops completely"],ans:1,
+ exp_en:"Extinction bursts are predictable and temporary. The behavior gets worse before it gets better. The RBT should continue extinction safely.",
+ exp_es:"Los estallidos de extinción son predecibles y temporales. La conducta empeora antes de mejorar. El RBT debe continuar la extinción de manera segura."},
+
+{id:77,domain:"D. Behavior Reduction",weight:17,
+ en:"Spontaneous recovery refers to:",
+ es:"La recuperación espontánea se refiere a:",
+ opts:["Behavior permanently stopping after extinction","A brief reappearance of an extinguished behavior — often after a period of rest","An increase in behavior due to reinforcement","New behaviors replacing the problem behavior"],ans:1,
+ exp_en:"After extinction, behavior may briefly reappear (spontaneous recovery) in the next session. The RBT should continue extinction — it is not a sign of failure.",
+ exp_es:"Después de la extinción, la conducta puede reaparecer brevemente (recuperación espontánea) en la siguiente sesión. El RBT debe continuar la extinción — no es señal de fracaso."},
+
+{id:78,domain:"D. Behavior Reduction",weight:17,
+ en:"For escape-maintained problem behavior, extinction involves:",
+ es:"Para la conducta problema mantenida por escape, la extinción implica:",
+ opts:["Withholding attention when the behavior occurs","Continuing task demands even when the behavior occurs (while keeping everyone safe)","Removing the task when the behavior occurs","Providing a break immediately after the behavior"],ans:1,
+ exp_en:"Escape extinction = preventing escape from the aversive stimulus. The RBT maintains the task demand. This removes the consequence (escape) that maintained the behavior.",
+ exp_es:"Extinción de escape = prevenir el escape del estímulo aversivo. El RBT mantiene la demanda de tarea. Esto elimina la consecuencia (escape) que mantenía la conducta."},
+
+{id:79,domain:"D. Behavior Reduction",weight:17,
+ en:"Non-contingent reinforcement (NCR) reduces problem behavior by:",
+ es:"El reforzamiento no contingente (NCR) reduce la conducta problema:",
+ opts:["Reinforcing the absence of behavior","Delivering reinforcement on a time-based schedule regardless of behavior — satiation reduces the MO","Reinforcing alternative behaviors","Withholding reinforcement when behavior occurs"],ans:1,
+ exp_en:"NCR floods the environment with the maintaining reinforcer on a time schedule. Satiation reduces the motivating operation — the behavior 'isn't needed' anymore.",
+ exp_es:"El NCR satura el entorno con el reforzador que mantiene la conducta en un horario de tiempo. La saciedad reduce la operación motivadora — la conducta ya 'no es necesaria'."},
+
+{id:80,domain:"D. Behavior Reduction",weight:17,
+ en:"Antecedent interventions work by:",
+ es:"Las intervenciones de antecedente funcionan:",
+ opts:["Reinforcing alternative behaviors after the problem behavior","Changing conditions BEFORE the behavior to prevent it or make it less likely","Withholding reinforcement for problem behavior","Teaching new skills to replace problem behavior"],ans:1,
+ exp_en:"Antecedent interventions modify the environment BEFORE behavior occurs. Example: simplifying a task (to reduce escape motivation) before behavior has a chance to occur.",
+ exp_es:"Las intervenciones de antecedente modifican el entorno ANTES de que ocurra la conducta. Ej: simplificar una tarea (para reducir la motivación de escape) antes de que la conducta tenga oportunidad de ocurrir."},
+
+{id:81,domain:"D. Behavior Reduction",weight:17,
+ en:"Response cost is a punishment procedure that involves:",
+ es:"El costo de respuesta es un procedimiento de castigo que implica:",
+ opts:["Adding an aversive stimulus after behavior","Removing a specified amount of reinforcer after the target behavior","Blocking the response from occurring","Providing time-out from positive reinforcement"],ans:1,
+ exp_en:"Response cost removes (-) a positive reinforcer (e.g., tokens) after the problem behavior. It is Type II punishment.",
+ exp_es:"El costo de respuesta retira (-) un reforzador positivo (ej: fichas) después de la conducta problema. Es castigo Tipo II."},
+
+{id:82,domain:"D. Behavior Reduction",weight:17,
+ en:"Time-out from positive reinforcement works by:",
+ es:"El tiempo fuera del reforzamiento positivo funciona:",
+ opts:["Adding an aversive stimulus","Removing access to reinforcement for a brief period following problem behavior","Reinforcing the absence of problem behavior","Extinguishing behavior by ignoring it"],ans:1,
+ exp_en:"Time-out removes access to reinforcing environments or activities. Only effective if the current environment is reinforcing (if it's aversive, time-out may reinforce escape!)",
+ exp_es:"El tiempo fuera elimina el acceso a entornos o actividades reforzadoras. Solo es efectivo si el entorno actual es reforzante (¡si es aversivo, el tiempo fuera puede reforzar el escape!)."},
+
+{id:83,domain:"D. Behavior Reduction",weight:17,
+ en:"When implementing crisis/emergency procedures, an RBT's first priority is:",
+ es:"Al implementar procedimientos de crisis/emergencia, la primera prioridad del RBT es:",
+ opts:["Collecting data on the behavior","Contacting the BCBA before acting","Ensuring the safety of the client and everyone present","Continuing the session as planned"],ans:2,
+ exp_en:"Safety first — always. During crisis, the RBT follows the behavior intervention plan's crisis procedures and ensures everyone is safe. Data and BCBA contact follow.",
+ exp_es:"La seguridad primero — siempre. Durante una crisis, el RBT sigue los procedimientos de crisis del plan de intervención y garantiza que todos estén seguros. Los datos y el contacto con el BCBA siguen después."},
+
+{id:84,domain:"D. Behavior Reduction",weight:17,
+ en:"The function of behavior is important for treatment because:",
+ es:"La función de la conducta es importante para el tratamiento porque:",
+ opts:["All behaviors with the same topography have the same function","Different functions require different interventions — the SAME behavior may need different treatment","Function doesn't matter; topography determines treatment","All problem behaviors should use extinction regardless of function"],ans:1,
+ exp_en:"Function-based treatment is critical. The same behavior (e.g., hitting) maintained by attention vs. escape requires completely different interventions.",
+ exp_es:"El tratamiento basado en función es fundamental. La misma conducta (ej: golpear) mantenida por atención vs. escape requiere intervenciones completamente diferentes."},
+
+{id:85,domain:"D. Behavior Reduction",weight:17,
+ en:"When a behavior reduction plan is not showing results, the RBT should:",
+ es:"Cuando un plan de reducción de conducta no muestra resultados, el RBT debe:",
+ opts:["Change the intervention to something they think will work better","Continue implementing as written and report data and concerns to the BCBA","Stop the intervention and wait for natural improvement","Use more punishment procedures"],ans:1,
+ exp_en:"RBTs NEVER modify behavior plans. They implement as designed, collect accurate data, and communicate observations to the BCBA who makes clinical decisions.",
+ exp_es:"Los RBTs NUNCA modifican los planes de conducta. Implementan como se diseñó, recopilan datos precisos y comunican observaciones al BCBA quien toma decisiones clínicas."},
+
+{id:86,domain:"D. Behavior Reduction",weight:17,
+ en:"Overcorrection as a behavior reduction procedure involves:",
+ es:"La sobrecorrección como procedimiento de reducción de conducta implica:",
+ opts:["Removing all reinforcement from the environment","Requiring the client to restore the environment AND practice appropriate behavior repeatedly","Adding extra reinforcement after correct behavior","Taking tokens away for each problem behavior"],ans:1,
+ exp_en:"Overcorrection has two parts: restitution (restoring the environment to better than before) and positive practice (repeatedly practicing the correct behavior).",
+ exp_es:"La sobrecorrección tiene dos partes: restitución (restaurar el entorno a mejor que antes) y práctica positiva (practicar repetidamente la conducta correcta)."},
+
+{id:87,domain:"D. Behavior Reduction",weight:17,
+ en:"Which statement about punishment is CORRECT?",
+ es:"¿Cuál afirmación sobre el castigo es CORRECTA?",
+ opts:["Punishment always involves physical pain","Punishment is defined by its effect — it DECREASES the future probability of behavior","Punishment is always unethical in ABA","Punishment should always be tried before reinforcement-based approaches"],ans:1,
+ exp_en:"Punishment is defined by its FUNCTION: a consequence that decreases future behavior. It can be positive (adding aversive) or negative (removing reinforcer).",
+ exp_es:"El castigo se define por su FUNCIÓN: una consecuencia que disminuye la conducta futura. Puede ser positivo (agregar algo aversivo) o negativo (retirar un reforzador)."},
+
+{id:88,domain:"D. Behavior Reduction",weight:17,
+ en:"Before implementing any punishment procedure, RBT programs should include:",
+ es:"Antes de implementar cualquier procedimiento de castigo, los programas de RBT deben incluir:",
+ opts:["BCBA approval, exhausting reinforcement-based approaches, caregiver consent, and ongoing monitoring","No special requirements — any RBT can use punishment","Only verbal warnings to the client","Written consent from the client only"],ans:0,
+ exp_en:"Punishment procedures require ethical justification, BCBA design and oversight, exhaustion of less restrictive options, caregiver consent, and careful monitoring.",
+ exp_es:"Los procedimientos de castigo requieren justificación ética, diseño y supervisión del BCBA, agotamiento de opciones menos restrictivas, consentimiento del cuidador y monitoreo cuidadoso."},
+
+// === E. DOCUMENTATION (12 questions) ===
+{id:89,domain:"E. Documentation",weight:13,
+ en:"A session note should be written in language that is:",
+ es:"Una nota de sesión debe escribirse en lenguaje que sea:",
+ opts:["Subjective and interpretive","Emotional and empathetic","Objective, observable, and measurable","Detailed about the client's internal feelings"],ans:2,
+ exp_en:"Session notes must be objective — report what was SEEN and HEARD, not interpreted. Example: 'hit table twice' NOT 'was frustrated'.",
+ exp_es:"Las notas de sesión deben ser objetivas — reportar lo que se VIO y ESCUCHÓ, no interpretado. Ej: 'golpeó la mesa dos veces' NO 'estaba frustrado'."},
+
+{id:90,domain:"E. Documentation",weight:13,
+ en:"HIPAA (Health Insurance Portability and Accountability Act) requires RBTs to:",
+ es:"HIPAA requiere que los RBTs:",
+ opts:["Share client information with anyone who asks","Protect client protected health information (PHI) and only disclose it to authorized parties","Document all behaviors publicly","Avoid all written documentation"],ans:1,
+ exp_en:"HIPAA protects client confidentiality. PHI can only be shared with authorized individuals (team members, parents/guardians) with proper consent.",
+ exp_es:"HIPAA protege la confidencialidad del cliente. La PHI solo puede compartirse con personas autorizadas (miembros del equipo, padres/tutores) con consentimiento apropiado."},
+
+{id:91,domain:"E. Documentation",weight:13,
+ en:"When should session documentation be completed?",
+ es:"¿Cuándo debe completarse la documentación de la sesión?",
+ opts:["Anytime during the following week","As soon as possible after the session ends — while memory is fresh","Only when problem behaviors occur","At the end of each month"],ans:1,
+ exp_en:"Documentation should be completed promptly after the session. Delayed documentation risks inaccuracy and is an ethical violation.",
+ exp_es:"La documentación debe completarse prontamente después de la sesión. La documentación tardía arriesga imprecisión y es una violación ética."},
+
+{id:92,domain:"E. Documentation",weight:13,
+ en:"An incident report should be filed when:",
+ es:"Un reporte de incidente debe presentarse cuando:",
+ opts:["A client shows any problem behavior","An unusual safety-related event occurs (e.g., injury, elopement, significant behavioral escalation)","A client doesn't make progress","A parent asks for a meeting"],ans:1,
+ exp_en:"Incident reports document significant events — injuries, elopements, physical interventions, medication errors — following agency protocol.",
+ exp_es:"Los reportes de incidente documentan eventos significativos — lesiones, escapadas, intervenciones físicas, errores de medicación — siguiendo el protocolo de la agencia."},
+
+{id:93,domain:"E. Documentation",weight:13,
+ en:"Mandated reporter obligations mean an RBT:",
+ es:"Las obligaciones de reportero mandado significan que un RBT:",
+ opts:["Can choose whether to report suspected abuse","Must report suspected child abuse or neglect to appropriate authorities","Should first ask the BCBA before ever reporting","Only reports abuse witnessed directly during sessions"],ans:1,
+ exp_en:"RBTs are mandated reporters. If they suspect abuse or neglect, they are LEGALLY REQUIRED to report it to authorities — regardless of what others say.",
+ exp_es:"Los RBTs son reporteros mandados. Si sospechan abuso o negligencia, están LEGALMENTE OBLIGADOS a reportarlo a las autoridades — independientemente de lo que otros digan."},
+
+{id:94,domain:"E. Documentation",weight:13,
+ en:"An RBT should communicate with a client's family about session content:",
+ es:"Un RBT debe comunicarse con la familia de un cliente sobre el contenido de la sesión:",
+ opts:["Freely sharing all clinical decisions","Only as authorized by the supervising BCBA and within appropriate professional limits","By sending detailed reports directly to parents without BCBA review","Never — all communication goes through the BCBA only"],ans:1,
+ exp_en:"RBTs may communicate with caregivers as authorized. The BCBA oversees what is shared, how, and with whom to ensure clinical integrity and confidentiality.",
+ exp_es:"Los RBTs pueden comunicarse con cuidadores según lo autorizado. El BCBA supervisa qué se comparte, cómo y con quién para garantizar la integridad clínica y la confidencialidad."},
+
+{id:95,domain:"E. Documentation",weight:13,
+ en:"Which is an example of OBJECTIVE documentation?",
+ es:"¿Cuál es un ejemplo de documentación OBJETIVA?",
+ opts:["The client was very aggressive today","The client seemed to want to leave","The client threw three blocks at the wall during the 10:15 session","The client appeared to be in a bad mood"],ans:2,
+ exp_en:"'Threw three blocks at the wall' is observable and measurable. 'Aggressive', 'seemed', 'appeared' are subjective interpretations.",
+ exp_es:"'Lanzó tres bloques a la pared' es observable y medible. 'Agresivo', 'parecía', 'aparentó' son interpretaciones subjetivas."},
+
+{id:96,domain:"E. Documentation",weight:13,
+ en:"If an RBT makes an error in written documentation, they should:",
+ es:"Si un RBT comete un error en documentación escrita, debe:",
+ opts:["Use whiteout to cover the mistake","Destroy the document and start over","Draw a single line through the error, initial it, and write the correction","Ignore the error if it is small"],ans:2,
+ exp_en:"Proper correction method: single line through error, initials, date, and correct information. Never use whiteout or destroy records.",
+ exp_es:"Método correcto de corrección: una sola línea sobre el error, iniciales, fecha e información correcta. Nunca usar corrector líquido ni destruir registros."},
+
+{id:97,domain:"E. Documentation",weight:13,
+ en:"Data entered by an RBT should be:",
+ es:"Los datos ingresados por un RBT deben ser:",
+ opts:["Adjusted to show progress if the client is trying hard","Only recorded when the BCBA is present","Accurate, complete, and recorded as observed — never fabricated or modified","Simplified to save time"],ans:2,
+ exp_en:"Data integrity is non-negotiable. Falsifying or manipulating data is an ethical and legal violation that can harm clients and lead to decertification.",
+ exp_es:"La integridad de los datos es innegociable. Falsificar o manipular datos es una violación ética y legal que puede dañar a los clientes y llevar a la descertificación."},
+
+{id:98,domain:"E. Documentation",weight:13,
+ en:"Protected Health Information (PHI) includes:",
+ es:"La Información de Salud Protegida (PHI) incluye:",
+ opts:["Only diagnosis information","Names, dates, addresses, and any information that could identify a client combined with health information","Only insurance billing information","General statistics about a treatment population"],ans:1,
+ exp_en:"PHI = any information that could identify a specific individual combined with health information. This includes names, DOB, addresses, session dates, diagnoses.",
+ exp_es:"PHI = cualquier información que pueda identificar a un individuo específico combinada con información de salud. Incluye nombres, fecha de nacimiento, direcciones, fechas de sesión, diagnósticos."},
+
+{id:99,domain:"E. Documentation",weight:13,
+ en:"If a client's caregiver asks the RBT to change session notes to avoid insurance issues, the RBT should:",
+ es:"Si el cuidador de un cliente pide al RBT cambiar las notas de sesión para evitar problemas de seguro, el RBT debe:",
+ opts:["Change the notes since the caregiver has authority over the client","Agree to make minor changes only","Refuse and report the request to the supervising BCBA","Ask the client what they prefer"],ans:2,
+ exp_en:"Altering documentation at a caregiver's request is fraudulent. The RBT must refuse and immediately report this request to the BCBA.",
+ exp_es:"Alterar la documentación a petición de un cuidador es fraudulento. El RBT debe negarse e informar inmediatamente esta solicitud al BCBA."},
+
+{id:100,domain:"E. Documentation",weight:13,
+ en:"An RBT is texting session data to a parent using their personal phone. This is:",
+ es:"Un RBT envía datos de sesión a un padre por mensaje de texto con su teléfono personal. Esto es:",
+ opts:["Fine if the parent consented","Acceptable in urgent situations","Likely a HIPAA violation — PHI should be transmitted through secure, approved channels","Required for family engagement"],ans:2,
+ exp_en:"PHI must be transmitted through HIPAA-compliant, secure channels. Personal text messages are generally NOT compliant. This could expose the agency and RBT to legal liability.",
+ exp_es:"La PHI debe transmitirse a través de canales seguros compatibles con HIPAA. Los mensajes de texto personales generalmente NO son compatibles. Esto puede exponer a la agencia y al RBT a responsabilidad legal."},
+
+// === F. ETHICS (10 questions) ===
+{id:101,domain:"F. Ethics",weight:8,
+ en:"An RBT's scope of practice means they should:",
+ es:"El alcance de práctica de un RBT significa que deben:",
+ opts:["Design behavior programs independently when no BCBA is available","Implement behavior plans designed by their supervising BCBA — and not deviate","Diagnose clients with behavioral conditions","Modify the BIP based on their own clinical judgment"],ans:1,
+ exp_en:"RBTs implement — they do NOT design, modify, or interpret plans independently. That is the BCBA's professional and ethical responsibility.",
+ exp_es:"Los RBTs implementan — NO diseñan, modifican ni interpretan planes de manera independiente. Esa es la responsabilidad profesional y ética del BCBA."},
+
+{id:102,domain:"F. Ethics",weight:8,
+ en:"A dual relationship occurs when an RBT:",
+ es:"Una relación dual ocurre cuando un RBT:",
+ opts:["Works with two clients in the same session","Has both a professional AND a personal relationship with a client or family member","Supervises two different RBTs","Works across two different settings"],ans:1,
+ exp_en:"Dual relationships (e.g., being a family friend, social media contact, or dating a client's family member) create conflicts of interest and must be avoided.",
+ exp_es:"Las relaciones duales (ej: ser amigo de la familia, contacto en redes sociales, o tener relaciones con un familiar del cliente) crean conflictos de interés y deben evitarse."},
+
+{id:103,domain:"F. Ethics",weight:8,
+ en:"If an RBT suspects a colleague is not implementing a behavior plan correctly, they should:",
+ es:"Si un RBT sospecha que un colega no implementa un plan de conducta correctamente, debe:",
+ opts:["Ignore it — not their responsibility","Correct the colleague on the spot","Report the concern to the supervising BCBA","Post about it anonymously online"],ans:2,
+ exp_en:"RBTs report ethical concerns to their supervisor. They do not take unilateral corrective action or ignore it. The BCBA investigates and addresses the issue.",
+ exp_es:"Los RBTs reportan preocupaciones éticas a su supervisor. No toman acción correctiva unilateral ni lo ignoran. El BCBA investiga y aborda el problema."},
+
+{id:104,domain:"F. Ethics",weight:8,
+ en:"An RBT receives a gift from a client's parent. According to the BACB ethics code, they should:",
+ es:"Un RBT recibe un regalo del padre de un cliente. Según el código ético del BACB, debe:",
+ opts:["Accept it gratefully to maintain the relationship","Refuse the gift — or consult the agency's gift policy and the BCBA before accepting","Only accept gifts under $20","Share the gift with the team"],ans:1,
+ exp_en:"Gift giving/receiving can create dual relationship issues. RBTs should follow agency policy and consult the BCBA. The 2026 ethics code addresses this explicitly.",
+ exp_es:"Dar/recibir regalos puede crear problemas de relación dual. Los RBTs deben seguir la política de la agencia y consultar al BCBA. El código ético 2026 aborda esto explícitamente."},
+
+{id:105,domain:"F. Ethics",weight:8,
+ en:"Maintaining professional boundaries with clients and families includes:",
+ es:"Mantener límites profesionales con clientes y familias incluye:",
+ opts:["Befriending parents on social media to build rapport","Giving personal phone numbers for direct communication","Keeping all interactions professional and within the treatment context — avoiding personal relationships","Sharing personal stories to make clients comfortable"],ans:2,
+ exp_en:"Professional limits protect both clients and RBTs. Personal relationships, social media contact, and sharing personal information cross professional boundaries.",
+ exp_es:"Los límites profesionales protegen tanto a los clientes como a los RBTs. Las relaciones personales, el contacto en redes sociales y compartir información personal cruzan los límites profesionales."},
+
+{id:106,domain:"F. Ethics",weight:8,
+ en:"RBT supervision requirements state that:",
+ es:"Los requisitos de supervisión del RBT establecen que:",
+ opts:["RBTs can work independently without BCBA oversight","A minimum percentage of service hours must include supervisory contact with a BCBA or BCaBA","Supervision is only needed in the first month","RBTs supervise themselves during evening sessions"],ans:1,
+ exp_en:"The BACB requires ongoing supervision — a minimum percentage of service hours must have supervisory contact. Specific requirements are set by the BACB and vary by role.",
+ exp_es:"El BACB requiere supervisión continua — un porcentaje mínimo de horas de servicio debe tener contacto de supervisión. Los requisitos específicos los establece el BACB."},
+
+{id:107,domain:"F. Ethics",weight:8,
+ en:"Cultural humility and responsiveness in RBT practice means:",
+ es:"La humildad y respuesta cultural en la práctica del RBT significa:",
+ opts:["Treating all clients the same regardless of background","Recognizing and responding to clients' cultural backgrounds, values, and practices in service delivery","Only serving clients from your own cultural background","Avoiding all cultural topics in session"],ans:1,
+ exp_en:"The 2026 TCO adds cultural humility: RBTs must identify personal biases and adapt their practice to respect each client's cultural context.",
+ exp_es:"El TCO 2026 agrega humildad cultural: los RBTs deben identificar sesgos personales y adaptar su práctica para respetar el contexto cultural de cada cliente."},
+
+{id:108,domain:"F. Ethics",weight:8,
+ en:"When a parent asks an RBT to implement a procedure not in the current behavior plan, the RBT should:",
+ es:"Cuando un padre pide al RBT implementar un procedimiento que no está en el plan de conducta actual, el RBT debe:",
+ opts:["Try the parent's suggestion if it seems harmless","Implement it if the parent signs a consent form","Politely decline and consult the supervising BCBA — all procedures must be BCBA-approved","Immediately implement it to maintain family satisfaction"],ans:2,
+ exp_en:"Only BCBA-approved procedures are implemented. An RBT cannot add new interventions regardless of who requests it. The BCBA evaluates and decides.",
+ exp_es:"Solo se implementan procedimientos aprobados por el BCBA. Un RBT no puede agregar nuevas intervenciones independientemente de quién lo solicite. El BCBA evalúa y decide."},
+
+{id:109,domain:"F. Ethics",weight:8,
+ en:"If an RBT disagrees with a clinical decision made by their BCBA, the most professional response is to:",
+ es:"Si un RBT no está de acuerdo con una decisión clínica de su BCBA, la respuesta más profesional es:",
+ opts:["Refuse to implement the plan","Modify the plan to match their own approach","Implement the plan as directed while professionally communicating their concern to the BCBA","Complain to parents about the BCBA's approach"],ans:2,
+ exp_en:"Disagreement is handled professionally through open communication with the BCBA. The RBT implements the plan while raising concerns through appropriate channels.",
+ exp_es:"El desacuerdo se maneja profesionalmente a través de comunicación abierta con el BCBA. El RBT implementa el plan mientras plantea preocupaciones a través de los canales apropiados."},
+
+{id:110,domain:"F. Ethics",weight:8,
+ en:"An RBT's certification must be maintained by:",
+ es:"La certificación de un RBT debe mantenerse mediante:",
+ opts:["Passing a new exam every month","Completing required training, ongoing supervision, and renewing certification annually through the BACB","Self-renewal without additional requirements","Completing 1 hour of training per year"],ans:1,
+ exp_en:"RBT certification requires ongoing supervision, annual renewal, and competency assessment. The BACB sets specific maintenance requirements.",
+ exp_es:"La certificación RBT requiere supervisión continua, renovación anual y evaluación de competencia. El BACB establece los requisitos específicos de mantenimiento."}
+];
+
+// ============================================================
+// FLASHCARDS (40 cards)
+// ============================================================
+const FLASHCARDS = [
+{domain:"A. Measurement",en:"Continuous Measurement",es:"Medición Continua",def_en:"Recording every single instance of a behavior as it occurs. Includes frequency, duration, latency, and IRT. Most accurate method.",def_es:"Registrar cada instancia de una conducta cuando ocurre. Incluye frecuencia, duración, latencia e IRT. Método más preciso."},
+{domain:"A. Measurement",en:"Partial-Interval Recording (PIR)",es:"Registro de Intervalo Parcial",def_en:"Scores '+' if the behavior occurs at ANY point during the interval. Tends to OVERESTIMATE behavior.",def_es:"Marca '+' si la conducta ocurre en CUALQUIER momento del intervalo. Tiende a SOBREESTIMAR la conducta."},
+{domain:"A. Measurement",en:"Whole-Interval Recording (WIR)",es:"Registro de Intervalo Completo",def_en:"Scores '+' only if the behavior occurs throughout the ENTIRE interval. Tends to UNDERESTIMATE behavior.",def_es:"Marca '+' solo si la conducta ocurre durante TODO el intervalo. Tiende a SUBESTIMAR la conducta."},
+{domain:"A. Measurement",en:"Momentary Time Sampling (MTS)",es:"Muestreo de Tiempo Momentáneo",def_en:"Records behavior only at the EXACT MOMENT the interval ends. Tends to underestimate brief behaviors. Efficient for busy settings.",def_es:"Registra la conducta solo en el MOMENTO EXACTO en que termina el intervalo. Tiende a subestimar conductas breves. Eficiente en entornos ocupados."},
+{domain:"A. Measurement",en:"Rate of Behavior",es:"Tasa de Conducta",def_en:"Frequency ÷ Time (responses per minute). Used when comparing sessions of different lengths.",def_es:"Frecuencia ÷ Tiempo (respuestas por minuto). Se usa para comparar sesiones de diferentes duraciones."},
+{domain:"A. Measurement",en:"Latency",es:"Latencia",def_en:"Time between the SD (cue) and the ONSET of the response. Example: how long it takes to start a task after 'begin'.",def_es:"Tiempo entre el ED (señal) y el INICIO de la respuesta. Ej: cuánto tiempo tarda en iniciar una tarea después de 'comenzar'."},
+{domain:"A. Measurement",en:"Inter-Response Time (IRT)",es:"Tiempo Entre Respuestas (IRT)",def_en:"Time between the END of one response and the START of the next response. Used to study response pacing.",def_es:"Tiempo entre el FINAL de una respuesta y el INICIO de la siguiente. Se usa para estudiar el ritmo de respuesta."},
+{domain:"A. Measurement",en:"Interobserver Agreement (IOA)",es:"Acuerdo Entre Observadores (IOA)",def_en:"Measures consistency between two observers collecting data simultaneously. High IOA = reliable data. Low IOA = unclear definition.",def_es:"Mide la consistencia entre dos observadores recopilando datos simultáneamente. IOA alto = datos confiables. IOA bajo = definición poco clara."},
+{domain:"B. Assessment",en:"Four Functions of Behavior (AETA)",es:"Cuatro Funciones de Conducta (AETA)",def_en:"Attention · Escape/Avoidance · Tangible access · Automatic/Sensory reinforcement. Every problem behavior is maintained by one or more.",def_es:"Atención · Escape/Evitación · Acceso a tangibles · Automático/Sensorial. Toda conducta problema es mantenida por una o más."},
+{domain:"B. Assessment",en:"Single-Stimulus Preference Assessment",es:"Evaluación de Estímulo Único",def_en:"Presents ONE item at a time. Records approach or avoidance. Simple but doesn't reveal relative preference between items.",def_es:"Presenta UN artículo a la vez. Registra acercamiento o evitación. Simple pero no revela preferencia relativa entre artículos."},
+{domain:"B. Assessment",en:"Paired-Stimulus Preference Assessment (PS)",es:"Evaluación de Estímulo Pareado",def_en:"Presents TWO items at a time. Client selects one. Items chosen most often = highest preference. Vary positions to avoid position bias.",def_es:"Presenta DOS artículos a la vez. El cliente selecciona uno. Los artículos elegidos con más frecuencia = mayor preferencia. Varía posiciones para evitar sesgo."},
+{domain:"B. Assessment",en:"MSWO Preference Assessment",es:"Evaluación MSWO",def_en:"Multiple Stimulus Without Replacement. Presents an array; chosen items are removed. Efficiently identifies preference hierarchy.",def_es:"Múltiples Estímulos Sin Reemplazo. Presenta una variedad; los artículos elegidos se retiran. Identifica eficientemente la jerarquía de preferencia."},
+{domain:"B. Assessment",en:"ABC Recording",es:"Registro ABC",def_en:"Antecedent (what happened BEFORE) · Behavior (what the person DID) · Consequence (what happened AFTER). Used for functional assessment.",def_es:"Antecedente (qué pasó ANTES) · Conducta (qué HIZO la persona) · Consecuencia (qué pasó DESPUÉS). Usado para evaluación funcional."},
+{domain:"C. Skill Acquisition",en:"Discriminative Stimulus (SD)",es:"Estímulo Discriminativo (ED)",def_en:"A cue that signals reinforcement is available for a specific behavior. Example: 'Touch your nose' → touching nose → receives praise.",def_es:"Una señal que indica que el reforzamiento está disponible para una conducta específica. Ej: 'Toca tu nariz' → tocar nariz → recibe elogio."},
+{domain:"C. Skill Acquisition",en:"Positive Reinforcement",es:"Reforzamiento Positivo",def_en:"ADDING (+) a stimulus after behavior → INCREASES future probability. Example: giving candy after correct response.",def_es:"AGREGAR (+) un estímulo después de la conducta → AUMENTA la probabilidad futura. Ej: dar un dulce después de una respuesta correcta."},
+{domain:"C. Skill Acquisition",en:"Negative Reinforcement",es:"Reforzamiento Negativo",def_en:"REMOVING (-) an aversive stimulus after behavior → INCREASES future probability. Example: removing loud noise when child puts on headphones.",def_es:"RETIRAR (-) un estímulo aversivo después de la conducta → AUMENTA la probabilidad futura. Ej: quitar ruido fuerte cuando el niño se pone audífonos."},
+{domain:"C. Skill Acquisition",en:"Mand",es:"Mando",def_en:"A verbal REQUEST controlled by a motivating operation. The speaker gets what they ask for. Example: 'Juice!' when thirsty.",def_es:"Una SOLICITUD verbal controlada por una operación motivadora. El hablante obtiene lo que pide. Ej: '¡Jugo!' cuando tiene sed."},
+{domain:"C. Skill Acquisition",en:"Tact",es:"Tacto",def_en:"A verbal LABEL controlled by a non-verbal stimulus. Example: seeing a dog and saying 'dog!' — no request, just labeling.",def_es:"Una ETIQUETA verbal controlada por un estímulo no verbal. Ej: ver un perro y decir '¡perro!' — sin solicitar, solo etiquetando."},
+{domain:"C. Skill Acquisition",en:"Echoic",es:"Ecoico",def_en:"Vocal IMITATION of what was just heard. Example: therapist says 'ball' → client says 'ball'. Controlled by verbal stimulus.",def_es:"IMITACIÓN vocal de lo que se acaba de escuchar. Ej: terapeuta dice 'pelota' → cliente dice 'pelota'. Controlado por estímulo verbal."},
+{domain:"C. Skill Acquisition",en:"Intraverbal",es:"Intraverbal",def_en:"Verbal response to prior verbal behavior WITHOUT correspondence. Example: 'What do you eat?' → 'Cereal'. Fill-in-the-blank.",def_es:"Respuesta verbal a conducta verbal previa SIN correspondencia. Ej: '¿Qué comes?' → 'Cereal'. Completar la oración."},
+{domain:"C. Skill Acquisition",en:"Shaping",es:"Moldeamiento",def_en:"Reinforcing successive approximations toward the TARGET behavior. Each step closer to the goal = reinforced. Previous steps go on extinction.",def_es:"Reforzar aproximaciones sucesivas hacia la conducta OBJETIVO. Cada paso más cercano a la meta = reforzado. Pasos anteriores se extinguen."},
+{domain:"C. Skill Acquisition",en:"Forward Chaining",es:"Encadenamiento hacia adelante",def_en:"Teach STEP 1 first; once mastered, add Step 2, etc. Remaining steps are prompted or completed by the trainer.",def_es:"Enseñar el PASO 1 primero; una vez dominado, agregar Paso 2, etc. Los pasos restantes son ayudados o completados por el entrenador."},
+{domain:"C. Skill Acquisition",en:"Backward Chaining",es:"Encadenamiento hacia atrás",def_en:"Teach the LAST step first. Learner always finishes the chain → natural reinforcement at the end.",def_es:"Enseñar el ÚLTIMO paso primero. El aprendiz siempre termina la cadena → reforzamiento natural al final."},
+{domain:"C. Skill Acquisition",en:"Most-to-Least Prompting (MTL)",es:"Ayuda de Más a Menos (MTL)",def_en:"Start with the MOST intrusive prompt (full physical) and fade to less intrusive. Minimizes errors. Used in errorless learning.",def_es:"Comenzar con la ayuda MÁS intrusiva (física completa) y reducir a menos intrusiva. Minimiza errores. Usado en aprendizaje sin error."},
+{domain:"C. Skill Acquisition",en:"Least-to-Most Prompting (LTM)",es:"Ayuda de Menos a Más (LTM)",def_en:"Start with the LEAST intrusive prompt. Increase only if the learner doesn't respond. Allows more independent responding.",def_es:"Comenzar con la ayuda MENOS intrusiva. Aumentar solo si el aprendiz no responde. Permite más respuesta independiente."},
+{domain:"C. Skill Acquisition",en:"Motivating Operation (MO)",es:"Operación Motivadora (OM)",def_en:"Temporarily alters the VALUE of a reinforcer AND the frequency of related behavior. Deprivation (EO) vs. Satiation (AO).",def_es:"Altera temporalmente el VALOR de un reforzador Y la frecuencia de la conducta relacionada. Privación (OP) vs. Saciedad (OA)."},
+{domain:"C. Skill Acquisition",en:"Continuous Reinforcement (CRF/FR1)",es:"Reforzamiento Continuo (CRF/RF1)",def_en:"Reinforce EVERY correct response. Best for establishing NEW skills. Must be thinned as skill develops.",def_es:"Reforzar CADA respuesta correcta. Mejor para establecer NUEVAS habilidades. Debe adelgazarse a medida que la habilidad se desarrolla."},
+{domain:"C. Skill Acquisition",en:"Variable Ratio (VR) Schedule",es:"Programa de Razón Variable (RV)",def_en:"Reinforce after an UNPREDICTABLE number of responses. Produces highest and most persistent rates. Very resistant to extinction.",def_es:"Reforzar después de un número IMPREDECIBLE de respuestas. Produce las tasas más altas y persistentes. Muy resistente a la extinción."},
+{domain:"D. Behavior Reduction",en:"Extinction",es:"Extinción",def_en:"Withholding the MAINTAINING REINFORCER. Behavior no longer 'works.' Leads to decrease after possible extinction burst.",def_es:"Retirar el REFORZADOR QUE MANTIENE la conducta. La conducta ya no 'funciona'. Lleva a disminución después de posible estallido de extinción."},
+{domain:"D. Behavior Reduction",en:"Extinction Burst",es:"Estallido de Extinción",def_en:"TEMPORARY increase in behavior frequency, intensity, or duration when extinction is FIRST applied. Expected — continue extinction.",def_es:"Aumento TEMPORAL en frecuencia, intensidad o duración cuando la extinción se aplica POR PRIMERA VEZ. Esperado — continuar la extinción."},
+{domain:"D. Behavior Reduction",en:"DRO — Differential Reinforcement of Other Behavior",es:"DRO — Reforzamiento Diferencial de Otra Conducta",def_en:"Reinforce the ABSENCE of target behavior during an interval. If behavior occurs, reset timer — no reinforcement.",def_es:"Reforzar la AUSENCIA de la conducta objetivo durante un intervalo. Si ocurre la conducta, reiniciar temporizador — sin reforzamiento."},
+{domain:"D. Behavior Reduction",en:"DRA — Differential Reinforcement of Alternative Behavior",es:"DRA — Reforzamiento Diferencial de Conducta Alternativa",def_en:"Reinforce an alternative behavior that serves the SAME FUNCTION as the problem behavior. Withhold reinforcement from problem behavior.",def_es:"Reforzar una conducta alternativa que sirve la MISMA FUNCIÓN que la conducta problema. Retener reforzamiento de la conducta problema."},
+{domain:"D. Behavior Reduction",en:"DRI — Differential Reinforcement of Incompatible Behavior",es:"DRI — Reforzamiento Diferencial de Conducta Incompatible",def_en:"Reinforce a behavior that CANNOT OCCUR simultaneously with the problem behavior. Example: hands folded vs. hitting.",def_es:"Reforzar una conducta que NO PUEDE OCURRIR simultáneamente con la conducta problema. Ej: manos juntas vs. golpear."},
+{domain:"D. Behavior Reduction",en:"Non-Contingent Reinforcement (NCR)",es:"Reforzamiento No Contingente (NCR)",def_en:"Deliver reinforcement on a TIME SCHEDULE — independent of behavior. Reduces the motivating operation for problem behavior.",def_es:"Entregar reforzamiento en un HORARIO DE TIEMPO — independiente de la conducta. Reduce la operación motivadora para la conducta problema."},
+{domain:"D. Behavior Reduction",en:"Response Cost",es:"Costo de Respuesta",def_en:"REMOVE a specified amount of positive reinforcer (e.g., tokens) after problem behavior. Type II (negative) punishment.",def_es:"RETIRAR una cantidad específica de reforzador positivo (ej: fichas) después de la conducta problema. Castigo Tipo II (negativo)."},
+{domain:"E. Documentation",en:"Objective Documentation",es:"Documentación Objetiva",def_en:"Reports exactly what was SEEN and HEARD — no interpretation. 'Hit table twice' ✓ vs. 'Was frustrated' ✗.",def_es:"Reporta exactamente lo que se VIO y ESCUCHÓ — sin interpretación. 'Golpeó la mesa dos veces' ✓ vs. 'Estaba frustrado' ✗."},
+{domain:"E. Documentation",en:"HIPAA",es:"HIPAA",def_en:"Health Insurance Portability and Accountability Act. Protects client PHI. Only share with authorized parties. Non-compliant = legal risk.",def_es:"Ley de Portabilidad y Responsabilidad de Seguros de Salud. Protege la PHI del cliente. Solo compartir con personas autorizadas. No cumplir = riesgo legal."},
+{domain:"E. Documentation",en:"Mandated Reporter",es:"Reportero Mandado",def_en:"RBTs are LEGALLY REQUIRED to report suspected child abuse or neglect to authorities — regardless of supervisory instruction.",def_es:"Los RBTs están LEGALMENTE OBLIGADOS a reportar sospecha de abuso o negligencia infantil a las autoridades — independientemente de la instrucción del supervisor."},
+{domain:"F. Ethics",en:"Scope of Practice",es:"Alcance de Práctica",def_en:"RBTs IMPLEMENT plans designed by BCBAs. They do NOT design, modify, diagnose, or interpret plans independently.",def_es:"Los RBTs IMPLEMENTAN planes diseñados por BCBAs. NO diseñan, modifican, diagnostican ni interpretan planes de manera independiente."},
+{domain:"F. Ethics",en:"Dual Relationship",es:"Relación Dual",def_en:"Having BOTH a professional and personal relationship with a client or family (e.g., friendship, business, social media). Must be avoided.",def_es:"Tener TANTO una relación profesional como personal con un cliente o familia (ej: amistad, negocio, redes sociales). Debe evitarse."}
+];
+
+// ============================================================
+// GLOSSARY (35 terms)
+// ============================================================
+const GLOSSARY = [
+{en:"Applied Behavior Analysis (ABA)",es:"Análisis de Conducta Aplicado",def_en:"The science of applying behavioral principles to improve socially significant behaviors in a measurable and systematic way.",def_es:"La ciencia de aplicar principios conductuales para mejorar conductas socialmente significativas de manera medible y sistemática.",domain:"General"},
+{en:"Antecedent",es:"Antecedente",def_en:"Any event or stimulus that occurs BEFORE a behavior and may influence it.",def_es:"Cualquier evento o estímulo que ocurre ANTES de una conducta y puede influir en ella.",domain:"General"},
+{en:"Behavior",es:"Conducta",def_en:"Any observable and measurable action of an organism. Must be defined in objective terms.",def_es:"Cualquier acción observable y medible de un organismo. Debe definirse en términos objetivos.",domain:"General"},
+{en:"Consequence",es:"Consecuencia",def_en:"Any event that follows a behavior and may strengthen or weaken it in the future.",def_es:"Cualquier evento que sigue a una conducta y puede fortalecerla o debilitarla en el futuro.",domain:"General"},
+{en:"Discriminative Stimulus (SD)",es:"Estímulo Discriminativo (ED)",def_en:"A stimulus that signals that reinforcement is available for a specific behavior in this moment.",def_es:"Un estímulo que señala que el reforzamiento está disponible para una conducta específica en este momento.",domain:"C. Skill Acquisition"},
+{en:"S-Delta (S∆)",es:"S-Delta (S∆)",def_en:"A stimulus that signals that reinforcement is NOT available. Behavior in the presence of S∆ is not reinforced.",def_es:"Un estímulo que señala que el reforzamiento NO está disponible. La conducta en presencia del S∆ no se refuerza.",domain:"C. Skill Acquisition"},
+{en:"Reinforcer",es:"Reforzador",def_en:"A consequence that INCREASES the future probability of the behavior it follows. Defined by its effect, not its form.",def_es:"Una consecuencia que AUMENTA la probabilidad futura de la conducta que sigue. Se define por su efecto, no su forma.",domain:"C. Skill Acquisition"},
+{en:"Punisher",es:"Castigador",def_en:"A consequence that DECREASES the future probability of the behavior it follows. Defined by function.",def_es:"Una consecuencia que DISMINUYE la probabilidad futura de la conducta que sigue. Se define por función.",domain:"D. Behavior Reduction"},
+{en:"Extinction",es:"Extinción",def_en:"Withholding the reinforcer that was maintaining a behavior, leading to eventual decrease in that behavior.",def_es:"Retirar el reforzador que mantenía una conducta, llevando a la eventual disminución de esa conducta.",domain:"D. Behavior Reduction"},
+{en:"Extinction Burst",es:"Estallido de Extinción",def_en:"A temporary increase in the frequency, intensity, or duration of behavior when extinction is first applied.",def_es:"Un aumento temporal en la frecuencia, intensidad o duración de la conducta cuando la extinción se aplica por primera vez.",domain:"D. Behavior Reduction"},
+{en:"Spontaneous Recovery",es:"Recuperación Espontánea",def_en:"Brief reappearance of an extinguished behavior, often at the start of a new session after a break.",def_es:"Reaparición breve de una conducta extinguida, a menudo al inicio de una nueva sesión después de un descanso.",domain:"D. Behavior Reduction"},
+{en:"Differential Reinforcement",es:"Reforzamiento Diferencial",def_en:"Reinforcing one behavior (or its absence) while withholding reinforcement for another. Used in DRO, DRA, DRI, DRL.",def_es:"Reforzar una conducta (o su ausencia) mientras se retiene el reforzamiento de otra. Usado en DRO, DRA, DRI, DRL.",domain:"D. Behavior Reduction"},
+{en:"Generalization",es:"Generalización",def_en:"A skill occurring in untrained settings, with untrained people, or with untrained materials beyond training conditions.",def_es:"Una habilidad que ocurre en entornos no entrenados, con personas no entrenadas o con materiales no entrenados más allá de las condiciones de entrenamiento.",domain:"C. Skill Acquisition"},
+{en:"Maintenance",es:"Mantenimiento",def_en:"The ability to perform a previously learned skill over time, without continued intensive training.",def_es:"La capacidad de realizar una habilidad aprendida previamente con el tiempo, sin entrenamiento intensivo continuo.",domain:"C. Skill Acquisition"},
+{en:"Task Analysis",es:"Análisis de Tarea",def_en:"Breaking a complex multi-step skill into small, sequential, individually teachable steps.",def_es:"Dividir una habilidad compleja de múltiples pasos en pasos pequeños, secuenciales e individualmente enseñables.",domain:"C. Skill Acquisition"},
+{en:"Chaining",es:"Encadenamiento",def_en:"Teaching a sequence of behaviors (from a task analysis) by linking individual steps together into a complete behavior chain.",def_es:"Enseñar una secuencia de conductas (de un análisis de tarea) enlazando los pasos individuales en una cadena de conducta completa.",domain:"C. Skill Acquisition"},
+{en:"Shaping",es:"Moldeamiento",def_en:"Reinforcing successive approximations toward the target behavior — each step closer is reinforced; previous steps are extinguished.",def_es:"Reforzar aproximaciones sucesivas hacia la conducta objetivo — cada paso más cercano se refuerza; los pasos anteriores se extinguen.",domain:"C. Skill Acquisition"},
+{en:"Prompt",es:"Ayuda (Prompt)",def_en:"An added stimulus (verbal, gestural, physical, model, positional, visual) that helps evoke the correct response.",def_es:"Un estímulo añadido (verbal, gestual, físico, modelo, posicional, visual) que ayuda a evocar la respuesta correcta.",domain:"C. Skill Acquisition"},
+{en:"Prompt Fading",es:"Retiro de Ayuda",def_en:"Systematically reducing prompt intensity so the learner responds to natural cues without assistance (prevents prompt dependency).",def_es:"Reducir sistemáticamente la intensidad de la ayuda para que el aprendiz responda a señales naturales sin asistencia (previene dependencia de ayuda)."},
+{en:"Prompt Dependency",es:"Dependencia de Ayuda",def_en:"When a learner can only perform a behavior when a prompt is present — indicates insufficient fading during training.",def_es:"Cuando un aprendiz solo puede realizar una conducta cuando hay una ayuda presente — indica retiro insuficiente durante el entrenamiento.",domain:"C. Skill Acquisition"},
+{en:"Motivating Operation (MO)",es:"Operación Motivadora (OM)",def_en:"An environmental condition that temporarily changes the value of a reinforcer AND the frequency of behavior associated with it.",def_es:"Una condición ambiental que cambia temporalmente el valor de un reforzador Y la frecuencia de la conducta asociada con él.",domain:"C. Skill Acquisition"},
+{en:"Fixed Ratio (FR) Schedule",es:"Programa de Razón Fija (RF)",def_en:"Reinforce after a FIXED number of responses. FR1 = every response. Produces post-reinforcement pause.",def_es:"Reforzar después de un número FIJO de respuestas. RF1 = cada respuesta. Produce pausa post-reforzamiento.",domain:"C. Skill Acquisition"},
+{en:"Variable Ratio (VR) Schedule",es:"Programa de Razón Variable (RV)",def_en:"Reinforce after a VARIABLE number of responses. Produces highest and most persistent responding. Very resistant to extinction.",def_es:"Reforzar después de un número VARIABLE de respuestas. Produce la respuesta más alta y persistente. Muy resistente a la extinción.",domain:"C. Skill Acquisition"},
+{en:"Discrete Trial Training (DTT)",es:"Enseñanza de Ensayo Discreto (DTT)",def_en:"Structured teaching method: SD → Response → Consequence → ITI. Mass trials, controlled environment, systematic data collection.",def_es:"Método de enseñanza estructurado: ED → Respuesta → Consecuencia → ITI. Múltiples ensayos, entorno controlado, recolección sistemática de datos.",domain:"C. Skill Acquisition"},
+{en:"Natural Environment Teaching (NET)",es:"Enseñanza en Entorno Natural (NET)",def_en:"Teaching embedded in natural activities following the learner's motivation. Promotes generalization better than DTT alone.",def_es:"Enseñanza integrada en actividades naturales siguiendo la motivación del aprendiz. Promueve mejor la generalización que solo DTT.",domain:"C. Skill Acquisition"},
+{en:"BCBA (Board Certified Behavior Analyst)",es:"BCBA (Analista de Conducta Certificado por la Junta)",def_en:"Licensed professional who designs behavior programs and supervises RBTs. RBTs implement; BCBAs design, interpret, and modify.",def_es:"Profesional licenciado que diseña programas de conducta y supervisa a los RBTs. Los RBTs implementan; los BCBAs diseñan, interpretan y modifican.",domain:"F. Ethics"},
+{en:"Behavior Intervention Plan (BIP)",es:"Plan de Intervención Conductual (PIC)",def_en:"BCBA-designed written plan specifying strategies to reduce problem behaviors. RBTs implement exactly as written.",def_es:"Plan escrito diseñado por el BCBA que especifica estrategias para reducir conductas problema. Los RBTs lo implementan exactamente como está escrito.",domain:"D. Behavior Reduction"},
+{en:"Skill Acquisition Plan (SAP)",es:"Plan de Adquisición de Habilidades (PAH)",def_en:"BCBA-designed written plan outlining how to teach new skills. RBTs implement without modification.",def_es:"Plan escrito diseñado por el BCBA que describe cómo enseñar nuevas habilidades. Los RBTs lo implementan sin modificación.",domain:"C. Skill Acquisition"},
+{en:"HIPAA",es:"HIPAA",def_en:"Health Insurance Portability and Accountability Act. Requires protection of client Protected Health Information (PHI). Violations = legal penalties.",def_es:"Ley de Portabilidad y Responsabilidad de Seguros de Salud. Requiere protección de la Información de Salud Protegida (PHI) del cliente. Violaciones = penalidades legales.",domain:"E. Documentation"},
+{en:"Protected Health Information (PHI)",es:"Información de Salud Protegida (PHI)",def_en:"Any information that could identify a client combined with their health data — name, DOB, address, diagnosis, session dates, etc.",def_es:"Cualquier información que pueda identificar a un cliente combinada con sus datos de salud — nombre, fecha de nacimiento, dirección, diagnóstico, fechas de sesión, etc.",domain:"E. Documentation"},
+{en:"Scope of Practice",es:"Alcance de Práctica",def_en:"The defined limits of what an RBT is trained and authorized to do. Implement plans — do NOT design, diagnose, or modify.",def_es:"Los límites definidos de lo que un RBT está entrenado y autorizado a hacer. Implementar planes — NO diseñar, diagnosticar ni modificar.",domain:"F. Ethics"},
+{en:"Dual Relationship",es:"Relación Dual",def_en:"When an RBT has both a professional AND personal relationship with a client or family. Creates conflicts of interest — must be avoided.",def_es:"Cuando un RBT tiene tanto una relación profesional como personal con un cliente o familia. Crea conflictos de interés — debe evitarse.",domain:"F. Ethics"},
+{en:"Inter-trial Interval (ITI)",es:"Intervalo entre Ensayos (ITI)",def_en:"Brief pause (1-5 seconds) between discrete teaching trials in DTT. Provides a clear boundary between consecutive trials.",def_es:"Pausa breve (1-5 segundos) entre ensayos de enseñanza discretos en DTT. Proporciona un límite claro entre ensayos consecutivos.",domain:"C. Skill Acquisition"},
+{en:"Token Economy",es:"Economía de Fichas",def_en:"Conditioned reinforcers (tokens) earned for target behaviors, exchanged for backup (primary) reinforcers. Teaches delayed gratification.",def_es:"Reforzadores condicionados (fichas) ganados por conductas objetivo, intercambiados por reforzadores de apoyo (primarios). Enseña gratificación diferida.",domain:"C. Skill Acquisition"},
+{en:"Functional Behavior Assessment (FBA)",es:"Evaluación Funcional de Conducta (EFC)",def_en:"A process to identify the environmental variables (antecedents and consequences) maintaining a problem behavior. RBTs assist with data collection only.",def_es:"Un proceso para identificar las variables ambientales (antecedentes y consecuencias) que mantienen una conducta problema. Los RBTs solo ayudan con la recolección de datos.",domain:"B. Assessment"}
+];
+
+// ============================================================
+// STATE
+// ============================================================
+const DOMAINS = ["All / Todos","A. Measurement","B. Assessment","C. Skill Acquisition","D. Behavior Reduction","E. Documentation","F. Ethics"];
+let PROG = {}; // in-memory only for Safari iOS compatibility
+
+// Quiz state
+let qDomain = "All / Todos", qList = [], qIdx = 0, qAnswered = false;
+let qCorrect = 0, qWrong = 0, qStreak = 0;
+
+// Flash state
+let fDomain = "All / Todos", fList = [], fIdx = 0;
+
+// Sim state
+let simList = [], simIdx = 0, simCorrect = 0, simWrong = 0, simAnswered = false;
+let simDomain = "All / Todos", simTimer = null, simSeconds = 5400, simStart = null;
+
+// Glos filter
+let glosDomain = "All / Todos";
+
+function saveProgress(){} // disabled - in-memory only
+
+function shuffle(arr){return [...arr].sort(()=>Math.random()-.5)}
+
+function filterByDomain(list,d){
+  if(d==="All / Todos") return [...list];
+  return list.filter(x=>x.domain===d);
+}
+
+function domainColor(d){
+  const map={"A. Measurement":"#e3f2fd","B. Assessment":"#e8f5e9","C. Skill Acquisition":"#fff3e0","D. Behavior Reduction":"#fce4ec","E. Documentation":"#f3e5f5","F. Ethics":"#e0f2f1"};
+  return map[d]||"#fff9c4";
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showTab(id){
+  document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if(id==='prog') renderProgress();
+  if(id==='glos') renderGlos('');
+}
+
+// ============================================================
+// DOMAIN TABS BUILDER
+// ============================================================
+function buildDomainFilter(containerId, activeDomain, onClickFn){
+  const c=document.getElementById(containerId);
+  c.innerHTML=DOMAINS.map(d=>`<button class="d-btn${d===activeDomain?' on':''}" onclick="${onClickFn}('${d.replace(/'/g,"\\'")}',event)">${d.split('.')[0]||d}</button>`).join('');
+}
+
+// ============================================================
+// SIMULATOR
+// ============================================================
+function buildSimDomainGrid(){
+  const g=document.getElementById('sim-domain-grid');
+  const domWeights={"A. Measurement":17,"B. Assessment":13,"C. Skill Acquisition":32,"D. Behavior Reduction":17,"E. Documentation":13,"F. Ethics":8};
+  g.innerHTML=Object.entries(domWeights).map(([d,w])=>{
+    const pct=getAccuracy(d);
+    return `<div class="sim-domain-card" onclick="startDomainSim('${d}')">
+      <div class="sd-pct">${pct===null?'—':pct+'%'}</div>
+      <div class="sd-name">${d}<br><span style="font-size:9px;color:#aaa">${w}% examen / exam</span></div>
+      <div class="sd-bar"><div class="sd-bar-fill" style="width:${pct||0}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function startFullSim(){
+  simDomain="All / Todos";
+  simList=shuffle(QUESTIONS).slice(0,25);
+  launchSim("Simulacro Completo","25 preguntas · todos los dominios / all domains",5400);
+}
+
+function startDomainSim(d){
+  simDomain=d;
+  const pool=filterByDomain(QUESTIONS,d);
+  simList=shuffle(pool).slice(0,Math.min(25,pool.length));
+  launchSim(d,`${simList.length} preguntas · ${d}`,5400);
+}
+
+function launchSim(title,sub,secs){
+  document.getElementById('sim-home').classList.add('hidden');
+  document.getElementById('sim-active').classList.remove('hidden');
+  document.getElementById('sim-title').textContent=title;
+  document.getElementById('sim-sub').textContent=sub;
+  simIdx=0; simCorrect=0; simWrong=0; simAnswered=false;
+  simSeconds=secs; simStart=Date.now();
+  updateSimStats();
+  renderSimQ();
+  clearInterval(simTimer);
+  simTimer=setInterval(tickTimer,1000);
+}
+
+function tickTimer(){
+  simSeconds--;
+  if(simSeconds<=0){clearInterval(simTimer);finishSim();}
+  const m=Math.floor(simSeconds/60), s=simSeconds%60;
+  document.getElementById('sim-timer').textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  if(simSeconds<=300) document.getElementById('sim-timer').style.color='#dc3545';
+}
+
+function updateSimStats(){
+  document.getElementById('sim-correct').textContent=simCorrect;
+  document.getElementById('sim-wrong').textContent=simWrong;
+  document.getElementById('sim-left').textContent=simList.length-simIdx;
+  const tot=simCorrect+simWrong;
+  document.getElementById('sim-pct').textContent=tot>0?Math.round(simCorrect/tot*100)+'%':'—';
+  document.getElementById('sim-prog').style.width=(simIdx/simList.length*100)+'%';
+}
+
+function renderSimQ(){
+  if(simIdx>=simList.length){finishSim();return;}
+  simAnswered=false;
+  const q=simList[simIdx];
+  const area=document.getElementById('sim-card-area');
+  area.innerHTML=`
+    <div class="q-top">
+      <span class="q-domain-badge" style="background:${domainColor(q.domain)}">${q.domain}</span>
+      <span class="q-count">${simIdx+1} / ${simList.length}</span>
+    </div>
+    <div class="q-en">${q.en}</div>
+    <div class="q-es">${q.es}</div>
+    <div class="opts" id="sim-opts">
+      ${q.opts.map((o,i)=>`<button class="opt" onclick="simSelectOpt(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+    </div>
+    <div class="exp-box" id="sim-exp"></div>
+    <div class="q-footer">
+      <span class="result-msg" id="sim-result-msg"></span>
+      <button class="btn" id="sim-next" style="display:none" onclick="simNext()">Siguiente / Next →</button>
+    </div>`;
+}
+
+function simSelectOpt(i){
+  if(simAnswered) return;
+  simAnswered=true;
+  const q=simList[simIdx];
+  const btns=document.querySelectorAll('#sim-opts .opt');
+  btns.forEach(b=>b.classList.add('locked'));
+  btns[i].classList.add(i===q.ans?'correct':'wrong');
+  if(i!==q.ans) btns[q.ans].classList.add('reveal');
+  const exp=document.getElementById('sim-exp');
+  exp.innerHTML=`<strong>Explanation:</strong> ${q.exp_en}<br><em>Explicación: ${q.exp_es}</em>`;
+  exp.classList.add('show');
+  const msg=document.getElementById('sim-result-msg');
+  if(i===q.ans){simCorrect++;msg.textContent='✓ Correcto';msg.className='result-msg ok';}
+  else{simWrong++;msg.textContent='✗ Incorrecto';msg.className='result-msg bad';}
+  // save progress
+  if(!PROG[q.domain]) PROG[q.domain]={correct:0,total:0};
+  PROG[q.domain].total++;
+  if(i===q.ans) PROG[q.domain].correct++;
+  saveProgress();
+  updateSimStats();
+  document.getElementById('sim-next').style.display='block';
+}
+
+function simNext(){simIdx++;renderSimQ();}
+
+function finishSim(){
+  clearInterval(simTimer);
+  const elapsed=Math.round((Date.now()-simStart)/1000);
+  const m=Math.floor(elapsed/60), s=elapsed%60;
+  const pct=Math.round(simCorrect/(simCorrect+simWrong||1)*100);
+  document.getElementById('res-circle').textContent=pct+'%';
+  document.getElementById('res-circle').className='results-circle '+(pct>=80?'pass':'fail');
+  document.getElementById('res-title').textContent=pct>=80?'¡Aprobado! / Passed!':'Necesitas más práctica / Keep practicing';
+  document.getElementById('res-msg').innerHTML=pct>=80?
+    `Excelente trabajo. Puntaje para pasar el examen real: 80%+.<br>Great work. Real exam passing score: 80%+.`:
+    `Sigue estudiando. Necesitas 80%+ para pasar.<br>Keep studying. You need 80%+ to pass.`;
+  document.getElementById('res-correct').textContent=simCorrect;
+  document.getElementById('res-wrong').textContent=simWrong;
+  document.getElementById('res-time').textContent=`${m}m ${s}s`;
+  document.getElementById('results-overlay').classList.add('show');
+}
+
+function closeResults(){document.getElementById('results-overlay').classList.remove('show');}
+function newSim(){
+  closeResults();
+  document.getElementById('sim-home').classList.remove('hidden');
+  document.getElementById('sim-active').classList.add('hidden');
+  buildSimDomainGrid();
+}
+
+// ============================================================
+// FREE QUIZ
+// ============================================================
+function initQuiz(){
+  buildDomainFilter('quiz-filter','All / Todos','setQuizDomain');
+  startQuiz('All / Todos');
+}
+
+function setQuizDomain(d,e){
+  qDomain=d;
+  buildDomainFilter('quiz-filter',d,'setQuizDomain');
+  qList=shuffle(filterByDomain(QUESTIONS,d));
+  qIdx=0; qCorrect=0; qWrong=0; qStreak=0; qAnswered=false;
+  updateQStats();
+  renderQ();
+}
+
+function startQuiz(d){setQuizDomain(d,null);}
+
+function updateQStats(){
+  document.getElementById('qz-correct').textContent=qCorrect;
+  document.getElementById('qz-wrong').textContent=qWrong;
+  document.getElementById('qz-streak').textContent=qStreak;
+  const tot=qCorrect+qWrong;
+  document.getElementById('qz-pct').textContent=tot>0?Math.round(qCorrect/tot*100)+'%':'—';
+  document.getElementById('quiz-prog').style.width=(qIdx/(qList.length||1)*100)+'%';
+}
+
+function renderQ(){
+  if(!qList.length||qIdx>=qList.length){
+    if(qList.length>0){
+      qList=shuffle(filterByDomain(QUESTIONS,qDomain));
+      qIdx=0;
+    }
+  }
+  qAnswered=false;
+  const q=qList[qIdx];
+  const area=document.getElementById('quiz-card-area');
+  area.innerHTML=`
+    <div class="q-top">
+      <span class="q-domain-badge" style="background:${domainColor(q.domain)}">${q.domain}</span>
+      <span class="q-count">${qIdx+1} / ${qList.length} <span class="q-weight">${q.weight}% del examen</span></span>
+    </div>
+    <div class="q-en">${q.en}</div>
+    <div class="q-es">${q.es}</div>
+    <div class="opts" id="q-opts">
+      ${q.opts.map((o,i)=>`<button class="opt" onclick="selectOpt(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+    </div>
+    <div class="exp-box" id="q-exp"></div>
+    <div class="q-footer">
+      <span class="result-msg" id="q-result-msg"></span>
+      <button class="btn" id="q-next" style="display:none" onclick="nextQ()">Siguiente / Next →</button>
+    </div>`;
+}
+
+function selectOpt(i){
+  if(qAnswered) return;
+  qAnswered=true;
+  const q=qList[qIdx];
+  const btns=document.querySelectorAll('#q-opts .opt');
+  btns.forEach(b=>b.classList.add('locked'));
+  btns[i].classList.add(i===q.ans?'correct':'wrong');
+  if(i!==q.ans) btns[q.ans].classList.add('reveal');
+  const exp=document.getElementById('q-exp');
+  exp.innerHTML=`<strong>Explanation:</strong> ${q.exp_en}<br><em>Explicación: ${q.exp_es}</em>`;
+  exp.classList.add('show');
+  const msg=document.getElementById('q-result-msg');
+  if(i===q.ans){qCorrect++;qStreak++;msg.textContent='✓ Correcto';msg.className='result-msg ok';}
+  else{qWrong++;qStreak=0;msg.textContent='✗ Incorrecto';msg.className='result-msg bad';}
+  if(!PROG[q.domain]) PROG[q.domain]={correct:0,total:0};
+  PROG[q.domain].total++;
+  if(i===q.ans) PROG[q.domain].correct++;
+  saveProgress();
+  updateQStats();
+  document.getElementById('q-next').style.display='block';
+}
+
+function nextQ(){qIdx++;renderQ();}
+function resetQuiz(){setQuizDomain(qDomain,null);}
+
+// ============================================================
+// FLASHCARDS
+// ============================================================
+function initFlash(){
+  buildDomainFilter('flash-filter','All / Todos','setFlashDomain');
+  fList=shuffle(FLASHCARDS); fIdx=0;
+  renderFlash();
+}
+
+function setFlashDomain(d,e){
+  fDomain=d;
+  buildDomainFilter('flash-filter',d,'setFlashDomain');
+  fList=shuffle(filterByDomain(FLASHCARDS,d));
+  fIdx=0;
+  const w=document.getElementById('flip-wrap');
+  w.classList.remove('flipped');
+  renderFlash();
+}
+
+function renderFlash(){
+  if(!fList.length) return;
+  const c=fList[fIdx];
+  document.getElementById('cf-domain').textContent=c.domain;
+  document.getElementById('cf-en').textContent=c.en;
+  document.getElementById('cf-es').textContent=c.es;
+  document.getElementById('cb-domain').textContent=c.domain;
+  document.getElementById('cb-en').textContent=c.def_en;
+  document.getElementById('cb-es').textContent=c.def_es;
+  document.getElementById('flash-counter').textContent=`${fIdx+1} / ${fList.length} · ${c.domain}`;
+  document.getElementById('flip-wrap').classList.remove('flipped');
+}
+
+function doFlip(){document.getElementById('flip-wrap').classList.toggle('flipped');}
+
+function flashMove(dir){
+  fIdx=(fIdx+dir+fList.length)%fList.length;
+  renderFlash();
+}
+
+function shuffleFlash(){
+  fList=shuffle(fList); fIdx=0; renderFlash();
+}
+
+// ============================================================
+// GLOSSARY
+// ============================================================
+function renderGlos(filter){
+  const f=filter.toLowerCase();
+  const d=glosDomain;
+  let list=GLOSSARY.filter(g=>{
+    const matchD=d==="All / Todos"||g.domain===d;
+    const matchT=!f||g.en.toLowerCase().includes(f)||g.es.toLowerCase().includes(f)||g.def_en.toLowerCase().includes(f)||g.def_es.toLowerCase().includes(f);
+    return matchD&&matchT;
+  });
+  const c=document.getElementById('glos-list');
+  if(!list.length){c.innerHTML='<p style="color:#aaa;padding:1rem;text-align:center">Sin resultados / No results</p>';return;}
+  c.innerHTML=list.sort((a,b)=>a.en.localeCompare(b.en)).map(g=>`
+    <div class="glos-item">
+      <div class="gi-term-en">${g.en}</div>
+      <div class="gi-term-es">${g.es}</div>
+      <div class="gi-def-en">${g.def_en}</div>
+      <div class="gi-def-es">${g.def_es}</div>
+      <span class="gi-tag">${g.domain||'General'}</span>
+    </div>`).join('');
+}
+
+function filterGlos(v){renderGlos(v);}
+function setGlosDomain(d,e){
+  glosDomain=d;
+  buildDomainFilter('glos-filter',d,'setGlosDomain');
+  renderGlos(document.getElementById('glos-input').value);
+}
+
+// ============================================================
+// PROGRESS
+// ============================================================
+function getAccuracy(domain){
+  if(!PROG[domain]||PROG[domain].total===0) return null;
+  return Math.round(PROG[domain].correct/PROG[domain].total*100);
+}
+
+function renderProgress(){
+  const domWeights={"A. Measurement":17,"B. Assessment":13,"C. Skill Acquisition":32,"D. Behavior Reduction":17,"E. Documentation":13,"F. Ethics":8};
+  const c=document.getElementById('prog-domains');
+  c.innerHTML=Object.entries(domWeights).map(([d,w])=>{
+    const p=PROG[d]||{correct:0,total:0};
+    const pct=p.total>0?Math.round(p.correct/p.total*100):0;
+    return `<div class="domain-prog-item">
+      <div class="dpi-top">
+        <span class="dpi-name">${d}</span>
+        <span class="dpi-pct">${p.total>0?pct+'%':'Sin datos'}</span>
+      </div>
+      <div class="dpi-bar"><div class="dpi-fill" style="width:${pct}%"></div></div>
+      <div class="dpi-sub">${p.correct} correctas de ${p.total} preguntas · ${w}% del examen</div>
+    </div>`;
+  }).join('');
+
+  // Total
+  const tot=Object.values(PROG).reduce((a,v)=>({correct:a.correct+v.correct,total:a.total+v.total}),{correct:0,total:0});
+  const totalPct=tot.total>0?Math.round(tot.correct/tot.total*100):0;
+  c.innerHTML+=`<div style="background:#1a1a2e;color:#fff;border-radius:10px;padding:14px;margin-top:.5rem;display:flex;justify-content:space-between;align-items:center">
+    <div><div style="font-weight:700">Total General</div><div style="font-size:11px;color:#ccc">${tot.correct} correctas de ${tot.total} preguntas</div></div>
+    <div style="font-size:24px;font-weight:800">${totalPct}%</div>
+  </div>`;
+
+  // Achievements
+  const achs=[
+    {name:"Primera respuesta",desc:"Responde 1 pregunta",emoji:"🎯",cond:tot.total>=1},
+    {name:"10 preguntas",desc:"Responde 10 preguntas",emoji:"📚",cond:tot.total>=10},
+    {name:"50 preguntas",desc:"Responde 50 preguntas",emoji:"🔥",cond:tot.total>=50},
+    {name:"100 preguntas",desc:"Responde 100 preguntas",emoji:"💯",cond:tot.total>=100},
+    {name:"Racha de 5",desc:"5 correctas seguidas",emoji:"⚡",cond:qStreak>=5},
+    {name:"80% promedio",desc:"Acierto general 80%+",emoji:"🏆",cond:totalPct>=80},
+    {name:"Measurement Pro",desc:"80%+ en Medición",emoji:"📊",cond:getAccuracy("A. Measurement")>=80},
+    {name:"Ethics Pro",desc:"80%+ en Ética",emoji:"⚖️",cond:getAccuracy("F. Ethics")>=80},
+  ];
+  document.getElementById('achievements').innerHTML=achs.map(a=>`
+    <div class="ach ${a.cond?'':'locked'}">
+      <div class="ach-icon">${a.emoji}</div>
+      <div class="ach-name">${a.name}</div>
+      <div class="ach-desc">${a.desc}</div>
+    </div>`).join('');
+}
+
+function resetProgress(){PROG={};saveProgress();renderProgress();}
+
+// ============================================================
+// INIT
+// ============================================================
+
+// iOS touch fix - prevent 300ms delay
+document.addEventListener('touchstart', function(){}, {passive: true});
+
+window.onload=function(){
+  buildSimDomainGrid();
+  buildDomainFilter('glos-filter','All / Todos','setGlosDomain');
+  initQuiz();
+  initFlash();
+};
+</script>
+</body>
+</html>
