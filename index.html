@@ -383,6 +383,247 @@ input { font-size: 16px !important; } /* prevents iOS zoom */
   </div>
 </div>
 
+
+<!-- GRAFICAS -->
+<div id="tab-graficas" class="tab">
+<div class="scroll">
+  <p class="st">Interpretación de Gráficas / Graph Interpretation</p>
+  
+  <!-- Graph 1: Baseline vs Intervention -->
+  <div class="card" style="margin-bottom:10px">
+    <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px">Gráfica 1: Línea Base vs. Intervención / Baseline vs. Intervention</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Conducta: Golpes por sesión · Behavior: Hits per session</div>
+    <canvas id="graph1" width="100%" height="200" style="width:100%;max-height:200px"></canvas>
+    <div style="margin-top:10px">
+      <p style="font-size:12px;font-weight:600;color:var(--dark);margin-bottom:6px">¿Qué ves en esta gráfica? / What do you see in this graph?</p>
+      <div style="display:flex;flex-direction:column;gap:6px" id="g1-opts">
+        <button class="opt" onclick="checkGraph(1,0)">A. La conducta está aumentando en ambas fases / Behavior is increasing in both phases</button>
+        <button class="opt" onclick="checkGraph(1,1)">B. Línea base estable; intervención muestra tendencia descendente / Stable baseline; intervention shows decreasing trend ✓</button>
+        <button class="opt" onclick="checkGraph(1,2)">C. Los datos son muy variables sin tendencia clara / Data is highly variable with no clear trend</button>
+        <button class="opt" onclick="checkGraph(1,3)">D. La intervención no tuvo efecto / The intervention had no effect</button>
+      </div>
+      <div id="g1-fb" style="display:none;margin-top:8px;padding:10px;background:#f0f4ff;border-left:3px solid var(--dark);border-radius:6px;font-size:12px;line-height:1.5"></div>
+    </div>
+  </div>
+
+  <!-- Graph 2: Variable data -->
+  <div class="card" style="margin-bottom:10px">
+    <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px">Gráfica 2: Datos Variables / Variable Data</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Conducta: Rabietas por sesión · Behavior: Tantrums per session</div>
+    <canvas id="graph2" width="100%" height="200" style="width:100%;max-height:200px"></canvas>
+    <div style="margin-top:10px">
+      <p style="font-size:12px;font-weight:600;color:var(--dark);margin-bottom:6px">¿Cuál es el problema con estos datos? / What is the problem with this data?</p>
+      <div style="display:flex;flex-direction:column;gap:6px" id="g2-opts">
+        <button class="opt" onclick="checkGraph(2,0)">A. La tendencia es claramente descendente / The trend is clearly decreasing</button>
+        <button class="opt" onclick="checkGraph(2,1)">B. Los datos son estables y predecibles / The data is stable and predictable</button>
+        <button class="opt" onclick="checkGraph(2,2)">C. Alta variabilidad — difícil evaluar el efecto del tratamiento / High variability — hard to evaluate treatment effect ✓</button>
+        <button class="opt" onclick="checkGraph(2,3)">D. El registro de datos es incorrecto / Data recording is incorrect</button>
+      </div>
+      <div id="g2-fb" style="display:none;margin-top:8px;padding:10px;background:#f0f4ff;border-left:3px solid var(--dark);border-radius:6px;font-size:12px;line-height:1.5"></div>
+    </div>
+  </div>
+
+  <!-- Graph 3: Cumulative -->
+  <div class="card" style="margin-bottom:10px">
+    <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px">Gráfica 3: Registro Acumulativo / Cumulative Record</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Respuestas correctas acumuladas · Cumulative correct responses</div>
+    <canvas id="graph3" width="100%" height="200" style="width:100%;max-height:200px"></canvas>
+    <div style="margin-top:10px">
+      <p style="font-size:12px;font-weight:600;color:var(--dark);margin-bottom:6px">¿Qué indica la línea plana en las sesiones 6-8? / What does the flat line in sessions 6-8 indicate?</p>
+      <div style="display:flex;flex-direction:column;gap:6px" id="g3-opts">
+        <button class="opt" onclick="checkGraph(3,0)">A. La conducta aumentó / Behavior increased</button>
+        <button class="opt" onclick="checkGraph(3,1)">B. La conducta NO ocurrió — cero respuestas en esas sesiones / Behavior did NOT occur — zero responses in those sessions ✓</button>
+        <button class="opt" onclick="checkGraph(3,2)">C. Los datos no fueron recopilados / Data was not collected</button>
+        <button class="opt" onclick="checkGraph(3,3)">D. El gráfico tiene un error / The graph has an error</button>
+      </div>
+      <div id="g3-fb" style="display:none;margin-top:8px;padding:10px;background:#f0f4ff;border-left:3px solid var(--dark);border-radius:6px;font-size:12px;line-height:1.5"></div>
+    </div>
+  </div>
+
+  <!-- Graph 4: IOA Calculator -->
+  <div class="card">
+    <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px">Calculadora IOA / IOA Calculator</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Practica calculando el Acuerdo entre Observadores · Practice calculating Interobserver Agreement</div>
+    <div style="display:flex;gap:10px;margin-bottom:10px">
+      <div style="flex:1">
+        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">Observer 1 / Observador 1</label>
+        <input type="number" id="ioa1" placeholder="ej: 18" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid var(--border);font-size:16px;font-family:inherit">
+      </div>
+      <div style="flex:1">
+        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">Observer 2 / Observador 2</label>
+        <input type="number" id="ioa2" placeholder="ej: 15" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid var(--border);font-size:16px;font-family:inherit">
+      </div>
+    </div>
+    <button class="btn btn-dk" onclick="calcIOA()">Calcular IOA</button>
+    <div id="ioa-result" style="margin-top:10px;display:none;padding:12px;border-radius:8px;font-size:14px;text-align:center;font-weight:700"></div>
+    <p style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center">Fórmula: (menor ÷ mayor) × 100 · Aceptable: ≥80%</p>
+  </div>
+
+</div>
+</div>
+
+<script>
+// ==================== GRAPHS ====================
+function drawGraph1(){
+  const canvas=document.getElementById('graph1');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.offsetWidth||300, H=200;
+  canvas.width=W; canvas.height=H;
+  const baseline=[12,14,11,13,12];
+  const intervention=[8,5,3,2,1];
+  const all=[...baseline,...intervention];
+  const maxY=Math.max(...all)+2, minY=0;
+  const padL=35,padR=15,padT=15,padB=30;
+  const gW=W-padL-padR, gH=H-padT-padB;
+  ctx.clearRect(0,0,W,H);
+  // Grid
+  ctx.strokeStyle='#e5e5e0';ctx.lineWidth=1;
+  for(let i=0;i<=5;i++){
+    const y=padT+gH*(1-i/5);
+    ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();
+    ctx.fillStyle='#999';ctx.font='10px sans-serif';ctx.textAlign='right';
+    ctx.fillText(Math.round(maxY*i/5),padL-4,y+3);
+  }
+  // Phase line
+  const phaseX=padL+gW*(5/10);
+  ctx.strokeStyle='#333';ctx.lineWidth=2;ctx.setLineDash([4,4]);
+  ctx.beginPath();ctx.moveTo(phaseX,padT);ctx.lineTo(phaseX,H-padB);ctx.stroke();
+  ctx.setLineDash([]);
+  // Labels
+  ctx.fillStyle='#666';ctx.font='10px sans-serif';ctx.textAlign='center';
+  ctx.fillText('Baseline',padL+gW*0.25,padT-3);
+  ctx.fillText('Intervención',padL+gW*0.75,padT-3);
+  // Data points
+  function toX(i){return padL+gW*(i/10)+(gW/20);}
+  function toY(v){return padT+gH*(1-(v-minY)/(maxY-minY));}
+  // Baseline line
+  ctx.strokeStyle='#666';ctx.lineWidth=2;ctx.beginPath();
+  baseline.forEach((v,i)=>{i===0?ctx.moveTo(toX(i),toY(v)):ctx.lineTo(toX(i),toY(v));});
+  ctx.stroke();
+  baseline.forEach((v,i)=>{ctx.fillStyle='#1a1a2e';ctx.beginPath();ctx.arc(toX(i),toY(v),5,0,Math.PI*2);ctx.fill();});
+  // Intervention line
+  ctx.strokeStyle='#28a745';ctx.lineWidth=2;ctx.beginPath();
+  intervention.forEach((v,i)=>{i===0?ctx.moveTo(toX(i+5),toY(v)):ctx.lineTo(toX(i+5),toY(v));});
+  ctx.stroke();
+  intervention.forEach((v,i)=>{ctx.fillStyle='#28a745';ctx.beginPath();ctx.arc(toX(i+5),toY(v),5,0,Math.PI*2);ctx.fill();});
+  // X labels
+  ctx.fillStyle='#666';ctx.font='9px sans-serif';ctx.textAlign='center';
+  for(let i=0;i<10;i++){ctx.fillText(i+1,toX(i),H-padB+14);}
+}
+
+function drawGraph2(){
+  const canvas=document.getElementById('graph2');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.offsetWidth||300, H=200;
+  canvas.width=W; canvas.height=H;
+  const data=[2,8,1,9,3,7,2,8,1,9];
+  const maxY=12,padL=35,padR=15,padT=15,padB=30;
+  const gW=W-padL-padR, gH=H-padT-padB;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='#e5e5e0';ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){
+    const y=padT+gH*(1-i/4);
+    ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();
+    ctx.fillStyle='#999';ctx.font='10px sans-serif';ctx.textAlign='right';
+    ctx.fillText(Math.round(maxY*i/4),padL-4,y+3);
+  }
+  function toX(i){return padL+gW*(i/(data.length-1));}
+  function toY(v){return padT+gH*(1-v/maxY);}
+  ctx.strokeStyle='#dc3545';ctx.lineWidth=2;ctx.beginPath();
+  data.forEach((v,i)=>{i===0?ctx.moveTo(toX(i),toY(v)):ctx.lineTo(toX(i),toY(v));});
+  ctx.stroke();
+  data.forEach((v,i)=>{ctx.fillStyle='#dc3545';ctx.beginPath();ctx.arc(toX(i),toY(v),5,0,Math.PI*2);ctx.fill();});
+  ctx.fillStyle='#666';ctx.font='9px sans-serif';ctx.textAlign='center';
+  data.forEach((_,i)=>{ctx.fillText(i+1,toX(i),H-padB+14);});
+}
+
+function drawGraph3(){
+  const canvas=document.getElementById('graph3');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.offsetWidth||300, H=200;
+  canvas.width=W; canvas.height=H;
+  const data=[5,12,18,24,30,30,30,30,35,42];
+  const maxY=45,padL=35,padR=15,padT=15,padB=30;
+  const gW=W-padL-padR, gH=H-padT-padB;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='#e5e5e0';ctx.lineWidth=1;
+  for(let i=0;i<=5;i++){
+    const y=padT+gH*(1-i/5);
+    ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();
+    ctx.fillStyle='#999';ctx.font='10px sans-serif';ctx.textAlign='right';
+    ctx.fillText(Math.round(maxY*i/5),padL-4,y+3);
+  }
+  function toX(i){return padL+gW*(i/(data.length-1));}
+  function toY(v){return padT+gH*(1-v/maxY);}
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2;ctx.beginPath();
+  data.forEach((v,i)=>{i===0?ctx.moveTo(toX(i),toY(v)):ctx.lineTo(toX(i),toY(v));});
+  ctx.stroke();
+  data.forEach((v,i)=>{ctx.fillStyle='#1a1a2e';ctx.beginPath();ctx.arc(toX(i),toY(v),5,0,Math.PI*2);ctx.fill();});
+  // Highlight flat section
+  ctx.fillStyle='rgba(245,166,35,0.15)';
+  ctx.fillRect(toX(4),padT,toX(7)-toX(4),gH);
+  ctx.fillStyle='#856404';ctx.font='9px sans-serif';ctx.textAlign='center';
+  ctx.fillText('Línea plana / Flat',toX(5.5),padT+15);
+  ctx.fillStyle='#666';ctx.font='9px sans-serif';ctx.textAlign='center';
+  data.forEach((_,i)=>{ctx.fillText(i+1,toX(i),H-padB+14);});
+}
+
+const graphAnswers={1:1,2:2,3:1};
+const graphFeedback={
+  1:{
+    correct:"✓ Correcto / Correct! La línea base es estable (~12-13 golpes). La intervención muestra una clara tendencia DESCENDENTE de 8 a 1. La línea de cambio de fase separa las condiciones. El tratamiento parece funcionar. / Baseline is stable (~12-13 hits). Intervention shows a clear DECREASING trend from 8 to 1. The phase change line separates conditions. Treatment appears to be working.",
+    wrong:"✗ Incorrecto. Observa la línea vertical (cambio de fase). A la izquierda: datos estables ~12. A la derecha: datos bajan de 8 a 1. Tendencia DESCENDENTE = posible efecto del tratamiento. / Incorrect. Note the vertical line (phase change). Left: stable ~12. Right: data drops from 8 to 1. DECREASING trend = possible treatment effect."
+  },
+  2:{
+    correct:"✓ Correcto / Correct! Los datos saltan entre 1-9 sin dirección consistente. Alta variabilidad hace difícil saber si el tratamiento está funcionando porque no hay tendencia clara. El BCBA necesita investigar la causa. / Data jumps between 1-9 with no consistent direction. High variability makes it hard to know if treatment is working because there's no clear trend. The BCBA needs to investigate.",
+    wrong:"✗ Incorrecto. Observa los datos: 2, 8, 1, 9, 3, 7, 2, 8 — sube y baja sin patrón. Esto es ALTA VARIABILIDAD, no una tendencia estable ni descendente. / Incorrect. Look at the data: 2, 8, 1, 9, 3, 7, 2, 8 — goes up and down with no pattern. This is HIGH VARIABILITY, not a stable or decreasing trend."
+  },
+  3:{
+    correct:"✓ Correcto / Correct! En un registro acumulativo, una línea PLANA significa CERO respuestas. El total se quedó en 30 para las sesiones 6, 7 y 8 — no se agregaron nuevas respuestas. Plana = sin conducta en esas sesiones. / In a cumulative record, a FLAT LINE means ZERO responses. The total stayed at 30 for sessions 6, 7, 8 — no new responses were added. Flat = no behavior in those sessions.",
+    wrong:"✗ Incorrecto. En gráficas acumulativas, la línea NUNCA baja — solo sube o se aplana. Una línea plana significa que NO ocurrió ninguna respuesta (cero). El total no aumentó porque no hubo conducta. / Incorrect. In cumulative graphs, the line NEVER goes down — it only goes up or flattens. A flat line means NO responses occurred (zero). The total didn't increase because there was no behavior."
+  }
+};
+
+function checkGraph(graphNum, selected){
+  const correct=graphAnswers[graphNum];
+  const btns=document.querySelectorAll('#g'+graphNum+'-opts .opt');
+  btns.forEach(b=>b.classList.add('locked'));
+  btns[selected].classList.add(selected===correct?'correct':'wrong');
+  if(selected!==correct)btns[correct].classList.add('reveal');
+  const fb=document.getElementById('g'+graphNum+'-fb');
+  fb.style.display='block';
+  fb.innerHTML=selected===correct?graphFeedback[graphNum].correct:graphFeedback[graphNum].wrong;
+}
+
+function calcIOA(){
+  const v1=parseFloat(document.getElementById('ioa1').value);
+  const v2=parseFloat(document.getElementById('ioa2').value);
+  const res=document.getElementById('ioa-result');
+  if(isNaN(v1)||isNaN(v2)||v1<0||v2<0){
+    res.style.display='block';res.style.background='#f8d7da';res.style.color='#721c24';
+    res.innerHTML='Por favor ingresa números válidos / Please enter valid numbers';return;
+  }
+  const ioa=Math.round((Math.min(v1,v2)/Math.max(v1,v2))*100);
+  const pass=ioa>=80;
+  res.style.display='block';
+  res.style.background=pass?'#d4edda':'#f8d7da';
+  res.style.color=pass?'#155724':'#721c24';
+  res.innerHTML=`IOA = ${ioa}% · ${pass?'✓ Aceptable (≥80%)':'✗ Bajo — revisar definición de conducta / Low — review behavior definition'}`;
+}
+
+// Draw graphs when tab is opened
+const origShowTab=window.showTab||function(){};
+window.showTab=function(id,btn){
+  origShowTab(id,btn);
+  if(id==='graficas'){
+    setTimeout(()=>{drawGraph1();drawGraph2();drawGraph3();},100);
+  }
+};
+</script>
+
 <!-- RESULTS MODAL -->
 <div class="results-overlay" id="results-overlay">
   <div class="results-modal">
@@ -1199,6 +1440,358 @@ const QUESTIONS = [
  opts:["DRO","DRA","DRL","DRI"],ans:1,
  exp_en:"DRA: reinforcing an ALTERNATIVE behavior (raising hand) that serves the same function as the problem behavior, while the problem behavior is on extinction.",
  exp_es:"DRA: reforzar una conducta ALTERNATIVA (levantar la mano) que sirve la misma función que la conducta problema, mientras la conducta problema está en extinción."}
+
+,
+{id:114,domain:"A. Measurement",weight:17,
+en:"Sofia, an RBT, is tracking how many times a 6-year-old named Carlos hits his sister during a 30-minute play session. She marks every single hit as it happens. Which measurement method is Sofia using?",
+es:"Sofía, una RBT, registra cuántas veces Carlos (6 años) golpea a su hermana durante una sesión de juego de 30 minutos. Marca cada golpe cuando ocurre. ¿Qué método usa Sofía?",
+opts:["Momentary time sampling","Whole-interval recording","Frequency (event) recording","Duration recording"],ans:2,
+exp_en:"Recording every discrete instance as it happens = Frequency/Event recording. Sofia is counting each individual hit.",
+exp_es:"Registrar cada instancia discreta cuando ocurre = Registro de frecuencia/evento. Sofía cuenta cada golpe individual."},
+
+{id:115,domain:"A. Measurement",weight:17,
+en:"RBT Marco sets a timer for 10-minute intervals. When the timer goes off, he looks up and notes whether 8-year-old Diana is on-task at that exact moment. This is:",
+es:"El RBT Marco pone un temporizador de 10 minutos. Cuando suena, mira si Diana (8 años) está en tarea en ese momento exacto. Esto es:",
+opts:["Whole-interval recording","Partial-interval recording","Momentary time sampling","Latency recording"],ans:2,
+exp_en:"Checking behavior at the EXACT END of each interval = Momentary Time Sampling. Marco only observes when the timer rings.",
+exp_es:"Verificar la conducta al FINAL EXACTO de cada intervalo = Muestreo de Tiempo Momentáneo. Marco solo observa cuando suena el temporizador."},
+
+{id:116,domain:"A. Measurement",weight:17,
+en:"RBT Lucia records a '+' every time 5-year-old Tomás screams during ANY part of a 5-minute interval, even if it only lasts 2 seconds. Over time, Tomás's parents notice the data shows more screaming than they observe at home. Why?",
+es:"La RBT Lucía marca '+' cada vez que Tomás (5 años) grita en CUALQUIER momento de un intervalo de 5 minutos, aunque dure 2 segundos. Los padres notan que los datos muestran más gritos que en casa. ¿Por qué?",
+opts:["Lucia is making data errors","Partial-interval recording tends to OVERESTIMATE behavior","Whole-interval recording is inflating the data","The behavior is more frequent at the clinic"],ans:1,
+exp_en:"Partial-interval recording scores '+' for ANY occurrence in the interval — even a 1-second scream counts as the full interval. This systematically overestimates.",
+exp_es:"El intervalo parcial marca '+' por CUALQUIER ocurrencia — aunque sea 1 segundo cuenta como todo el intervalo. Esto sistemáticamente sobreestima."},
+
+{id:117,domain:"A. Measurement",weight:17,
+en:"During a 60-minute session, RBT James measured that 7-year-old Ana spent 23 minutes out of her seat. What measurement type did James use?",
+es:"Durante una sesión de 60 minutos, el RBT James midió que Ana (7 años) pasó 23 minutos fuera de su asiento. ¿Qué tipo de medición usó James?",
+opts:["Frequency recording","Latency recording","Duration recording","Permanent product recording"],ans:2,
+exp_en:"Measuring HOW LONG a behavior lasts = Duration recording. 23 minutes out of seat is a duration measure.",
+exp_es:"Medir CUÁNTO DURA una conducta = Registro de duración. 23 minutos fuera del asiento es una medida de duración."},
+
+{id:118,domain:"A. Measurement",weight:17,
+en:"RBT Elena says 'It's time to clean up!' and starts a stopwatch. She stops it when 9-year-old Miguel begins putting toys away. She records 47 seconds. What did Elena measure?",
+es:"La RBT Elena dice '¡Hora de recoger!' y enciende un cronómetro. Lo detiene cuando Miguel (9 años) empieza a guardar juguetes. Registra 47 segundos. ¿Qué midió Elena?",
+opts:["Duration of the cleaning behavior","Latency — time from cue to start of behavior","Inter-response time","Rate of compliance"],ans:1,
+exp_en:"Latency = time from the SD (cue: 'time to clean up') to the ONSET of the behavior (Miguel starts putting toys away). 47 seconds is the latency.",
+exp_es:"Latencia = tiempo desde el ED ('hora de recoger') hasta el INICIO de la conducta (Miguel empieza a guardar juguetes). 47 segundos es la latencia."},
+
+{id:119,domain:"A. Measurement",weight:17,
+en:"At the end of a session, RBT Daniela counts the number of math worksheets that 10-year-old Luis completed. She never directly observed him doing the work. This is:",
+es:"Al final de la sesión, la RBT Daniela cuenta las hojas de matemáticas que Luis (10 años) completó. Nunca lo observó directamente haciendo el trabajo. Esto es:",
+opts:["Frequency recording","Momentary time sampling","Permanent product recording","Duration recording"],ans:2,
+exp_en:"Permanent product recording measures the lasting OUTCOME of behavior without direct observation. Counting completed worksheets is the classic example.",
+exp_es:"El registro de producto permanente mide el RESULTADO duradero de la conducta sin observación directa. Contar hojas completadas es el ejemplo clásico."},
+
+{id:120,domain:"A. Measurement",weight:17,
+en:"RBT Rosa and RBT Pablo both observe 4-year-old Mia during the same session. Rosa records 12 instances of hitting; Pablo records 11. Their IOA is approximately:",
+es:"La RBT Rosa y el RBT Pablo observan a Mia (4 años) en la misma sesión. Rosa registra 12 golpes; Pablo registra 11. Su IOA es aproximadamente:",
+opts:["55%","75%","92%","100%"],ans:2,
+exp_en:"IOA (frequency method) = smaller count ÷ larger count × 100. (11 ÷ 12) × 100 = 91.7% ≈ 92%. Above 80% is generally acceptable.",
+exp_es:"IOA (método de frecuencia) = conteo menor ÷ conteo mayor × 100. (11 ÷ 12) × 100 = 91.7% ≈ 92%. Por encima del 80% es generalmente aceptable."},
+
+{id:121,domain:"B. Assessment",weight:11,
+en:"Before starting a session with 6-year-old Keanu, RBT Mia places 5 items on the table (a car, bubbles, a ball, Play-Doh, and a book) and removes each item Keanu selects. By the end, she has ranked his preferences. This is:",
+es:"Antes de la sesión con Keanu (6 años), la RBT Mia coloca 5 artículos en la mesa y retira cada uno que Keanu selecciona. Al final, tiene un ranking de preferencias. Esto es:",
+opts:["Free-operant preference assessment","Single-stimulus assessment","Paired-stimulus assessment","MSWO (Multiple Stimulus Without Replacement)"],ans:3,
+exp_en:"Multiple items presented as an array, with chosen items REMOVED = MSWO. The items are not replaced, creating a preference hierarchy.",
+exp_es:"Múltiples artículos en variedad, con artículos elegidos RETIRADOS = MSWO. Los artículos no se reemplazan, creando una jerarquía de preferencias."},
+
+{id:122,domain:"B. Assessment",weight:11,
+en:"RBT Nico observes 7-year-old Pao in the classroom for 30 minutes without interfering. He notes she spends 18 minutes with the iPad, 7 minutes with LEGOs, and 5 minutes with crayons. This is a:",
+es:"El RBT Nico observa a Pao (7 años) en el salón por 30 minutos sin interferir. Nota que pasa 18 min con el iPad, 7 min con LEGOs y 5 min con crayones. Esto es una:",
+opts:["Paired-stimulus preference assessment","MSWO assessment","Free-operant preference assessment","Single-stimulus assessment"],ans:2,
+exp_en:"Free-operant assessment = observing which items the client NATURALLY approaches in their environment without the therapist controlling access. No structured trials.",
+exp_es:"Evaluación de operante libre = observar qué artículos el cliente se acerca NATURALMENTE en su entorno sin que el terapeuta controle el acceso. Sin ensayos estructurados."},
+
+{id:123,domain:"B. Assessment",weight:11,
+en:"The ABC data from a week of sessions shows: Every time the teacher gives 5-year-old Marco a math worksheet (A), he throws it on the floor (B), and the teacher removes the task and redirects him (C). What function does Marco's behavior likely serve?",
+es:"Los datos ABC muestran: Cada vez que la maestra da a Marco (5 años) una hoja de matemáticas (A), él la tira al suelo (B), y la maestra retira la tarea (C). ¿Qué función sirve probablemente la conducta de Marco?",
+opts:["Attention","Access to tangibles","Automatic/sensory","Escape/avoidance"],ans:3,
+exp_en:"The consequence is TASK REMOVAL — Marco successfully escapes the math worksheet. This pattern strongly suggests escape-maintained behavior.",
+exp_es:"La consecuencia es RETIRAR LA TAREA — Marco escapa exitosamente de la hoja de matemáticas. Este patrón sugiere fuertemente conducta mantenida por escape."},
+
+{id:124,domain:"B. Assessment",weight:11,
+en:"RBT Ana has just completed a preference assessment showing that 8-year-old Leo highly prefers YouTube videos. She gives him YouTube access after every correct response. After 2 weeks, Leo's correct responses DECREASE. What can Ana conclude?",
+es:"La RBT Ana completó una evaluación de preferencia: Leo (8 años) prefiere mucho los videos de YouTube. Le da acceso después de cada respuesta correcta. Después de 2 semanas, las respuestas correctas de Leo DISMINUYEN. ¿Qué puede concluir Ana?",
+opts:["YouTube is a reinforcer for Leo","YouTube is a punisher for Leo","YouTube is a preferred stimulus but NOT functioning as a reinforcer","The preference assessment was done incorrectly"],ans:2,
+exp_en:"Preference ≠ reinforcer. A reinforcer INCREASES behavior. Since correct responses DECREASED, YouTube is NOT functioning as a reinforcer for Leo's responding.",
+exp_es:"Preferencia ≠ reforzador. Un reforzador AUMENTA la conducta. Como las respuestas correctas DISMINUYERON, YouTube NO está funcionando como reforzador para Leo."},
+
+{id:125,domain:"B. Assessment",weight:11,
+en:"During an ABC recording, RBT Carlos notes: 'Teacher leaves the room (A) → Sofia starts humming and rocking (B) → teacher does not return, behavior continues (C).' The likely function is:",
+es:"Durante un registro ABC, el RBT Carlos nota: 'Maestra sale del salón (A) → Sofía empieza a tararear y mecerse (B) → la maestra no regresa, la conducta continúa (C).' La función probable es:",
+opts:["Attention","Escape","Access to tangibles","Automatic/sensory"],ans:3,
+exp_en:"The behavior continues without any social consequence — no one provides attention, nothing is removed or given. This suggests automatic (sensory) reinforcement.",
+exp_es:"La conducta continúa sin consecuencia social — nadie presta atención, nada se retira o entrega. Esto sugiere reforzamiento automático (sensorial)."},
+
+{id:126,domain:"C. Skill Acquisition",weight:25,
+en:"RBT Valeria is teaching 5-year-old Noah to wash his hands. She physically guides him through all 12 steps on trial 1. On trial 2, she only guides from step 2 onward. On trial 3, from step 3. Each session she starts one step later. This is:",
+es:"La RBT Valeria enseña a Noah (5 años) a lavarse las manos. Lo guía físicamente en todos los pasos en el ensayo 1. En el ensayo 2, solo desde el paso 2. En el ensayo 3, desde el paso 3. Esto es:",
+opts:["Forward chaining with most-to-least prompting","Backward chaining","Total task presentation","Forward chaining — teaching step 1 first, then adding steps"],ans:3,
+exp_en:"Forward chaining: teach STEP 1 first (Noah does step 1 independently), then step 2 is added, etc. The chain is built from beginning to end.",
+exp_es:"Encadenamiento hacia adelante: enseñar el PASO 1 primero (Noah hace el paso 1 independientemente), luego se agrega el paso 2, etc. La cadena se construye de inicio a fin."},
+
+{id:127,domain:"C. Skill Acquisition",weight:25,
+en:"RBT Diego teaches 4-year-old Lily to put on her shoes. He completes steps 1-5 for her, then teaches her ONLY step 6 (tying the bow) until she masters it. Then he teaches steps 1-5 on her own. This is:",
+es:"El RBT Diego enseña a Lily (4 años) a ponerse los zapatos. Él completa los pasos 1-5 por ella y enseña SOLO el paso 6 (el lazo). Una vez dominado, enseña los pasos anteriores. Esto es:",
+opts:["Forward chaining","Total task presentation","Backward chaining — teaching the last step first","Most-to-least prompting"],ans:2,
+exp_en:"Backward chaining: teach the LAST step first. Lily always finishes the chain (tying the bow) and receives natural reinforcement — she's wearing her shoes!",
+exp_es:"Encadenamiento hacia atrás: enseñar el ÚLTIMO paso primero. Lily siempre termina la cadena (el lazo) y recibe reforzamiento natural — ¡tiene sus zapatos puestos!"},
+
+{id:128,domain:"C. Skill Acquisition",weight:25,
+en:"RBT Carmen is teaching 6-year-old Ben to say 'cookie.' She first reinforces 'cuh,' then only 'coo,' then 'coo-ki,' and finally only the full word 'cookie.' This procedure is:",
+es:"La RBT Carmen enseña a Ben (6 años) a decir 'galleta'. Primero refuerza 'ga', luego 'gall', luego 'galle', y finalmente solo 'galleta' completa. Este procedimiento es:",
+opts:["Chaining","Errorless learning","Shaping — reinforcing successive approximations","Time delay prompting"],ans:2,
+exp_en:"Shaping reinforces behaviors progressively CLOSER to the target. Each closer approximation ('cuh' → 'coo' → 'cookie') is reinforced; previous steps go on extinction.",
+exp_es:"El moldeamiento refuerza conductas progresivamente MÁS CERCANAS al objetivo. Cada aproximación más cercana se refuerza; los pasos anteriores se extinguen."},
+
+{id:129,domain:"C. Skill Acquisition",weight:25,
+en:"RBT Kim says 'touch red' and immediately uses a physical prompt to guide 3-year-old Sam's hand to the red card before any error can occur. This approach is called:",
+es:"La RBT Kim dice 'toca rojo' e inmediatamente usa una ayuda física para guiar la mano de Sam (3 años) a la tarjeta roja antes de que ocurra cualquier error. Este enfoque se llama:",
+opts:["Least-to-most prompting","Time delay","Errorless learning using most-to-least prompting","Natural environment teaching"],ans:2,
+exp_en:"Errorless learning = providing immediate, intensive prompting (MTL) to PREVENT errors. The goal is that Sam never makes an incorrect response during learning.",
+exp_es:"Aprendizaje sin error = proporcionar ayuda inmediata e intensiva (MTL) para PREVENIR errores. El objetivo es que Sam nunca dé una respuesta incorrecta durante el aprendizaje."},
+
+{id:130,domain:"C. Skill Acquisition",weight:25,
+en:"RBT Tara says 'What is this?' showing a picture of a dog to 5-year-old Jake. She waits 3 seconds. If Jake doesn't respond, she says 'dog' and waits for him to echo it. This is:",
+es:"La RBT Tara dice '¿Qué es esto?' mostrando un perro a Jake (5 años). Espera 3 segundos. Si Jake no responde, dice 'perro' y espera que él lo repita. Esto es:",
+opts:["Errorless learning","Most-to-least prompting","Time delay prompting — inserting a wait time before providing the prompt","Least-to-most prompting"],ans:2,
+exp_en:"Time delay = inserting a wait period (3 seconds) between the SD and the prompt. This gives Jake the opportunity to respond independently first.",
+exp_es:"Demora de tiempo = insertar un período de espera (3 segundos) entre el ED y la ayuda. Esto da a Jake la oportunidad de responder independientemente primero."},
+
+{id:131,domain:"C. Skill Acquisition",weight:25,
+en:"5-year-old Maya has learned to label a cup at the table during DTT sessions. Her RBT now practices this skill during snack time, at the park, and in the car with different cups. The RBT is working on:",
+es:"Maya (5 años) aprendió a etiquetar una taza en DTT. Su RBT ahora practica esto durante la merienda, en el parque y en el carro con tazas diferentes. El RBT está trabajando en:",
+opts:["Maintenance","Discrimination training","Generalization — extending the skill to new settings and materials","Errorless learning"],ans:2,
+exp_en:"Generalization training extends skills to untrained settings, people, and materials. Maya needs to label cups everywhere, not just at the therapy table.",
+exp_es:"El entrenamiento de generalización extiende las habilidades a entornos, personas y materiales no entrenados. Maya necesita etiquetar tazas en todas partes, no solo en la mesa de terapia."},
+
+{id:132,domain:"C. Skill Acquisition",weight:25,
+en:"During free play, 4-year-old Leo reaches for the bubbles and says 'buh!' His RBT immediately gives him the bubbles. 'Buh!' is an example of a:",
+es:"Durante el juego libre, Leo (4 años) alcanza los pompones y dice '¡buh!' Su RBT inmediatamente le da los pompones. '¡Buh!' es un ejemplo de un:",
+opts:["Tact — labeling the environment","Echoic — repeating what was heard","Mand — a request controlled by a motivating operation","Intraverbal — response to verbal behavior"],ans:2,
+exp_en:"A mand is a REQUEST controlled by a motivating operation (Leo WANTS bubbles). He gets what he asks for. This is the defining feature of a mand.",
+exp_es:"Un mando es una SOLICITUD controlada por una operación motivadora (Leo QUIERE pompones). Obtiene lo que pide. Esta es la característica definitoria del mando."},
+
+{id:133,domain:"C. Skill Acquisition",weight:25,
+en:"RBT Paul points to a tree during a walk and 6-year-old Emma says 'tree!' without being asked. This is an example of a:",
+es:"El RBT Paul señala un árbol durante un paseo y Emma (6 años) dice '¡árbol!' sin que se lo pidan. Esto es un ejemplo de un:",
+opts:["Mand","Echoic","Intraverbal","Tact — labeling something in the environment"],ans:3,
+exp_en:"A tact is a LABEL for something in the non-verbal environment. Emma sees the tree (non-verbal stimulus) and names it. No request, no repetition.",
+exp_es:"Un tacto es una ETIQUETA para algo en el entorno no verbal. Emma ve el árbol (estímulo no verbal) y lo nombra. Sin solicitar, sin repetir."},
+
+{id:134,domain:"C. Skill Acquisition",weight:25,
+en:"RBT Jen says 'What do you do when you're hungry?' and 7-year-old Tyler says 'I eat food.' Tyler's response is an example of:",
+es:"La RBT Jen dice '¿Qué haces cuando tienes hambre?' y Tyler (7 años) dice 'Como comida.' La respuesta de Tyler es un ejemplo de:",
+opts:["Mand","Tact","Echoic","Intraverbal — verbal response to prior verbal behavior"],ans:3,
+exp_en:"Intraverbal = verbal response to prior verbal behavior WITHOUT correspondence. 'Hungry' → 'I eat food' — Tyler doesn't see hunger, he responds to the question.",
+exp_es:"Intraverbal = respuesta verbal a conducta verbal previa SIN correspondencia. 'Hambre' → 'Como comida' — Tyler no ve el hambre, responde a la pregunta."},
+
+{id:135,domain:"C. Skill Acquisition",weight:25,
+en:"After 3 months of therapy, 5-year-old Kai mastered 'touching nose on command.' The BCBA stops daily practice. Three months later, the RBT checks: Kai still touches his nose correctly 9 out of 10 times. This check is called a:",
+es:"Después de 3 meses, Kai (5 años) dominó 'tocar la nariz al pedírselo'. El BCBA detiene la práctica diaria. Tres meses después, el RBT verifica: Kai toca su nariz correctamente 9 de 10 veces. Esta verificación se llama:",
+opts:["Generalization probe","Preference assessment","Maintenance probe — checking if skill is retained over time","Discrimination training"],ans:2,
+exp_en:"Maintenance probes check whether mastered skills are RETAINED after intensive training ends. Kai's 90% shows the skill has been maintained.",
+exp_es:"Las pruebas de mantenimiento verifican si las habilidades dominadas se RETIENEN después de que termina el entrenamiento intensivo. El 90% de Kai muestra que la habilidad se ha mantenido."},
+
+{id:136,domain:"C. Skill Acquisition",weight:25,
+en:"Before snack, RBT Maria notices that 5-year-old Zoe is reaching for her favorite crackers. Maria uses this moment to practice 'please' — Zoe says 'please' and immediately gets the crackers. This is an example of:",
+es:"Antes de la merienda, la RBT María nota que Zoe (5 años) alcanza sus galletas favoritas. María usa este momento para practicar 'por favor'. Zoe dice 'por favor' y obtiene las galletas. Esto es un ejemplo de:",
+opts:["Discrete trial teaching (DTT)","Natural environment teaching (NET) — using motivation to teach in context","Backward chaining","Errorless learning"],ans:1,
+exp_en:"NET embeds instruction in naturally occurring situations following the learner's motivation. Zoe WANTS crackers — that motivating operation makes learning 'please' meaningful.",
+exp_es:"La NET integra la instrucción en situaciones naturales siguiendo la motivación del aprendiz. Zoe QUIERE galletas — esa operación motivadora hace que aprender 'por favor' sea significativo."},
+
+{id:137,domain:"D. Behavior Reduction",weight:19,
+en:"6-year-old Alex hits the table whenever he's given a writing task. His RBT is instructed to keep the task in front of him and calmly redirect him back to work every time he hits, without removing the task. This is:",
+es:"Alex (6 años) golpea la mesa cuando le dan tareas de escritura. Su RBT tiene instrucciones de mantener la tarea frente a él y redirigirlo calmadamente cada vez que golpea, sin retirar la tarea. Esto es:",
+opts:["DRO","Attention extinction","Escape extinction — preventing escape from the task demand","Response cost"],ans:2,
+exp_en:"Escape extinction = NOT allowing escape from the aversive stimulus (writing task). The RBT keeps the demand in place. The behavior no longer 'works' to remove the task.",
+exp_es:"Extinción de escape = NO permitir el escape del estímulo aversivo (tarea de escritura). El RBT mantiene la demanda. La conducta ya no 'funciona' para retirar la tarea."},
+
+{id:138,domain:"D. Behavior Reduction",weight:19,
+en:"On day 1 of extinction, 5-year-old Emma's tantrum lasts 4 minutes. On day 2, it lasts 9 minutes and she also starts banging her head (new behavior). On day 3, tantrums drop to 2 minutes. What happened on day 2?",
+es:"El día 1 de extinción, la rabieta de Emma (5 años) dura 4 minutos. El día 2 dura 9 minutos y también empieza a golpearse la cabeza (conducta nueva). El día 3 baja a 2 minutos. ¿Qué ocurrió el día 2?",
+opts:["Spontaneous recovery","The extinction procedure failed","Extinction burst — temporary increase in behavior and response variation when extinction is first applied","The function of the behavior changed"],ans:2,
+exp_en:"Extinction burst = temporary INCREASE in frequency, intensity, or duration + possible new response forms. Day 2 is a classic extinction burst. Day 3 shows it's working.",
+exp_es:"Estallido de extinción = AUMENTO temporal en frecuencia, intensidad o duración + posibles nuevas formas de respuesta. El día 2 es un estallido clásico. El día 3 muestra que funciona."},
+
+{id:139,domain:"D. Behavior Reduction",weight:19,
+en:"After 3 weeks of extinction, 7-year-old Sam's tantrums had stopped. After a weekend break, Sam has a tantrum on Monday morning that looks just like his old ones. His RBT should:",
+es:"Después de 3 semanas de extinción, las rabietas de Sam (7 años) habían cesado. Después de un fin de semana, Sam tiene una rabieta el lunes que parece igual a las antiguas. Su RBT debe:",
+opts:["Conclude extinction failed and try a different approach","Provide attention to comfort Sam","Continue the extinction procedure — this is spontaneous recovery, which is temporary","Restart the behavior program from the beginning"],ans:2,
+exp_en:"Spontaneous recovery = brief reappearance of extinguished behavior after a break. It is EXPECTED and TEMPORARY. The RBT continues extinction — it will decrease again.",
+exp_es:"Recuperación espontánea = reaparición breve de la conducta extinguida después de un descanso. Es ESPERADA y TEMPORAL. El RBT continúa la extinción — disminuirá de nuevo."},
+
+{id:140,domain:"D. Behavior Reduction",weight:19,
+en:"4-year-old Mia screams to get her iPad (attention/tangible function). Her BCBA designs a plan: reinforce Mia with the iPad every 3 minutes on a timer, regardless of whether she screams or not. This is:",
+es:"Mia (4 años) grita para obtener su iPad (función tangible/atención). Su BCBA diseña un plan: reforzar a Mia con el iPad cada 3 minutos según un temporizador, independientemente de si grita o no. Esto es:",
+opts:["DRO","DRA","Non-contingent reinforcement (NCR) — time-based delivery","Response cost"],ans:2,
+exp_en:"NCR delivers reinforcement on a TIME SCHEDULE, independent of behavior. This saturates the MO — Mia no longer NEEDS to scream for iPad access.",
+exp_es:"El NCR entrega reforzamiento en un HORARIO DE TIEMPO, independiente de la conducta. Esto satura la OM — Mia ya no NECESITA gritar para acceder al iPad."},
+
+{id:141,domain:"D. Behavior Reduction",weight:19,
+en:"5-year-old Carlos screams to get his teacher's attention (attention-maintained). His BCBA designs a plan: teach Carlos to raise his hand, reinforce hand-raising with attention, and ignore screaming. This is:",
+es:"Carlos (5 años) grita para obtener la atención de su maestra (mantenido por atención). Su BCBA diseña un plan: enseñar a Carlos a levantar la mano, reforzar levantar la mano con atención, e ignorar los gritos. Esto es:",
+opts:["DRO — reinforcing absence of behavior","DRI — reinforcing incompatible behavior","DRA — reinforcing an alternative behavior with the same function","NCR"],ans:2,
+exp_en:"DRA: raising hand serves the SAME FUNCTION as screaming (gets attention) but is socially appropriate. Screaming is placed on extinction simultaneously.",
+exp_es:"DRA: levantar la mano sirve la MISMA FUNCIÓN que gritar (obtiene atención) pero es socialmente apropiado. Los gritos se ponen en extinción simultáneamente."},
+
+{id:142,domain:"D. Behavior Reduction",weight:19,
+en:"6-year-old Lily hits others during circle time. Her BCBA implements DRI: reinforce Lily for keeping her hands in her lap (incompatible with hitting). Why is 'hands in lap' considered incompatible?",
+es:"Lily (6 años) golpea a otros durante el círculo. Su BCBA implementa DRI: reforzar a Lily por tener las manos en el regazo (incompatible con golpear). ¿Por qué 'manos en el regazo' es incompatible?",
+opts:["Because it occurs less frequently than hitting","Because it is a more appropriate behavior","Because it is physically IMPOSSIBLE to hit someone while keeping hands in lap","Because the BCBA prefers it"],ans:2,
+exp_en:"Incompatible = physically IMPOSSIBLE to do simultaneously. You cannot have hands in your lap AND hit someone at the same time. This is the defining feature of DRI.",
+exp_es:"Incompatible = físicamente IMPOSIBLE de hacer simultáneamente. No puedes tener las manos en el regazo Y golpear a alguien al mismo tiempo. Esta es la característica definitoria del DRI."},
+
+{id:143,domain:"D. Behavior Reduction",weight:19,
+en:"7-year-old Max is on a DRO-5 minute program for hitting. If Max does NOT hit for 5 minutes, he earns a token. Today at minute 4:30, Max hits. The RBT should:",
+es:"Max (7 años) está en un programa DRO-5 minutos para golpear. Si Max NO golpea por 5 minutos, gana una ficha. Hoy al minuto 4:30, Max golpea. El RBT debe:",
+opts:["Give Max a token anyway since he was close","Reset the 5-minute timer — no reinforcement is delivered","Give a half token for partial success","End the session"],ans:1,
+exp_en:"DRO: reinforcement is delivered ONLY if the target behavior did NOT occur during the entire interval. The hit at 4:30 means the interval is reset with no reinforcement.",
+exp_es:"DRO: el reforzamiento se entrega SOLO si la conducta objetivo NO ocurrió durante todo el intervalo. El golpe a las 4:30 significa que el intervalo se reinicia sin reforzamiento."},
+
+{id:144,domain:"D. Behavior Reduction",weight:19,
+en:"During extinction for attention-maintained screaming, 5-year-old Eva's screaming increases dramatically and she also starts throwing toys. Her RBT is concerned and wants to give attention to stop the throwing. The RBT should:",
+es:"Durante la extinción para gritos mantenidos por atención, los gritos de Eva (5 años) aumentan dramáticamente y también empieza a tirar juguetes. Su RBT quiere dar atención para detener el lanzamiento. El RBT debe:",
+opts:["Give attention immediately to ensure safety","Consult the BCBA about adding a safety protocol — do NOT provide attention for screaming","Stop extinction and try a different approach","Ignore both behaviors permanently"],ans:1,
+exp_en:"Extinction bursts with property destruction require BCBA guidance. The RBT should consult the BCBA — providing attention would reinforce BOTH screaming AND throwing.",
+exp_es:"Los estallidos de extinción con destrucción de propiedad requieren orientación del BCBA. El RBT debe consultar al BCBA — dar atención reforzaría TANTO los gritos COMO el lanzamiento."},
+
+{id:145,domain:"E. Documentation",weight:13,
+en:"After a session, RBT Sofia writes: 'Client was very aggressive and upset today, clearly frustrated with the tasks.' Her supervisor asks her to rewrite it. The BEST rewrite is:",
+es:"Después de una sesión, la RBT Sofía escribe: 'El cliente estaba muy agresivo y molesto hoy, claramente frustrado con las tareas.' Su supervisora le pide reescribirlo. La MEJOR reescritura es:",
+opts:["Client seemed really frustrated and aggressive","Client hit the table 4 times with an open hand and pushed materials off the desk twice during math tasks","Client had a really bad day with lots of behavior problems","Client's behavior was at its worst level this week"],ans:1,
+exp_en:"Session notes must be OBSERVABLE and MEASURABLE. '4 times with open hand' and 'pushed materials twice' describe exactly what was seen — no interpretation.",
+exp_es:"Las notas de sesión deben ser OBSERVABLES y MEDIBLES. '4 veces con la mano abierta' y 'empujó materiales dos veces' describen exactamente lo que se vio — sin interpretación."},
+
+{id:146,domain:"E. Documentation",weight:13,
+en:"While working at a coffee shop after a session, RBT Marco tells a friend: 'I had the hardest client today — this kid named Tyler who has autism and keeps hitting everyone.' This is:",
+es:"Trabajando en una cafetería después de la sesión, el RBT Marco le dice a un amigo: 'Tuve el cliente más difícil hoy — un niño llamado Tyler que tiene autismo y sigue golpeando a todos.' Esto es:",
+opts:["Acceptable if Marco keeps it general","A minor boundary crossing but not serious","A HIPAA violation — sharing PHI (name, diagnosis, behavior) in a public place with an unauthorized person","Fine as long as the friend doesn't know the family"],ans:2,
+exp_en:"Marco shared the client's NAME, DIAGNOSIS, and BEHAVIOR in a public place with someone unauthorized. This is a clear HIPAA violation of Protected Health Information.",
+exp_es:"Marco compartió el NOMBRE, DIAGNÓSTICO y CONDUCTA del cliente en un lugar público con alguien no autorizado. Esta es una clara violación de HIPAA de Información de Salud Protegida."},
+
+{id:147,domain:"E. Documentation",weight:13,
+en:"During a session, 6-year-old Ava falls and gets a cut on her knee requiring a bandage. After managing the situation, RBT Julia's NEXT step is:",
+es:"Durante una sesión, Ava (6 años) se cae y se corta la rodilla, necesitando una venda. Después de manejar la situación, el SIGUIENTE paso de la RBT Julia es:",
+opts:["Continue the session as planned","Document the incident in the session note only","Complete an incident report following agency protocol and notify the supervisor","Call the parents and keep it between them"],ans:2,
+exp_en:"Any safety-related event requires an INCIDENT REPORT per agency protocol AND supervisor notification. This goes beyond the routine session note.",
+exp_es:"Cualquier evento relacionado con seguridad requiere un REPORTE DE INCIDENTE según el protocolo de la agencia Y notificación al supervisor. Esto va más allá de la nota de sesión rutinaria."},
+
+{id:148,domain:"E. Documentation",weight:13,
+en:"RBT David makes an error in his paper session note — he wrote '12 trials' but it should be '21 trials.' The CORRECT way to fix this is:",
+es:"El RBT David comete un error en su nota de sesión en papel — escribió '12 ensayos' pero debería ser '21 ensayos.' La forma CORRECTA de corregirlo es:",
+opts:["Use whiteout and write the correct number","Tear out the page and rewrite the note","Draw a single line through '12', write '21' next to it, and initial and date the correction","Cross it out heavily so it cannot be read"],ans:2,
+exp_en:"Proper correction: single line through the error (keep it readable), write correction next to it, initial and date. NEVER use whiteout — it implies falsification.",
+exp_es:"Corrección correcta: una sola línea sobre el error (mantenerlo legible), escribir la corrección junto a él, iniciales y fecha. NUNCA usar corrector — implica falsificación."},
+
+{id:149,domain:"F. Ethics",weight:15,
+en:"The parent of 8-year-old Ryan asks RBT Tina to stop doing the 'boring handwashing program' and just play games instead during sessions. Tina should:",
+es:"El padre de Ryan (8 años) pide a la RBT Tina que deje el 'aburrido programa de lavado de manos' y solo juegue juegos durante las sesiones. Tina debe:",
+opts:["Stop the handwashing program — parents have authority over therapy","Alternate between handwashing and games each session","Politely decline and let the BCBA know about the parent's request — only BCBAs modify programs","Modify the program slightly to make it more fun"],ans:2,
+exp_en:"RBTs implement BCBA-approved programs ONLY. Any modification request from parents must go to the BCBA. Tina cannot change the program regardless of who asks.",
+exp_es:"Los RBTs implementan SOLO programas aprobados por el BCBA. Cualquier solicitud de modificación de los padres debe ir al BCBA. Tina no puede cambiar el programa independientemente de quién lo pida."},
+
+{id:150,domain:"F. Ethics",weight:15,
+en:"The mother of 7-year-old Maya invites RBT Carlos to Maya's birthday party next weekend and says 'You're part of our family!' Carlos should:",
+es:"La madre de Maya (7 años) invita al RBT Carlos a la fiesta de cumpleaños de Maya y dice '¡Eres parte de nuestra familia!' Carlos debe:",
+opts:["Accept — it would hurt the family's feelings to decline","Accept only if he doesn't stay long","Politely decline and consult his supervisor — attending would create a dual relationship","Accept since it's a child's birthday party and clearly not romantic"],ans:2,
+exp_en:"Attending a client's family events creates a DUAL RELATIONSHIP (professional + personal). Even well-intentioned social contact blurs professional boundaries and must be avoided.",
+exp_es:"Asistir a eventos de la familia del cliente crea una RELACIÓN DUAL (profesional + personal). Incluso el contacto social bien intencionado difumina los límites profesionales y debe evitarse."},
+
+{id:151,domain:"F. Ethics",weight:15,
+en:"While reviewing a session video, RBT Donna notices her colleague RBT Rick is implementing a behavior program completely differently than written — skipping steps and adding his own prompts. Donna should:",
+es:"Al revisar un video de sesión, la RBT Donna nota que su colega el RBT Rick implementa un programa de conducta completamente diferente al escrito — saltando pasos y agregando sus propias ayudas. Donna debe:",
+opts:["Talk to Rick directly and tell him to fix it","Post about it anonymously in a staff group chat","Report her observation to the supervising BCBA","Ignore it — it's not her responsibility"],ans:2,
+exp_en:"RBTs report ethical/procedural concerns to their BCBA supervisor — not directly to colleagues, not anonymously. The BCBA is responsible for investigating and correcting the issue.",
+exp_es:"Los RBTs reportan preocupaciones éticas/procedimentales a su supervisor BCBA — no directamente a colegas, no anónimamente. El BCBA es responsable de investigar y corregir el problema."},
+
+{id:152,domain:"F. Ethics",weight:15,
+en:"During a home session, 9-year-old Noah tells RBT Lisa that his uncle 'hits him a lot when he's bad' and shows her a bruise on his arm. Lisa should:",
+es:"Durante una sesión en casa, Noah (9 años) le dice a la RBT Lisa que su tío 'lo golpea mucho cuando se porta mal' y le muestra un moretón en el brazo. Lisa debe:",
+opts:["Talk to the uncle directly before involving anyone else","Tell the BCBA and let the BCBA decide whether to report","Report the suspected abuse to the appropriate authorities — RBTs are mandated reporters","Wait to gather more evidence before reporting"],ans:2,
+exp_en:"RBTs are MANDATED REPORTERS. They are LEGALLY REQUIRED to report suspected abuse to authorities — NOT to wait, NOT to investigate, NOT to ask the BCBA for permission first.",
+exp_es:"Los RBTs son REPORTEROS MANDADOS. Están LEGALMENTE OBLIGADOS a reportar sospecha de abuso a las autoridades — NO esperar, NO investigar, NO pedir permiso al BCBA primero."},
+
+{id:153,domain:"F. Ethics",weight:15,
+en:"RBT Maya has been working with 5-year-old Leo for 2 years. Leo's family offers Maya a $200 gift card at the holidays as a thank-you. Maya should:",
+es:"La RBT Maya ha trabajado con Leo (5 años) por 2 años. La familia de Leo le ofrece una tarjeta de regalo de $200 en las fiestas como agradecimiento. Maya debe:",
+opts:["Accept it — she has earned it after 2 years","Accept only if she gives something back of equal value","Consult her agency's gift policy and the BCBA before accepting or declining","Accept since it is a holiday gift, not a business transaction"],ans:2,
+exp_en:"Gift receiving can create dual relationship issues and conflicts of interest. RBTs must follow their AGENCY'S GIFT POLICY and consult the BCBA. Never accept without guidance.",
+exp_es:"Recibir regalos puede crear problemas de relación dual y conflictos de interés. Los RBTs deben seguir la POLÍTICA DE REGALOS DE LA AGENCIA y consultar al BCBA. Nunca aceptar sin orientación."}
+
+,
+{id:154,domain:"A. Measurement",weight:17,
+en:"Look at this graph description: Baseline phase (sessions 1-5): data points at 12, 14, 11, 13, 12 hits per session. Intervention phase (sessions 6-10): data points at 8, 5, 3, 2, 1 hit per session. What does this graph show?",
+es:"Descripción de gráfica: Fase de línea base (sesiones 1-5): puntos en 12, 14, 11, 13, 12 golpes. Fase de intervención (sesiones 6-10): puntos en 8, 5, 3, 2, 1 golpe. ¿Qué muestra esta gráfica?",
+opts:["Behavior is increasing in both phases","Baseline is stable; intervention shows a decreasing trend — the treatment appears to be working","Behavior is highly variable with no clear trend","The intervention has no effect"],ans:1,
+exp_en:"Baseline: stable around 12-13 (flat trend). Intervention: clear DECREASING trend from 8 to 1. The phase change line separates the two conditions. This is a treatment effect.",
+exp_es:"Línea base: estable alrededor de 12-13 (tendencia plana). Intervención: tendencia DESCENDENTE clara de 8 a 1. La línea de cambio de fase separa las dos condiciones. Este es un efecto del tratamiento."},
+
+{id:155,domain:"A. Measurement",weight:17,
+en:"On a standard ABA line graph, what does the VERTICAL line drawn between two phases represent?",
+es:"En una gráfica de línea estándar de ABA, ¿qué representa la línea VERTICAL dibujada entre dos fases?",
+opts:["A data point where behavior was zero","A phase change line — it separates different conditions (e.g., baseline from intervention)","The average of the data","An error in data collection"],ans:1,
+exp_en:"Phase change lines (vertical lines) separate different experimental conditions on a graph. Everything to the LEFT is one condition; everything to the RIGHT is another.",
+exp_es:"Las líneas de cambio de fase (líneas verticales) separan diferentes condiciones experimentales en una gráfica. Todo a la IZQUIERDA es una condición; todo a la DERECHA es otra."},
+
+{id:156,domain:"A. Measurement",weight:17,
+en:"RBT Ana's graph shows these data points across 8 sessions: 2, 8, 1, 9, 3, 7, 2, 8. How would you describe this data pattern?",
+es:"La gráfica de la RBT Ana muestra estos puntos en 8 sesiones: 2, 8, 1, 9, 3, 7, 2, 8. ¿Cómo describirías este patrón de datos?",
+opts:["Increasing trend","Decreasing trend","Stable and flat","Highly variable — no clear trend"],ans:3,
+exp_en:"Variable data jumps up and down without a consistent direction. 2→8→1→9→3→7 shows NO stable trend. High variability makes it hard to evaluate treatment effectiveness.",
+exp_es:"Los datos variables suben y bajan sin dirección consistente. 2→8→1→9→3→7 no muestra tendencia estable. Alta variabilidad dificulta evaluar la efectividad del tratamiento."},
+
+{id:157,domain:"A. Measurement",weight:17,
+en:"In a graph of 6-year-old Marco's hitting behavior, the baseline shows an INCREASING trend (5, 7, 9, 11). Before starting intervention, what should the BCBA consider?",
+es:"En una gráfica de los golpes de Marco (6 años), la línea base muestra tendencia ASCENDENTE (5, 7, 9, 11). Antes de iniciar la intervención, ¿qué debe considerar el BCBA?",
+opts:["Start intervention immediately since the behavior is bad","The increasing trend means the behavior is worsening — intervention is urgent AND the baseline trend must be noted when evaluating treatment effects","Collect more baseline until the trend reverses","The data collection method must be wrong"],ans:1,
+exp_en:"An increasing baseline trend means behavior is getting worse. The BCBA notes this because any decrease in intervention must be evaluated against this upward trajectory.",
+exp_es:"Una tendencia ascendente en la línea base significa que la conducta empeora. El BCBA lo nota porque cualquier disminución en la intervención debe evaluarse contra esta trayectoria ascendente."},
+
+{id:158,domain:"A. Measurement",weight:17,
+en:"A cumulative record shows these totals across sessions: 5, 12, 18, 24, 30, 30, 30. What happened in sessions 5-7?",
+es:"Un registro acumulativo muestra estos totales: 5, 12, 18, 24, 30, 30, 30. ¿Qué ocurrió en las sesiones 5-7?",
+opts:["Behavior increased dramatically","Behavior decreased","The behavior did NOT occur in sessions 5, 6, and 7 — the cumulative line went flat","The data was not collected"],ans:2,
+exp_en:"In a cumulative record, a FLAT LINE means ZERO responses occurred. The total stayed at 30 for sessions 5, 6, 7 — no new responses were added. Flat = no behavior.",
+exp_es:"En un registro acumulativo, una LÍNEA PLANA significa CERO respuestas. El total se mantuvo en 30 para las sesiones 5, 6, 7 — no se agregaron nuevas respuestas. Plana = sin conducta."},
+
+{id:159,domain:"A. Measurement",weight:17,
+en:"RBT Rosa and RBT Pablo both observe 4-year-old Mia for a 20-minute session using 10-second intervals (120 intervals total). Rosa scored 36 intervals with behavior; Pablo scored 30. What is their IOA?",
+es:"La RBT Rosa y el RBT Pablo observan a Mia (4 años) por 20 minutos usando intervalos de 10 segundos (120 intervalos totales). Rosa marcó 36 intervalos con conducta; Pablo marcó 30. ¿Cuál es su IOA?",
+opts:["55%","72%","83%","90%"],ans:2,
+exp_en:"IOA (frequency method) = smaller ÷ larger × 100. (30 ÷ 36) × 100 = 83.3% ≈ 83%. This is above the 80% minimum threshold — acceptable reliability.",
+exp_es:"IOA (método de frecuencia) = menor ÷ mayor × 100. (30 ÷ 36) × 100 = 83.3% ≈ 83%. Está por encima del umbral mínimo del 80% — confiabilidad aceptable."},
+
+{id:160,domain:"A. Measurement",weight:17,
+en:"Two RBTs collect IOA data and get 62%. The BCBA is concerned. What does low IOA (below 80%) most likely indicate?",
+es:"Dos RBTs recopilan datos de IOA y obtienen 62%. El BCBA está preocupado. ¿Qué indica más probablemente un IOA bajo (menos del 80%)?",
+opts:["The behavior is very severe","The behavior is occurring too fast to count","The behavior definition is unclear OR the observers need retraining","The session was too long"],ans:2,
+exp_en:"Low IOA = the two observers are not seeing/recording the behavior consistently. This signals an UNCLEAR BEHAVIOR DEFINITION or need for RETRAINING — the data is unreliable.",
+exp_es:"IOA bajo = los dos observadores no ven/registran la conducta de manera consistente. Esto señala una DEFINICIÓN DE CONDUCTA POCO CLARA o necesidad de REENTRENAMIENTO — los datos no son confiables."},
+
+{id:161,domain:"A. Measurement",weight:17,
+en:"A graph of 5-year-old Zoe's on-task behavior shows: Baseline: 20%, 22%, 19%, 21%. Intervention Week 1: 35%, 42%, 48%. Intervention Week 2: 55%, 61%, 70%. What is the LEVEL change from baseline to intervention?",
+es:"Una gráfica de la conducta en tarea de Zoe (5 años): Línea base: 20%, 22%, 19%, 21%. Semana 1: 35%, 42%, 48%. Semana 2: 55%, 61%, 70%. ¿Cuál es el cambio de NIVEL de línea base a intervención?",
+opts:["The level decreased","There was no level change","The level increased — on-task behavior is clearly higher in intervention than baseline","Level changes cannot be seen without a graph"],ans:2,
+exp_en:"Level = the overall value of the data. Baseline averages ~20%; Intervention reaches 35-70%. The LEVEL INCREASED when intervention started. This is a positive behavior change.",
+exp_es:"Nivel = el valor general de los datos. La línea base promedia ~20%; la intervención alcanza 35-70%. El NIVEL AUMENTÓ cuando comenzó la intervención. Este es un cambio conductual positivo."},
+
+{id:162,domain:"A. Measurement",weight:17,
+en:"When graphing ABA data, the X-axis (horizontal) represents _______ and the Y-axis (vertical) represents _______.",
+es:"Al graficar datos de ABA, el eje X (horizontal) representa _______ y el eje Y (vertical) representa _______.",
+opts:["Behavior measure / Sessions or time","Sessions or time / Behavior measure","The observer / The behavior","The phase / The intervention"],ans:1,
+exp_en:"Standard ABA graph: X-axis = sessions/time (independent variable); Y-axis = behavior measurement (dependent variable). This is universal across all ABA graphs.",
+exp_es:"Gráfica estándar de ABA: Eje X = sesiones/tiempo (variable independiente); Eje Y = medición de conducta (variable dependiente). Esto es universal en todas las gráficas de ABA."},
+
+{id:163,domain:"A. Measurement",weight:17,
+en:"An RBT is looking at a graph and notices that all data points in the intervention phase are BELOW all data points in the baseline phase, with no overlap. This suggests:",
+es:"Un RBT observa una gráfica y nota que todos los puntos de datos en la fase de intervención están POR DEBAJO de todos los puntos de la línea base, sin superposición. Esto sugiere:",
+opts:["The intervention had no effect","The behavior increased during intervention","A strong treatment effect — the intervention clearly changed behavior levels","The baseline was collected incorrectly"],ans:2,
+exp_en:"No overlap between baseline and intervention data = a STRONG treatment effect. The behavior clearly changed when the intervention was introduced. More overlap = weaker effect.",
+exp_es:"Sin superposición entre datos de línea base e intervención = FUERTE efecto del tratamiento. La conducta claramente cambió cuando se introdujo la intervención. Más superposición = efecto más débil."}
 ];
 
 // ============================================================
