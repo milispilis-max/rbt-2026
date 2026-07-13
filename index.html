@@ -384,247 +384,6 @@ input { font-size: 16px !important; } /* prevents iOS zoom */
   </div>
 </div>
 
-
-<!-- GRAFICAS -->
-<div id="tab-graficas" class="tab-section">
-  <div class="container">
-  <p class="st">Interpretación de Gráficas / Graph Interpretation</p>
-  
-  <!-- Graph 1: Baseline vs Intervention -->
-  <div class="card" style="margin-bottom:10px">
-    <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px">Gráfica 1: Línea Base vs. Intervención / Baseline vs. Intervention</div>
-    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Conducta: Golpes por sesión · Behavior: Hits per session</div>
-    <canvas id="graph1" width="100%" height="200" style="width:100%;max-height:200px"></canvas>
-    <div style="margin-top:10px">
-      <p style="font-size:12px;font-weight:600;color:var(--dark);margin-bottom:6px">¿Qué ves en esta gráfica? / What do you see in this graph?</p>
-      <div style="display:flex;flex-direction:column;gap:6px" id="g1-opts">
-        <button class="opt" onclick="checkGraph(1,0)">A. La conducta está aumentando en ambas fases / Behavior is increasing in both phases</button>
-        <button class="opt" onclick="checkGraph(1,1)">B. Línea base estable; intervención muestra tendencia descendente / Stable baseline; intervention shows decreasing trend ✓</button>
-        <button class="opt" onclick="checkGraph(1,2)">C. Los datos son muy variables sin tendencia clara / Data is highly variable with no clear trend</button>
-        <button class="opt" onclick="checkGraph(1,3)">D. La intervención no tuvo efecto / The intervention had no effect</button>
-      </div>
-      <div id="g1-fb" style="display:none;margin-top:8px;padding:10px;background:#f0f4ff;border-left:3px solid var(--dark);border-radius:6px;font-size:12px;line-height:1.5"></div>
-    </div>
-  </div>
-
-  <!-- Graph 2: Variable data -->
-  <div class="card" style="margin-bottom:10px">
-    <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px">Gráfica 2: Datos Variables / Variable Data</div>
-    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Conducta: Rabietas por sesión · Behavior: Tantrums per session</div>
-    <canvas id="graph2" width="100%" height="200" style="width:100%;max-height:200px"></canvas>
-    <div style="margin-top:10px">
-      <p style="font-size:12px;font-weight:600;color:var(--dark);margin-bottom:6px">¿Cuál es el problema con estos datos? / What is the problem with this data?</p>
-      <div style="display:flex;flex-direction:column;gap:6px" id="g2-opts">
-        <button class="opt" onclick="checkGraph(2,0)">A. La tendencia es claramente descendente / The trend is clearly decreasing</button>
-        <button class="opt" onclick="checkGraph(2,1)">B. Los datos son estables y predecibles / The data is stable and predictable</button>
-        <button class="opt" onclick="checkGraph(2,2)">C. Alta variabilidad — difícil evaluar el efecto del tratamiento / High variability — hard to evaluate treatment effect ✓</button>
-        <button class="opt" onclick="checkGraph(2,3)">D. El registro de datos es incorrecto / Data recording is incorrect</button>
-      </div>
-      <div id="g2-fb" style="display:none;margin-top:8px;padding:10px;background:#f0f4ff;border-left:3px solid var(--dark);border-radius:6px;font-size:12px;line-height:1.5"></div>
-    </div>
-  </div>
-
-  <!-- Graph 3: Cumulative -->
-  <div class="card" style="margin-bottom:10px">
-    <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px">Gráfica 3: Registro Acumulativo / Cumulative Record</div>
-    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Respuestas correctas acumuladas · Cumulative correct responses</div>
-    <canvas id="graph3" width="100%" height="200" style="width:100%;max-height:200px"></canvas>
-    <div style="margin-top:10px">
-      <p style="font-size:12px;font-weight:600;color:var(--dark);margin-bottom:6px">¿Qué indica la línea plana en las sesiones 6-8? / What does the flat line in sessions 6-8 indicate?</p>
-      <div style="display:flex;flex-direction:column;gap:6px" id="g3-opts">
-        <button class="opt" onclick="checkGraph(3,0)">A. La conducta aumentó / Behavior increased</button>
-        <button class="opt" onclick="checkGraph(3,1)">B. La conducta NO ocurrió — cero respuestas en esas sesiones / Behavior did NOT occur — zero responses in those sessions ✓</button>
-        <button class="opt" onclick="checkGraph(3,2)">C. Los datos no fueron recopilados / Data was not collected</button>
-        <button class="opt" onclick="checkGraph(3,3)">D. El gráfico tiene un error / The graph has an error</button>
-      </div>
-      <div id="g3-fb" style="display:none;margin-top:8px;padding:10px;background:#f0f4ff;border-left:3px solid var(--dark);border-radius:6px;font-size:12px;line-height:1.5"></div>
-    </div>
-  </div>
-
-  <!-- Graph 4: IOA Calculator -->
-  <div class="card">
-    <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px">Calculadora IOA / IOA Calculator</div>
-    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Practica calculando el Acuerdo entre Observadores · Practice calculating Interobserver Agreement</div>
-    <div style="display:flex;gap:10px;margin-bottom:10px">
-      <div style="flex:1">
-        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">Observer 1 / Observador 1</label>
-        <input type="number" id="ioa1" placeholder="ej: 18" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid var(--border);font-size:16px;font-family:inherit">
-      </div>
-      <div style="flex:1">
-        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">Observer 2 / Observador 2</label>
-        <input type="number" id="ioa2" placeholder="ej: 15" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid var(--border);font-size:16px;font-family:inherit">
-      </div>
-    </div>
-    <button class="btn btn-dk" onclick="calcIOA()">Calcular IOA</button>
-    <div id="ioa-result" style="margin-top:10px;display:none;padding:12px;border-radius:8px;font-size:14px;text-align:center;font-weight:700"></div>
-    <p style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center">Fórmula: (menor ÷ mayor) × 100 · Aceptable: ≥80%</p>
-  </div>
-
-</div>
-</div>
-
-<script>
-// ==================== GRAPHS ====================
-function drawGraph1(){
-  const canvas=document.getElementById('graph1');
-  if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  const W=canvas.offsetWidth||300, H=200;
-  canvas.width=W; canvas.height=H;
-  const baseline=[12,14,11,13,12];
-  const intervention=[8,5,3,2,1];
-  const all=[...baseline,...intervention];
-  const maxY=Math.max(...all)+2, minY=0;
-  const padL=35,padR=15,padT=15,padB=30;
-  const gW=W-padL-padR, gH=H-padT-padB;
-  ctx.clearRect(0,0,W,H);
-  // Grid
-  ctx.strokeStyle='#e5e5e0';ctx.lineWidth=1;
-  for(let i=0;i<=5;i++){
-    const y=padT+gH*(1-i/5);
-    ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();
-    ctx.fillStyle='#999';ctx.font='10px sans-serif';ctx.textAlign='right';
-    ctx.fillText(Math.round(maxY*i/5),padL-4,y+3);
-  }
-  // Phase line
-  const phaseX=padL+gW*(5/10);
-  ctx.strokeStyle='#333';ctx.lineWidth=2;ctx.setLineDash([4,4]);
-  ctx.beginPath();ctx.moveTo(phaseX,padT);ctx.lineTo(phaseX,H-padB);ctx.stroke();
-  ctx.setLineDash([]);
-  // Labels
-  ctx.fillStyle='#666';ctx.font='10px sans-serif';ctx.textAlign='center';
-  ctx.fillText('Baseline',padL+gW*0.25,padT-3);
-  ctx.fillText('Intervención',padL+gW*0.75,padT-3);
-  // Data points
-  function toX(i){return padL+gW*(i/10)+(gW/20);}
-  function toY(v){return padT+gH*(1-(v-minY)/(maxY-minY));}
-  // Baseline line
-  ctx.strokeStyle='#666';ctx.lineWidth=2;ctx.beginPath();
-  baseline.forEach((v,i)=>{i===0?ctx.moveTo(toX(i),toY(v)):ctx.lineTo(toX(i),toY(v));});
-  ctx.stroke();
-  baseline.forEach((v,i)=>{ctx.fillStyle='#1a1a2e';ctx.beginPath();ctx.arc(toX(i),toY(v),5,0,Math.PI*2);ctx.fill();});
-  // Intervention line
-  ctx.strokeStyle='#28a745';ctx.lineWidth=2;ctx.beginPath();
-  intervention.forEach((v,i)=>{i===0?ctx.moveTo(toX(i+5),toY(v)):ctx.lineTo(toX(i+5),toY(v));});
-  ctx.stroke();
-  intervention.forEach((v,i)=>{ctx.fillStyle='#28a745';ctx.beginPath();ctx.arc(toX(i+5),toY(v),5,0,Math.PI*2);ctx.fill();});
-  // X labels
-  ctx.fillStyle='#666';ctx.font='9px sans-serif';ctx.textAlign='center';
-  for(let i=0;i<10;i++){ctx.fillText(i+1,toX(i),H-padB+14);}
-}
-
-function drawGraph2(){
-  const canvas=document.getElementById('graph2');
-  if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  const W=canvas.offsetWidth||300, H=200;
-  canvas.width=W; canvas.height=H;
-  const data=[2,8,1,9,3,7,2,8,1,9];
-  const maxY=12,padL=35,padR=15,padT=15,padB=30;
-  const gW=W-padL-padR, gH=H-padT-padB;
-  ctx.clearRect(0,0,W,H);
-  ctx.strokeStyle='#e5e5e0';ctx.lineWidth=1;
-  for(let i=0;i<=4;i++){
-    const y=padT+gH*(1-i/4);
-    ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();
-    ctx.fillStyle='#999';ctx.font='10px sans-serif';ctx.textAlign='right';
-    ctx.fillText(Math.round(maxY*i/4),padL-4,y+3);
-  }
-  function toX(i){return padL+gW*(i/(data.length-1));}
-  function toY(v){return padT+gH*(1-v/maxY);}
-  ctx.strokeStyle='#dc3545';ctx.lineWidth=2;ctx.beginPath();
-  data.forEach((v,i)=>{i===0?ctx.moveTo(toX(i),toY(v)):ctx.lineTo(toX(i),toY(v));});
-  ctx.stroke();
-  data.forEach((v,i)=>{ctx.fillStyle='#dc3545';ctx.beginPath();ctx.arc(toX(i),toY(v),5,0,Math.PI*2);ctx.fill();});
-  ctx.fillStyle='#666';ctx.font='9px sans-serif';ctx.textAlign='center';
-  data.forEach((_,i)=>{ctx.fillText(i+1,toX(i),H-padB+14);});
-}
-
-function drawGraph3(){
-  const canvas=document.getElementById('graph3');
-  if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  const W=canvas.offsetWidth||300, H=200;
-  canvas.width=W; canvas.height=H;
-  const data=[5,12,18,24,30,30,30,30,35,42];
-  const maxY=45,padL=35,padR=15,padT=15,padB=30;
-  const gW=W-padL-padR, gH=H-padT-padB;
-  ctx.clearRect(0,0,W,H);
-  ctx.strokeStyle='#e5e5e0';ctx.lineWidth=1;
-  for(let i=0;i<=5;i++){
-    const y=padT+gH*(1-i/5);
-    ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();
-    ctx.fillStyle='#999';ctx.font='10px sans-serif';ctx.textAlign='right';
-    ctx.fillText(Math.round(maxY*i/5),padL-4,y+3);
-  }
-  function toX(i){return padL+gW*(i/(data.length-1));}
-  function toY(v){return padT+gH*(1-v/maxY);}
-  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2;ctx.beginPath();
-  data.forEach((v,i)=>{i===0?ctx.moveTo(toX(i),toY(v)):ctx.lineTo(toX(i),toY(v));});
-  ctx.stroke();
-  data.forEach((v,i)=>{ctx.fillStyle='#1a1a2e';ctx.beginPath();ctx.arc(toX(i),toY(v),5,0,Math.PI*2);ctx.fill();});
-  // Highlight flat section
-  ctx.fillStyle='rgba(245,166,35,0.15)';
-  ctx.fillRect(toX(4),padT,toX(7)-toX(4),gH);
-  ctx.fillStyle='#856404';ctx.font='9px sans-serif';ctx.textAlign='center';
-  ctx.fillText('Línea plana / Flat',toX(5.5),padT+15);
-  ctx.fillStyle='#666';ctx.font='9px sans-serif';ctx.textAlign='center';
-  data.forEach((_,i)=>{ctx.fillText(i+1,toX(i),H-padB+14);});
-}
-
-const graphAnswers={1:1,2:2,3:1};
-const graphFeedback={
-  1:{
-    correct:"✓ Correcto / Correct! La línea base es estable (~12-13 golpes). La intervención muestra una clara tendencia DESCENDENTE de 8 a 1. La línea de cambio de fase separa las condiciones. El tratamiento parece funcionar. / Baseline is stable (~12-13 hits). Intervention shows a clear DECREASING trend from 8 to 1. The phase change line separates conditions. Treatment appears to be working.",
-    wrong:"✗ Incorrecto. Observa la línea vertical (cambio de fase). A la izquierda: datos estables ~12. A la derecha: datos bajan de 8 a 1. Tendencia DESCENDENTE = posible efecto del tratamiento. / Incorrect. Note the vertical line (phase change). Left: stable ~12. Right: data drops from 8 to 1. DECREASING trend = possible treatment effect."
-  },
-  2:{
-    correct:"✓ Correcto / Correct! Los datos saltan entre 1-9 sin dirección consistente. Alta variabilidad hace difícil saber si el tratamiento está funcionando porque no hay tendencia clara. El BCBA necesita investigar la causa. / Data jumps between 1-9 with no consistent direction. High variability makes it hard to know if treatment is working because there's no clear trend. The BCBA needs to investigate.",
-    wrong:"✗ Incorrecto. Observa los datos: 2, 8, 1, 9, 3, 7, 2, 8 — sube y baja sin patrón. Esto es ALTA VARIABILIDAD, no una tendencia estable ni descendente. / Incorrect. Look at the data: 2, 8, 1, 9, 3, 7, 2, 8 — goes up and down with no pattern. This is HIGH VARIABILITY, not a stable or decreasing trend."
-  },
-  3:{
-    correct:"✓ Correcto / Correct! En un registro acumulativo, una línea PLANA significa CERO respuestas. El total se quedó en 30 para las sesiones 6, 7 y 8 — no se agregaron nuevas respuestas. Plana = sin conducta en esas sesiones. / In a cumulative record, a FLAT LINE means ZERO responses. The total stayed at 30 for sessions 6, 7, 8 — no new responses were added. Flat = no behavior in those sessions.",
-    wrong:"✗ Incorrecto. En gráficas acumulativas, la línea NUNCA baja — solo sube o se aplana. Una línea plana significa que NO ocurrió ninguna respuesta (cero). El total no aumentó porque no hubo conducta. / Incorrect. In cumulative graphs, the line NEVER goes down — it only goes up or flattens. A flat line means NO responses occurred (zero). The total didn't increase because there was no behavior."
-  }
-};
-
-function checkGraph(graphNum, selected){
-  const correct=graphAnswers[graphNum];
-  const btns=document.querySelectorAll('#g'+graphNum+'-opts .opt');
-  btns.forEach(b=>b.classList.add('locked'));
-  btns[selected].classList.add(selected===correct?'correct':'wrong');
-  if(selected!==correct)btns[correct].classList.add('reveal');
-  const fb=document.getElementById('g'+graphNum+'-fb');
-  fb.style.display='block';
-  fb.innerHTML=selected===correct?graphFeedback[graphNum].correct:graphFeedback[graphNum].wrong;
-}
-
-function calcIOA(){
-  const v1=parseFloat(document.getElementById('ioa1').value);
-  const v2=parseFloat(document.getElementById('ioa2').value);
-  const res=document.getElementById('ioa-result');
-  if(isNaN(v1)||isNaN(v2)||v1<0||v2<0){
-    res.style.display='block';res.style.background='#f8d7da';res.style.color='#721c24';
-    res.innerHTML='Por favor ingresa números válidos / Please enter valid numbers';return;
-  }
-  const ioa=Math.round((Math.min(v1,v2)/Math.max(v1,v2))*100);
-  const pass=ioa>=80;
-  res.style.display='block';
-  res.style.background=pass?'#d4edda':'#f8d7da';
-  res.style.color=pass?'#155724':'#721c24';
-  res.innerHTML=`IOA = ${ioa}% · ${pass?'✓ Aceptable (≥80%)':'✗ Bajo — revisar definición de conducta / Low — review behavior definition'}`;
-}
-
-// Draw graphs when tab is opened
-const origShowTab=window.showTab||function(){};
-window.showTab=function(id,btn){
-  origShowTab(id,btn);
-  if(id==='graficas'){
-    setTimeout(()=>{drawGraph1();drawGraph2();drawGraph3();},100);
-  }
-};
-</script>
-
 <!-- RESULTS MODAL -->
 <div class="results-overlay" id="results-overlay">
   <div class="results-modal">
@@ -1440,9 +1199,7 @@ const QUESTIONS = [
  es:"El RBT refuerza al estudiante cada vez que levanta la mano (no grita). Gritar se ignora. ¿Qué procedimiento DR es? ★ Pregunta oficial del BACB",
  opts:["DRO","DRA","DRL","DRI"],ans:1,
  exp_en:"DRA: reinforcing an ALTERNATIVE behavior (raising hand) that serves the same function as the problem behavior, while the problem behavior is on extinction.",
- exp_es:"DRA: reforzar una conducta ALTERNATIVA (levantar la mano) que sirve la misma función que la conducta problema, mientras la conducta problema está en extinción."}
-
-,
+ exp_es:"DRA: reforzar una conducta ALTERNATIVA (levantar la mano) que sirve la misma función que la conducta problema, mientras la conducta problema está en extinción."},
 {id:114,domain:"A. Measurement",weight:17,
 en:"Sofia, an RBT, is tracking how many times a 6-year-old named Carlos hits his sister during a 30-minute play session. She marks every single hit as it happens. Which measurement method is Sofia using?",
 es:"Sofía, una RBT, registra cuántas veces Carlos (6 años) golpea a su hermana durante una sesión de juego de 30 minutos. Marca cada golpe cuando ocurre. ¿Qué método usa Sofía?",
@@ -2287,5 +2044,249 @@ window.onload=function(){
   initFlash();
 };
 </script>
+
+<!-- GRAFICAS -->
+<div id="tab-graficas" class="tab-section">
+  <div class="container">
+  <p class="st">Interpretación de Gráficas / Graph Interpretation</p>
+  
+  <!-- Graph 1: Baseline vs Intervention -->
+  <div class="card" style="margin-bottom:10px">
+    <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px">Gráfica 1: Línea Base vs. Intervención / Baseline vs. Intervention</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Conducta: Golpes por sesión · Behavior: Hits per session</div>
+    <canvas id="graph1" width="100%" height="200" style="width:100%;max-height:200px"></canvas>
+    <div style="margin-top:10px">
+      <p style="font-size:12px;font-weight:600;color:var(--dark);margin-bottom:6px">¿Qué ves en esta gráfica? / What do you see in this graph?</p>
+      <div style="display:flex;flex-direction:column;gap:6px" id="g1-opts">
+        <button class="opt" onclick="checkGraph(1,0)">A. La conducta está aumentando en ambas fases / Behavior is increasing in both phases</button>
+        <button class="opt" onclick="checkGraph(1,1)">B. Línea base estable; intervención muestra tendencia descendente / Stable baseline; intervention shows decreasing trend ✓</button>
+        <button class="opt" onclick="checkGraph(1,2)">C. Los datos son muy variables sin tendencia clara / Data is highly variable with no clear trend</button>
+        <button class="opt" onclick="checkGraph(1,3)">D. La intervención no tuvo efecto / The intervention had no effect</button>
+      </div>
+      <div id="g1-fb" style="display:none;margin-top:8px;padding:10px;background:#f0f4ff;border-left:3px solid var(--dark);border-radius:6px;font-size:12px;line-height:1.5"></div>
+    </div>
+  </div>
+
+  <!-- Graph 2: Variable data -->
+  <div class="card" style="margin-bottom:10px">
+    <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px">Gráfica 2: Datos Variables / Variable Data</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Conducta: Rabietas por sesión · Behavior: Tantrums per session</div>
+    <canvas id="graph2" width="100%" height="200" style="width:100%;max-height:200px"></canvas>
+    <div style="margin-top:10px">
+      <p style="font-size:12px;font-weight:600;color:var(--dark);margin-bottom:6px">¿Cuál es el problema con estos datos? / What is the problem with this data?</p>
+      <div style="display:flex;flex-direction:column;gap:6px" id="g2-opts">
+        <button class="opt" onclick="checkGraph(2,0)">A. La tendencia es claramente descendente / The trend is clearly decreasing</button>
+        <button class="opt" onclick="checkGraph(2,1)">B. Los datos son estables y predecibles / The data is stable and predictable</button>
+        <button class="opt" onclick="checkGraph(2,2)">C. Alta variabilidad — difícil evaluar el efecto del tratamiento / High variability — hard to evaluate treatment effect ✓</button>
+        <button class="opt" onclick="checkGraph(2,3)">D. El registro de datos es incorrecto / Data recording is incorrect</button>
+      </div>
+      <div id="g2-fb" style="display:none;margin-top:8px;padding:10px;background:#f0f4ff;border-left:3px solid var(--dark);border-radius:6px;font-size:12px;line-height:1.5"></div>
+    </div>
+  </div>
+
+  <!-- Graph 3: Cumulative -->
+  <div class="card" style="margin-bottom:10px">
+    <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px">Gráfica 3: Registro Acumulativo / Cumulative Record</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Respuestas correctas acumuladas · Cumulative correct responses</div>
+    <canvas id="graph3" width="100%" height="200" style="width:100%;max-height:200px"></canvas>
+    <div style="margin-top:10px">
+      <p style="font-size:12px;font-weight:600;color:var(--dark);margin-bottom:6px">¿Qué indica la línea plana en las sesiones 6-8? / What does the flat line in sessions 6-8 indicate?</p>
+      <div style="display:flex;flex-direction:column;gap:6px" id="g3-opts">
+        <button class="opt" onclick="checkGraph(3,0)">A. La conducta aumentó / Behavior increased</button>
+        <button class="opt" onclick="checkGraph(3,1)">B. La conducta NO ocurrió — cero respuestas en esas sesiones / Behavior did NOT occur — zero responses in those sessions ✓</button>
+        <button class="opt" onclick="checkGraph(3,2)">C. Los datos no fueron recopilados / Data was not collected</button>
+        <button class="opt" onclick="checkGraph(3,3)">D. El gráfico tiene un error / The graph has an error</button>
+      </div>
+      <div id="g3-fb" style="display:none;margin-top:8px;padding:10px;background:#f0f4ff;border-left:3px solid var(--dark);border-radius:6px;font-size:12px;line-height:1.5"></div>
+    </div>
+  </div>
+
+  <!-- Graph 4: IOA Calculator -->
+  <div class="card">
+    <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px">Calculadora IOA / IOA Calculator</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Practica calculando el Acuerdo entre Observadores · Practice calculating Interobserver Agreement</div>
+    <div style="display:flex;gap:10px;margin-bottom:10px">
+      <div style="flex:1">
+        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">Observer 1 / Observador 1</label>
+        <input type="number" id="ioa1" placeholder="ej: 18" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid var(--border);font-size:16px;font-family:inherit">
+      </div>
+      <div style="flex:1">
+        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">Observer 2 / Observador 2</label>
+        <input type="number" id="ioa2" placeholder="ej: 15" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid var(--border);font-size:16px;font-family:inherit">
+      </div>
+    </div>
+    <button class="btn btn-dk" onclick="calcIOA()">Calcular IOA</button>
+    <div id="ioa-result" style="margin-top:10px;display:none;padding:12px;border-radius:8px;font-size:14px;text-align:center;font-weight:700"></div>
+    <p style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center">Fórmula: (menor ÷ mayor) × 100 · Aceptable: ≥80%</p>
+  </div>
+
+</div>
+</div>
+
+<script>
+// ==================== GRAPHS ====================
+function drawGraph1(){
+  const canvas=document.getElementById('graph1');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.offsetWidth||300, H=200;
+  canvas.width=W; canvas.height=H;
+  const baseline=[12,14,11,13,12];
+  const intervention=[8,5,3,2,1];
+  const all=[...baseline,...intervention];
+  const maxY=Math.max(...all)+2, minY=0;
+  const padL=35,padR=15,padT=15,padB=30;
+  const gW=W-padL-padR, gH=H-padT-padB;
+  ctx.clearRect(0,0,W,H);
+  // Grid
+  ctx.strokeStyle='#e5e5e0';ctx.lineWidth=1;
+  for(let i=0;i<=5;i++){
+    const y=padT+gH*(1-i/5);
+    ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();
+    ctx.fillStyle='#999';ctx.font='10px sans-serif';ctx.textAlign='right';
+    ctx.fillText(Math.round(maxY*i/5),padL-4,y+3);
+  }
+  // Phase line
+  const phaseX=padL+gW*(5/10);
+  ctx.strokeStyle='#333';ctx.lineWidth=2;ctx.setLineDash([4,4]);
+  ctx.beginPath();ctx.moveTo(phaseX,padT);ctx.lineTo(phaseX,H-padB);ctx.stroke();
+  ctx.setLineDash([]);
+  // Labels
+  ctx.fillStyle='#666';ctx.font='10px sans-serif';ctx.textAlign='center';
+  ctx.fillText('Baseline',padL+gW*0.25,padT-3);
+  ctx.fillText('Intervención',padL+gW*0.75,padT-3);
+  // Data points
+  function toX(i){return padL+gW*(i/10)+(gW/20);}
+  function toY(v){return padT+gH*(1-(v-minY)/(maxY-minY));}
+  // Baseline line
+  ctx.strokeStyle='#666';ctx.lineWidth=2;ctx.beginPath();
+  baseline.forEach((v,i)=>{i===0?ctx.moveTo(toX(i),toY(v)):ctx.lineTo(toX(i),toY(v));});
+  ctx.stroke();
+  baseline.forEach((v,i)=>{ctx.fillStyle='#1a1a2e';ctx.beginPath();ctx.arc(toX(i),toY(v),5,0,Math.PI*2);ctx.fill();});
+  // Intervention line
+  ctx.strokeStyle='#28a745';ctx.lineWidth=2;ctx.beginPath();
+  intervention.forEach((v,i)=>{i===0?ctx.moveTo(toX(i+5),toY(v)):ctx.lineTo(toX(i+5),toY(v));});
+  ctx.stroke();
+  intervention.forEach((v,i)=>{ctx.fillStyle='#28a745';ctx.beginPath();ctx.arc(toX(i+5),toY(v),5,0,Math.PI*2);ctx.fill();});
+  // X labels
+  ctx.fillStyle='#666';ctx.font='9px sans-serif';ctx.textAlign='center';
+  for(let i=0;i<10;i++){ctx.fillText(i+1,toX(i),H-padB+14);}
+}
+
+function drawGraph2(){
+  const canvas=document.getElementById('graph2');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.offsetWidth||300, H=200;
+  canvas.width=W; canvas.height=H;
+  const data=[2,8,1,9,3,7,2,8,1,9];
+  const maxY=12,padL=35,padR=15,padT=15,padB=30;
+  const gW=W-padL-padR, gH=H-padT-padB;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='#e5e5e0';ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){
+    const y=padT+gH*(1-i/4);
+    ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();
+    ctx.fillStyle='#999';ctx.font='10px sans-serif';ctx.textAlign='right';
+    ctx.fillText(Math.round(maxY*i/4),padL-4,y+3);
+  }
+  function toX(i){return padL+gW*(i/(data.length-1));}
+  function toY(v){return padT+gH*(1-v/maxY);}
+  ctx.strokeStyle='#dc3545';ctx.lineWidth=2;ctx.beginPath();
+  data.forEach((v,i)=>{i===0?ctx.moveTo(toX(i),toY(v)):ctx.lineTo(toX(i),toY(v));});
+  ctx.stroke();
+  data.forEach((v,i)=>{ctx.fillStyle='#dc3545';ctx.beginPath();ctx.arc(toX(i),toY(v),5,0,Math.PI*2);ctx.fill();});
+  ctx.fillStyle='#666';ctx.font='9px sans-serif';ctx.textAlign='center';
+  data.forEach((_,i)=>{ctx.fillText(i+1,toX(i),H-padB+14);});
+}
+
+function drawGraph3(){
+  const canvas=document.getElementById('graph3');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.offsetWidth||300, H=200;
+  canvas.width=W; canvas.height=H;
+  const data=[5,12,18,24,30,30,30,30,35,42];
+  const maxY=45,padL=35,padR=15,padT=15,padB=30;
+  const gW=W-padL-padR, gH=H-padT-padB;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='#e5e5e0';ctx.lineWidth=1;
+  for(let i=0;i<=5;i++){
+    const y=padT+gH*(1-i/5);
+    ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();
+    ctx.fillStyle='#999';ctx.font='10px sans-serif';ctx.textAlign='right';
+    ctx.fillText(Math.round(maxY*i/5),padL-4,y+3);
+  }
+  function toX(i){return padL+gW*(i/(data.length-1));}
+  function toY(v){return padT+gH*(1-v/maxY);}
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2;ctx.beginPath();
+  data.forEach((v,i)=>{i===0?ctx.moveTo(toX(i),toY(v)):ctx.lineTo(toX(i),toY(v));});
+  ctx.stroke();
+  data.forEach((v,i)=>{ctx.fillStyle='#1a1a2e';ctx.beginPath();ctx.arc(toX(i),toY(v),5,0,Math.PI*2);ctx.fill();});
+  // Highlight flat section
+  ctx.fillStyle='rgba(245,166,35,0.15)';
+  ctx.fillRect(toX(4),padT,toX(7)-toX(4),gH);
+  ctx.fillStyle='#856404';ctx.font='9px sans-serif';ctx.textAlign='center';
+  ctx.fillText('Línea plana / Flat',toX(5.5),padT+15);
+  ctx.fillStyle='#666';ctx.font='9px sans-serif';ctx.textAlign='center';
+  data.forEach((_,i)=>{ctx.fillText(i+1,toX(i),H-padB+14);});
+}
+
+const graphAnswers={1:1,2:2,3:1};
+const graphFeedback={
+  1:{
+    correct:"✓ Correcto / Correct! La línea base es estable (~12-13 golpes). La intervención muestra una clara tendencia DESCENDENTE de 8 a 1. La línea de cambio de fase separa las condiciones. El tratamiento parece funcionar. / Baseline is stable (~12-13 hits). Intervention shows a clear DECREASING trend from 8 to 1. The phase change line separates conditions. Treatment appears to be working.",
+    wrong:"✗ Incorrecto. Observa la línea vertical (cambio de fase). A la izquierda: datos estables ~12. A la derecha: datos bajan de 8 a 1. Tendencia DESCENDENTE = posible efecto del tratamiento. / Incorrect. Note the vertical line (phase change). Left: stable ~12. Right: data drops from 8 to 1. DECREASING trend = possible treatment effect."
+  },
+  2:{
+    correct:"✓ Correcto / Correct! Los datos saltan entre 1-9 sin dirección consistente. Alta variabilidad hace difícil saber si el tratamiento está funcionando porque no hay tendencia clara. El BCBA necesita investigar la causa. / Data jumps between 1-9 with no consistent direction. High variability makes it hard to know if treatment is working because there's no clear trend. The BCBA needs to investigate.",
+    wrong:"✗ Incorrecto. Observa los datos: 2, 8, 1, 9, 3, 7, 2, 8 — sube y baja sin patrón. Esto es ALTA VARIABILIDAD, no una tendencia estable ni descendente. / Incorrect. Look at the data: 2, 8, 1, 9, 3, 7, 2, 8 — goes up and down with no pattern. This is HIGH VARIABILITY, not a stable or decreasing trend."
+  },
+  3:{
+    correct:"✓ Correcto / Correct! En un registro acumulativo, una línea PLANA significa CERO respuestas. El total se quedó en 30 para las sesiones 6, 7 y 8 — no se agregaron nuevas respuestas. Plana = sin conducta en esas sesiones. / In a cumulative record, a FLAT LINE means ZERO responses. The total stayed at 30 for sessions 6, 7, 8 — no new responses were added. Flat = no behavior in those sessions.",
+    wrong:"✗ Incorrecto. En gráficas acumulativas, la línea NUNCA baja — solo sube o se aplana. Una línea plana significa que NO ocurrió ninguna respuesta (cero). El total no aumentó porque no hubo conducta. / Incorrect. In cumulative graphs, the line NEVER goes down — it only goes up or flattens. A flat line means NO responses occurred (zero). The total didn't increase because there was no behavior."
+  }
+};
+
+function checkGraph(graphNum, selected){
+  const correct=graphAnswers[graphNum];
+  const btns=document.querySelectorAll('#g'+graphNum+'-opts .opt');
+  btns.forEach(b=>b.classList.add('locked'));
+  btns[selected].classList.add(selected===correct?'correct':'wrong');
+  if(selected!==correct)btns[correct].classList.add('reveal');
+  const fb=document.getElementById('g'+graphNum+'-fb');
+  fb.style.display='block';
+  fb.innerHTML=selected===correct?graphFeedback[graphNum].correct:graphFeedback[graphNum].wrong;
+}
+
+function calcIOA(){
+  const v1=parseFloat(document.getElementById('ioa1').value);
+  const v2=parseFloat(document.getElementById('ioa2').value);
+  const res=document.getElementById('ioa-result');
+  if(isNaN(v1)||isNaN(v2)||v1<0||v2<0){
+    res.style.display='block';res.style.background='#f8d7da';res.style.color='#721c24';
+    res.innerHTML='Por favor ingresa números válidos / Please enter valid numbers';return;
+  }
+  const ioa=Math.round((Math.min(v1,v2)/Math.max(v1,v2))*100);
+  const pass=ioa>=80;
+  res.style.display='block';
+  res.style.background=pass?'#d4edda':'#f8d7da';
+  res.style.color=pass?'#155724':'#721c24';
+  res.innerHTML=`IOA = ${ioa}% · ${pass?'✓ Aceptable (≥80%)':'✗ Bajo — revisar definición de conducta / Low — review behavior definition'}`;
+}
+
+// Draw graphs when tab is opened
+const origShowTab=window.showTab||function(){};
+window.showTab=function(id,btn){
+  origShowTab(id,btn);
+  if(id==='graficas'){
+    setTimeout(()=>{drawGraph1();drawGraph2();drawGraph3();},100);
+  }
+};
+</script>
+
+
+
+
 </body>
 </html>
