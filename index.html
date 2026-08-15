@@ -582,6 +582,30 @@ svg.graphSvg{width:100%;height:auto;background:#fff;border-radius:12px;border:1p
       </div>
     </section>
 
+
+      <!-- Patient Cases Graph Panel -->
+      <div id="graphPanel-patient" class="graphPanel card hidden">
+        <p style="font-size:13px;margin-bottom:12px;color:var(--text-light);">
+          Graph real patient data from clinical cases / Grafique datos reales de casos clínicos
+        </p>
+        <div style="margin-bottom:12px;">
+          <label style="font-size:12px;font-weight:600;display:block;margin-bottom:6px;">Select Patient Case / Seleccionar caso:</label>
+          <select id="patientSelect" onchange="renderPatientGraph()" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);font-size:13px;">
+            <option value="1">Patient: Marco — Self-injury (escape-maintained)</option>
+            <option value="2">Patient: Sofia — Tantrum (attention-maintained)</option>
+            <option value="3">Patient: Diego — Off-task behavior (automatic)</option>
+            <option value="4">Patient: Ana — Aggression (tangible-maintained)</option>
+            <option value="5">Patient: Luis — Elopement (escape-maintained)</option>
+          </select>
+        </div>
+        <svg id="svgPatient" class="graphSvg" viewBox="0 0 320 200" style="width:100%;"></svg>
+        <div id="patientGraphInfo" style="margin-top:10px;font-size:12px;color:var(--text-light);line-height:1.6;"></div>
+        <div style="margin-top:12px;padding:10px;background:var(--surface2);border-radius:8px;">
+          <p style="font-size:12px;font-weight:600;margin-bottom:6px;">📋 Interpret this graph / Interpreta esta gráfica:</p>
+          <div id="patientQuiz" style="display:flex;flex-direction:column;gap:6px;"></div>
+        </div>
+      </div>
+
     <!-- ---------- PROGRESS TAB ---------- -->
     <section id="view-progress" class="view">
       <h1 class="viewTitle">📊 Progress</h1>
@@ -1233,6 +1257,7 @@ function renderSimQuestion(){
     <div class="card">
       <span class="badge ${DOMAIN_CLASS[q.domain]}">${q.domain} · ${DOMAIN_NAMES[q.domain]}</span>
       <p class="qStem" style="margin-top:10px;">${q.en}</p>
+      <p style="font-size:13px;color:var(--text-light);font-style:italic;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed var(--border);">${q.es || ''}</p>
       <div id="simOptions">
         ${q.opts.map((opt,i) => `
           <button class="optionBtn ${selected===i?'selected':''}" onclick="selectSimAnswer(${i})">
@@ -1299,13 +1324,15 @@ function submitSimulator(){
     const correct = sel === q.ans;
     return `
       <div class="card">
-        <span class="badge ${DOMAIN_CLASS[q.domain]}">${q.domain}</span>
+        <span class="badge ${DOMAIN_CLASS[q.domain]}">${q.domain} · ${correct?'✓ Correct':'✗ Incorrect'}</span>
         <p class="qStem" style="margin-top:8px;">${q.en}</p>
+        <p style="font-size:12px;color:var(--text-light);font-style:italic;margin-bottom:10px;">${q.es || ''}</p>
         ${q.opts.map((opt,oi) => `
           <div class="optionBtn ${oi===q.ans?'correct':(oi===sel?'incorrect':'')}" style="pointer-events:none;">
             <span class="optLetter">${String.fromCharCode(65+oi)}</span><span>${opt}</span>
           </div>`).join('')}
-        <div class="explainBox">${q.exp_en || ''}</div>
+        <div style="background:#d1fae5;border-radius:6px;padding:8px 10px;margin:6px 0;font-size:12px;"><strong>✓ Respuesta correcta:</strong> ${q.opts[q.ans]}</div>
+        <div class="explainBox">${q.exp_en || ''}<br><em>${q.exp_es || ''}</em></div>
       </div>`;
   }).join('');
 }
@@ -1367,11 +1394,18 @@ function renderQuizQuestion(){
   const area = document.getElementById('quizArea');
   const q = quizState.currentQ;
   if(!q) return;
+  const diff = quizState.difficulty || 1;
+  const diffLabel = diff === 1 ? '🟢 Básico' : diff === 2 ? '🟡 Intermedio' : '🔴 Avanzado';
+  const num = quizState.questionNumber || 1;
+  const opts_es = q.opts_es || q.opts; // fallback to EN opts if no ES
   area.innerHTML = `
     <div class="card">
-      <span class="badge ${DOMAIN_CLASS[q.domain]}">${q.domain} · ${DOMAIN_NAMES[q.domain]}</span>
-      <p class="qStem" style="margin-top:10px;">${q.en}</p>
-      <p style="font-size:13px;color:var(--text-light);font-style:italic;margin-bottom:12px;">${q.es || ''}</p>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span class="badge ${DOMAIN_CLASS[q.domain]}">${q.domain} · ${DOMAIN_NAMES[q.domain]}</span>
+        <span style="font-size:11px;color:var(--text-light);">${diffLabel} · #${num}</span>
+      </div>
+      <p class="qStem" style="margin-top:6px;font-size:15px;font-weight:600;">${q.en}</p>
+      <p style="font-size:13px;color:var(--text-light);font-style:italic;margin-bottom:14px;border-bottom:1px dashed var(--border);padding-bottom:10px;">${q.es || ''}</p>
       <div id="quizOptions">
         ${q.opts.map((opt,i) => {
           let cls = '';
@@ -1379,14 +1413,29 @@ function renderQuizQuestion(){
             if(i===q.ans) cls='correct';
             else if(i===quizState.selected) cls='incorrect';
           } else if(i===quizState.selected) cls='selected';
-          return `<button class="optionBtn ${cls}" ${quizState.showAnswer?'disabled':''} onclick="answerQuiz(${i})">
-            <span class="optLetter">${String.fromCharCode(65+i)}</span><span>${opt}</span>
+          const esOpt = opts_es[i] || opt;
+          return `<button class="optionBtn ${cls}" ${quizState.showAnswer?'disabled':''} onclick="answerQuiz(${i})" style="text-align:left;">
+            <span class="optLetter">${String.fromCharCode(65+i)}</span>
+            <span style="display:flex;flex-direction:column;">
+              <span style="font-weight:500;">${opt}</span>
+              <span style="font-size:11px;color:var(--text-light);font-style:italic;">${esOpt !== opt ? esOpt : ''}</span>
+            </span>
           </button>`;
         }).join('')}
       </div>
-      ${quizState.showAnswer ? `<div class="explainBox">${q.exp_en || ''}<br><em>${q.exp_es || ''}</em></div>` : ''}
+      ${quizState.showAnswer ? `
+        <div class="explainBox">
+          <div style="background:#d1fae5;border-radius:6px;padding:8px 10px;margin-bottom:8px;font-size:13px;">
+            <strong>✓ Respuesta correcta / Correct answer:</strong> ${q.opts[q.ans]}
+          </div>
+          <strong>EN:</strong> ${q.exp_en || ''}<br>
+          <em><strong>ES:</strong> ${q.exp_es || ''}</em>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px;">
+          <button class="btn btn-orange" onclick="nextQuizQuestion()">Next / Siguiente →</button>
+        </div>
+      ` : ''}
     </div>
-    ${quizState.showAnswer ? `<button class="btn btn-orange" onclick="nextQuizQuestion()">Next Question →</button>` : ''}
   `;
 }
 
@@ -1394,15 +1443,18 @@ function answerQuiz(i){
   if(quizState.showAnswer) return;
   quizState.selected = i;
   quizState.showAnswer = true;
+  quizState.questionNumber = (quizState.questionNumber||0) + 1;
   const q = quizState.currentQ;
   const correct = i === q.ans;
+  updateDifficulty(correct);
   statsByQuestion[q.id] = statsByQuestion[q.id] || {correct:0, incorrect:0};
   correct ? statsByQuestion[q.id].correct++ : statsByQuestion[q.id].incorrect++;
   renderQuizQuestion();
 }
 
 function nextQuizQuestion(){
-  const pool = quizPool();
+  const basePool = quizPool();
+  const pool = difficultyFilteredPool(basePool).length > 0 ? difficultyFilteredPool(basePool) : basePool;
   quizState.currentQ = weightedPick(pool);
   quizState.showAnswer = false;
   quizState.selected = null;
@@ -1780,10 +1832,272 @@ function updateSimIntro(){
   }
 }
 
+
+/* ============================================================
+   DIFFICULTY SYSTEM — Progressive difficulty in Quiz
+   ============================================================ */
+
+function initDifficultySystem(){
+  quizState.difficulty = 1;       // 1=basic, 2=intermediate, 3=advanced
+  quizState.correctStreak = 0;    // consecutive correct answers
+  quizState.questionNumber = 0;
+}
+
+function updateDifficulty(correct){
+  if(correct){
+    quizState.correctStreak = (quizState.correctStreak || 0) + 1;
+    if(quizState.correctStreak >= 3 && quizState.difficulty < 3){
+      quizState.difficulty++;
+      quizState.correctStreak = 0;
+      showDifficultyBump();
+    }
+  } else {
+    quizState.correctStreak = 0;
+    if(quizState.difficulty > 1){
+      quizState.difficulty = Math.max(1, quizState.difficulty - 0.5 | 0);
+    }
+  }
+}
+
+function showDifficultyBump(){
+  const labels = {2:'🟡 Intermediate / Intermedio', 3:'🔴 Advanced / Avanzado'};
+  const label = labels[quizState.difficulty] || '';
+  const bump = document.createElement('div');
+  bump.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;z-index:999;transition:opacity .5s;';
+  bump.textContent = '⬆ Level up! ' + label;
+  document.body.appendChild(bump);
+  setTimeout(() => { bump.style.opacity='0'; setTimeout(()=>bump.remove(),500); }, 2000);
+}
+
+/* Pool filtered by difficulty:
+   difficulty 1 = all questions
+   difficulty 2 = questions with lower accuracy (harder for user)
+   difficulty 3 = most missed questions only */
+function difficultyFilteredPool(pool){
+  const d = quizState.difficulty || 1;
+  if(d === 1) return pool;
+  return pool.filter(q => {
+    const s = statsByQuestion[q.id];
+    if(!s || (s.correct+s.incorrect) === 0) return true; // unseen always included
+    const acc = s.correct / (s.correct + s.incorrect);
+    if(d === 2) return acc < 0.8;   // intermediate: include questions below 80%
+    if(d === 3) return acc < 0.6;   // advanced: only questions below 60%
+    return true;
+  });
+}
+
+/* ============================================================
+   CASES AREA INIT
+   ============================================================ */
+function renderCasesArea(){
+  const pool = casesPool();
+  if(pool.length === 0) return;
+  if(!caseState.currentCase || !pool.find(c=>c.id===caseState.currentCase.id)){
+    caseState.currentCase = pool[Math.floor(Math.random()*pool.length)];
+    caseState.showAnswer = false;
+    caseState.selected = null;
+  }
+  renderCaseQuestion();
+}
+
+
+/* ============================================================
+   PATIENT GRAPH CASES
+   ============================================================ */
+const PATIENT_CASES = {
+  1: {
+    name: "Marco", age: 7, behavior: "Self-injurious behavior (head-hitting)",
+    function: "Escape-maintained",
+    en: "Marco, 7 y/o. Head-hitting maintained by escape from demands.",
+    es: "Marco, 7 años. Golpes en la cabeza mantenidos por escape de demandas.",
+    baseline: [8,9,7,10,8,9],
+    intervention: [6,4,3,2,1,1,0,0,1,0],
+    phases: ["Baseline (A)", "DRA + Extinction (B)"],
+    question_en: "The graph shows a decreasing trend in the intervention phase. What does this suggest?",
+    question_es: "La gráfica muestra tendencia descendente en la fase de intervención. ¿Qué sugiere esto?",
+    opts: ["The intervention is not working","The behavior is increasing","The intervention appears to be reducing the behavior","Spontaneous recovery occurred"],
+    opts_es: ["La intervención no funciona","La conducta está aumentando","La intervención parece reducir la conducta","Ocurrió recuperación espontánea"],
+    ans: 2
+  },
+  2: {
+    name: "Sofia", age: 5, behavior: "Tantrums",
+    function: "Attention-maintained",
+    en: "Sofia, 5 y/o. Tantrums maintained by caregiver attention.",
+    es: "Sofía, 5 años. Rabietas mantenidas por atención del cuidador.",
+    baseline: [12,14,11,13,15,12],
+    intervention: [10,7,5,3,2,1,0,1,0,0],
+    phases: ["Baseline (A)", "NCR + Extinction (B)"],
+    question_en: "What happened in sessions 7-10 where data drops to 0-1?",
+    question_es: "¿Qué ocurrió en las sesiones 7-10 donde los datos bajan a 0-1?",
+    opts: ["Extinction burst","Spontaneous recovery","Behavior is being successfully reduced by intervention","Data collection error"],
+    opts_es: ["Estallido de extinción","Recuperación espontánea","La conducta se reduce exitosamente por la intervención","Error en recolección de datos"],
+    ans: 2
+  },
+  3: {
+    name: "Diego", age: 9, behavior: "Off-task behavior",
+    function: "Automatic reinforcement",
+    en: "Diego, 9 y/o. Off-task behavior (self-stimulatory) — automatic function.",
+    es: "Diego, 9 años. Conducta fuera de tarea (autoestimulatoria) — función automática.",
+    baseline: [45,48,42,50,47],
+    intervention: [40,35,28,22,18,15,12,10,8,9],
+    phases: ["Baseline (A)", "RIRD + Enriched Environment (B)"],
+    question_en: "The baseline shows values around 42-50%. What does a stable baseline indicate?",
+    question_es: "La línea base muestra valores alrededor de 42-50%. ¿Qué indica una línea base estable?",
+    opts: ["The behavior is improving before intervention","A consistent level that allows comparison with intervention effects","Data collection is unreliable","The behavior function changed"],
+    opts_es: ["La conducta mejora antes de la intervención","Un nivel consistente que permite comparar con los efectos de la intervención","La recolección de datos no es confiable","La función de la conducta cambió"],
+    ans: 1
+  },
+  4: {
+    name: "Ana", age: 6, behavior: "Aggression (hitting)",
+    function: "Tangible-maintained",
+    en: "Ana, 6 y/o. Aggression maintained by access to preferred items.",
+    es: "Ana, 6 años. Agresión mantenida por acceso a artículos preferidos.",
+    baseline: [5,7,6,8,5,7],
+    intervention: [9,11,7,5,4,3,2,1,0,1],
+    phases: ["Baseline (A)", "DRA + Extinction (B)"],
+    question_en: "Sessions 1-2 of intervention show HIGHER values than baseline. This is called:",
+    question_es: "Las sesiones 1-2 de intervención muestran valores MÁS ALTOS que la línea base. Esto se llama:",
+    opts: ["Treatment failure","Spontaneous recovery","Extinction burst — expected temporary increase","Data entry error"],
+    opts_es: ["Fracaso del tratamiento","Recuperación espontánea","Estallido de extinción — aumento temporal esperado","Error de ingreso de datos"],
+    ans: 2
+  },
+  5: {
+    name: "Luis", age: 8, behavior: "Elopement",
+    function: "Escape-maintained",
+    en: "Luis, 8 y/o. Elopement (running away) maintained by escape from tasks.",
+    es: "Luis, 8 años. Escapismo (huir) mantenido por escape de tareas.",
+    baseline: [4,5,3,4,5,4],
+    intervention: [3,2,2,1,0,0,0,1,0,0],
+    phases: ["Baseline (A)", "FCT + Escape Extinction (B)"],
+    question_en: "The cumulative record for Luis would show a flat line starting session 7. What does a flat line on a cumulative record mean?",
+    question_es: "El registro acumulativo de Luis mostraría una línea plana desde la sesión 7. ¿Qué significa una línea plana en un registro acumulativo?",
+    opts: ["Behavior is increasing rapidly","The behavior DID NOT occur — zero responses","Data was not collected","The graph resets to zero"],
+    opts_es: ["La conducta aumenta rápidamente","La conducta NO ocurrió — cero respuestas","Los datos no fueron recolectados","La gráfica regresa a cero"],
+    ans: 1
+  }
+};
+
+function renderPatientGraph(){
+  const sel = document.getElementById('patientSelect');
+  const id = sel ? sel.value : '1';
+  const pc = PATIENT_CASES[id];
+  if(!pc) return;
+
+  const svg = document.getElementById('svgPatient');
+  const info = document.getElementById('patientGraphInfo');
+  const quiz = document.getElementById('patientQuiz');
+
+  // Update info
+  info.innerHTML = `<strong>${pc.name}</strong> · ${pc.en}<br><em>${pc.es}</em><br>
+    <span style="background:#fef3c7;padding:2px 6px;border-radius:4px;font-size:11px;margin-top:4px;display:inline-block;">
+      Function: ${pc.function}
+    </span>`;
+
+  // Draw graph
+  const allData = [...pc.baseline, ...pc.intervention];
+  const maxVal = Math.max(...allData) + 2;
+  const blLen = pc.baseline.length;
+  const totalLen = allData.length;
+  const W = 320, H = 200;
+  const pL = 35, pR = 10, pT = 20, pB = 30;
+  const gW = W - pL - pR, gH = H - pT - pB;
+
+  const tX = i => pL + (i / (totalLen - 1)) * gW;
+  const tY = v => pT + gH * (1 - v / maxVal);
+
+  let svgStr = '';
+
+  // Grid lines
+  for(let i = 0; i <= 4; i++){
+    const y = pT + gH * (1 - i/4);
+    const val = Math.round(maxVal * i / 4);
+    svgStr += `<line x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}" stroke="#e5e7eb" stroke-width="1"/>`;
+    svgStr += `<text x="${pL-4}" y="${y+4}" text-anchor="end" font-size="9" fill="#9ca3af">${val}</text>`;
+  }
+
+  // Phase change line
+  const phaseX = tX(blLen - 0.5);
+  svgStr += `<line x1="${phaseX}" y1="${pT}" x2="${phaseX}" y2="${H-pB}" stroke="#374151" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+  svgStr += `<text x="${pL + (phaseX-pL)/2}" y="${pT-4}" text-anchor="middle" font-size="8" fill="#6b7280">Baseline</text>`;
+  svgStr += `<text x="${phaseX + (W-pR-phaseX)/2}" y="${pT-4}" text-anchor="middle" font-size="8" fill="#6b7280">Intervention</text>`;
+
+  // Baseline line (dark)
+  let path = '';
+  pc.baseline.forEach((v, i) => {
+    path += (i === 0 ? 'M' : 'L') + tX(i) + ',' + tY(v);
+  });
+  svgStr += `<path d="${path}" fill="none" stroke="#1e3a5f" stroke-width="2"/>`;
+  pc.baseline.forEach((v, i) => {
+    svgStr += `<circle cx="${tX(i)}" cy="${tY(v)}" r="4" fill="#1e3a5f"/>`;
+  });
+
+  // Intervention line (orange/red)
+  let path2 = '';
+  pc.intervention.forEach((v, i) => {
+    const xi = i + blLen;
+    path2 += (i === 0 ? 'M' : 'L') + tX(xi) + ',' + tY(v);
+  });
+  svgStr += `<path d="${path2}" fill="none" stroke="#e07a30" stroke-width="2"/>`;
+  pc.intervention.forEach((v, i) => {
+    const xi = i + blLen;
+    svgStr += `<circle cx="${tX(xi)}" cy="${tY(v)}" r="4" fill="#e07a30"/>`;
+  });
+
+  // X axis labels
+  allData.forEach((_, i) => {
+    svgStr += `<text x="${tX(i)}" y="${H-pB+14}" text-anchor="middle" font-size="8" fill="#9ca3af">${i+1}</text>`;
+  });
+  svgStr += `<text x="${W/2}" y="${H}" text-anchor="middle" font-size="8" fill="#6b7280">Session / Sesión</text>`;
+
+  svg.innerHTML = svgStr;
+
+  // Render quiz question
+  quiz.innerHTML = `
+    <p style="font-size:12px;font-weight:600;margin-bottom:8px;">${pc.question_en}<br><em style="font-weight:400;color:var(--text-light)">${pc.question_es}</em></p>
+    ${pc.opts.map((opt, i) => `
+      <button class="optionBtn" onclick="answerPatientQuiz(${id},${i},this)" style="text-align:left;">
+        <span class="optLetter">${String.fromCharCode(65+i)}</span>
+        <span style="display:flex;flex-direction:column;">
+          <span>${opt}</span>
+          <span style="font-size:11px;color:var(--text-light);font-style:italic;">${pc.opts_es[i]}</span>
+        </span>
+      </button>
+    `).join('')}
+    <div id="patientAns" style="display:none;" class="explainBox"></div>
+  `;
+}
+
+function answerPatientQuiz(caseId, selected, btn){
+  const pc = PATIENT_CASES[caseId];
+  const correct = selected === pc.ans;
+  document.querySelectorAll('#patientQuiz .optionBtn').forEach((b,i) => {
+    b.disabled = true;
+    if(i === pc.ans) b.classList.add('correct');
+    else if(i === selected) b.classList.add('incorrect');
+  });
+  const ansDiv = document.getElementById('patientAns');
+  ansDiv.style.display = 'block';
+  ansDiv.innerHTML = (correct ? '✓ Correct! / ¡Correcto! ' : '✗ Incorrect / Incorrecto. ') +
+    'The correct answer is <strong>' + String.fromCharCode(65+pc.ans) + '</strong>. ' + pc.opts[pc.ans] + ' / ' + pc.opts_es[pc.ans];
+}
+
+// Auto-render first patient graph when tab opens
+const _origSetGraphTab = typeof setGraphTab === 'function' ? setGraphTab : null;
+function setGraphTab(btn, tab){
+  document.querySelectorAll('.graphPanel').forEach(p => p.classList.add('hidden'));
+  document.getElementById('graphPanel-' + tab).classList.remove('hidden');
+  document.querySelectorAll('.graphTabs button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if(tab === 'patient') renderPatientGraph();
+}
+
 document.addEventListener('DOMContentLoaded', function(){
   renderStaticGraphs();
   renderProgress();
   updateSimIntro();
+  renderQuizArea();
+  renderCasesArea();
+  initDifficultySystem();
 });
 </script>
 </body>
