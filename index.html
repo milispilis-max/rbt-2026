@@ -1889,16 +1889,7 @@ function difficultyFilteredPool(pool){
 /* ============================================================
    CASES AREA INIT
    ============================================================ */
-function renderCasesArea(){
-  const pool = casesPool();
-  if(pool.length === 0) return;
-  if(!caseState.currentCase || !pool.find(c=>c.id===caseState.currentCase.id)){
-    caseState.currentCase = pool[Math.floor(Math.random()*pool.length)];
-    caseState.showAnswer = false;
-    caseState.selected = null;
-  }
-  renderCaseQuestion();
-}
+
 
 
 /* ============================================================
