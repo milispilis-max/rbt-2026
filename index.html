@@ -172,9 +172,13 @@ select, input[type="text"]{
   background:#fff;
   border-top:1px solid var(--border);
   display:flex;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
   z-index:50;
   box-shadow:0 -2px 8px rgba(0,0,0,.05);
 }
+#bottomNav::-webkit-scrollbar{display:none;}
 .navBtn{
   flex:1;
   background:none;
@@ -183,13 +187,14 @@ select, input[type="text"]{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:2px;
+  gap:1px;
   color:var(--text-light);
-  font-size:10px;
+  font-size:9px;
   font-weight:600;
-  padding:6px 2px;
+  padding:4px 1px;
+  min-width:0;
 }
-.navBtn .navIcon{font-size:19px;line-height:1;}
+.navBtn .navIcon{font-size:17px;line-height:1;}
 .navBtn.active{color:var(--orange);}
 
 /* ---------- MODAL ---------- */
@@ -493,6 +498,24 @@ svg.graphSvg{width:100%;height:auto;background:#fff;border-radius:12px;border:1p
       </div>
     </section>
 
+
+    <!-- ---------- EXAM 100 TAB ---------- -->
+    <section id="view-exam100" class="view">
+      <h1 class="viewTitle">📝 Examen 100 Preg</h1>
+      <p class="viewSub">Practice Answer Key · Clave de Respuestas de Práctica</p>
+      <div style="padding:0 0 10px;">
+        <button id="e100startBtn" class="btn btn-orange" onclick="startExam100()" style="width:100%;padding:14px;font-size:15px;">▶ Iniciar Examen / Start Exam</button>
+      </div>
+      <div class="statsBar" id="e100stats" style="display:none;">
+        <div class="statBox"><div class="statN" id="e100c">0</div><div class="statL">✓ OK</div></div>
+        <div class="statBox"><div class="statN" id="e100w">0</div><div class="statL">✗ No</div></div>
+        <div class="statBox"><div class="statN" id="e100n">100</div><div class="statL">Quedan</div></div>
+        <div class="statBox"><div class="statN" id="e100p">—</div><div class="statL">%</div></div>
+      </div>
+      <div class="progressTrack" id="e100prog" style="display:none;"><div class="progressFill" id="e100fill" style="width:0%"></div></div>
+      <div id="e100area"></div>
+    </section>
+
     <!-- ---------- FLASHCARDS TAB ---------- -->
     <section id="view-flashcards" class="view">
       <h1 class="viewTitle">🃏 Flashcards</h1>
@@ -582,30 +605,6 @@ svg.graphSvg{width:100%;height:auto;background:#fff;border-radius:12px;border:1p
       </div>
     </section>
 
-
-      <!-- Patient Cases Graph Panel -->
-      <div id="graphPanel-patient" class="graphPanel card hidden">
-        <p style="font-size:13px;margin-bottom:12px;color:var(--text-light);">
-          Graph real patient data from clinical cases / Grafique datos reales de casos clínicos
-        </p>
-        <div style="margin-bottom:12px;">
-          <label style="font-size:12px;font-weight:600;display:block;margin-bottom:6px;">Select Patient Case / Seleccionar caso:</label>
-          <select id="patientSelect" onchange="renderPatientGraph()" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);font-size:13px;">
-            <option value="1">Patient: Marco — Self-injury (escape-maintained)</option>
-            <option value="2">Patient: Sofia — Tantrum (attention-maintained)</option>
-            <option value="3">Patient: Diego — Off-task behavior (automatic)</option>
-            <option value="4">Patient: Ana — Aggression (tangible-maintained)</option>
-            <option value="5">Patient: Luis — Elopement (escape-maintained)</option>
-          </select>
-        </div>
-        <svg id="svgPatient" class="graphSvg" viewBox="0 0 320 200" style="width:100%;"></svg>
-        <div id="patientGraphInfo" style="margin-top:10px;font-size:12px;color:var(--text-light);line-height:1.6;"></div>
-        <div style="margin-top:12px;padding:10px;background:var(--surface2);border-radius:8px;">
-          <p style="font-size:12px;font-weight:600;margin-bottom:6px;">📋 Interpret this graph / Interpreta esta gráfica:</p>
-          <div id="patientQuiz" style="display:flex;flex-direction:column;gap:6px;"></div>
-        </div>
-      </div>
-
     <!-- ---------- PROGRESS TAB ---------- -->
     <section id="view-progress" class="view">
       <h1 class="viewTitle">📊 Progress</h1>
@@ -637,7 +636,8 @@ svg.graphSvg{width:100%;height:auto;background:#fff;border-radius:12px;border:1p
     <button class="navBtn" data-tab="flashcards" onclick="switchTab('flashcards')"><span class="navIcon">🃏</span><span>Cards</span></button>
     <button class="navBtn" data-tab="glossary" onclick="switchTab('glossary')"><span class="navIcon">📖</span><span>Glossary</span></button>
     <button class="navBtn" data-tab="graphs" onclick="switchTab('graphs')"><span class="navIcon">📈</span><span>Graphs</span></button>
-    <button class="navBtn" data-tab="progress" onclick="switchTab('progress')"><span class="navIcon">📊</span><span>Progress</span></button>
+    <button class="navBtn" data-tab="exam100" onclick="switchTab('exam100')"><span class="navIcon">📝</span><span>Examen</span></button>
+        <button class="navBtn" data-tab="progress" onclick="switchTab('progress')"><span class="navIcon">📊</span><span>Progress</span></button>
   </nav>
 
   <!-- ============ STUDY PLAN MODAL ============ -->
@@ -1257,7 +1257,6 @@ function renderSimQuestion(){
     <div class="card">
       <span class="badge ${DOMAIN_CLASS[q.domain]}">${q.domain} · ${DOMAIN_NAMES[q.domain]}</span>
       <p class="qStem" style="margin-top:10px;">${q.en}</p>
-      <p style="font-size:13px;color:var(--text-light);font-style:italic;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed var(--border);">${q.es || ''}</p>
       <div id="simOptions">
         ${q.opts.map((opt,i) => `
           <button class="optionBtn ${selected===i?'selected':''}" onclick="selectSimAnswer(${i})">
@@ -1324,15 +1323,13 @@ function submitSimulator(){
     const correct = sel === q.ans;
     return `
       <div class="card">
-        <span class="badge ${DOMAIN_CLASS[q.domain]}">${q.domain} · ${correct?'✓ Correct':'✗ Incorrect'}</span>
+        <span class="badge ${DOMAIN_CLASS[q.domain]}">${q.domain}</span>
         <p class="qStem" style="margin-top:8px;">${q.en}</p>
-        <p style="font-size:12px;color:var(--text-light);font-style:italic;margin-bottom:10px;">${q.es || ''}</p>
         ${q.opts.map((opt,oi) => `
           <div class="optionBtn ${oi===q.ans?'correct':(oi===sel?'incorrect':'')}" style="pointer-events:none;">
             <span class="optLetter">${String.fromCharCode(65+oi)}</span><span>${opt}</span>
           </div>`).join('')}
-        <div style="background:#d1fae5;border-radius:6px;padding:8px 10px;margin:6px 0;font-size:12px;"><strong>✓ Respuesta correcta:</strong> ${q.opts[q.ans]}</div>
-        <div class="explainBox">${q.exp_en || ''}<br><em>${q.exp_es || ''}</em></div>
+        <div class="explainBox">${q.exp_en || ''}</div>
       </div>`;
   }).join('');
 }
@@ -1394,18 +1391,11 @@ function renderQuizQuestion(){
   const area = document.getElementById('quizArea');
   const q = quizState.currentQ;
   if(!q) return;
-  const diff = quizState.difficulty || 1;
-  const diffLabel = diff === 1 ? '🟢 Básico' : diff === 2 ? '🟡 Intermedio' : '🔴 Avanzado';
-  const num = quizState.questionNumber || 1;
-  const opts_es = q.opts_es || q.opts; // fallback to EN opts if no ES
   area.innerHTML = `
     <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <span class="badge ${DOMAIN_CLASS[q.domain]}">${q.domain} · ${DOMAIN_NAMES[q.domain]}</span>
-        <span style="font-size:11px;color:var(--text-light);">${diffLabel} · #${num}</span>
-      </div>
-      <p class="qStem" style="margin-top:6px;font-size:15px;font-weight:600;">${q.en}</p>
-      <p style="font-size:13px;color:var(--text-light);font-style:italic;margin-bottom:14px;border-bottom:1px dashed var(--border);padding-bottom:10px;">${q.es || ''}</p>
+      <span class="badge ${DOMAIN_CLASS[q.domain]}">${q.domain} · ${DOMAIN_NAMES[q.domain]}</span>
+      <p class="qStem" style="margin-top:10px;">${q.en}</p>
+      <p style="font-size:13px;color:var(--text-light);font-style:italic;margin-bottom:12px;">${q.es || ''}</p>
       <div id="quizOptions">
         ${q.opts.map((opt,i) => {
           let cls = '';
@@ -1413,29 +1403,14 @@ function renderQuizQuestion(){
             if(i===q.ans) cls='correct';
             else if(i===quizState.selected) cls='incorrect';
           } else if(i===quizState.selected) cls='selected';
-          const esOpt = opts_es[i] || opt;
-          return `<button class="optionBtn ${cls}" ${quizState.showAnswer?'disabled':''} onclick="answerQuiz(${i})" style="text-align:left;">
-            <span class="optLetter">${String.fromCharCode(65+i)}</span>
-            <span style="display:flex;flex-direction:column;">
-              <span style="font-weight:500;">${opt}</span>
-              <span style="font-size:11px;color:var(--text-light);font-style:italic;">${esOpt !== opt ? esOpt : ''}</span>
-            </span>
+          return `<button class="optionBtn ${cls}" ${quizState.showAnswer?'disabled':''} onclick="answerQuiz(${i})">
+            <span class="optLetter">${String.fromCharCode(65+i)}</span><span>${opt}</span>
           </button>`;
         }).join('')}
       </div>
-      ${quizState.showAnswer ? `
-        <div class="explainBox">
-          <div style="background:#d1fae5;border-radius:6px;padding:8px 10px;margin-bottom:8px;font-size:13px;">
-            <strong>✓ Respuesta correcta / Correct answer:</strong> ${q.opts[q.ans]}
-          </div>
-          <strong>EN:</strong> ${q.exp_en || ''}<br>
-          <em><strong>ES:</strong> ${q.exp_es || ''}</em>
-        </div>
-        <div style="margin-top:10px;display:flex;gap:8px;">
-          <button class="btn btn-orange" onclick="nextQuizQuestion()">Next / Siguiente →</button>
-        </div>
-      ` : ''}
+      ${quizState.showAnswer ? `<div class="explainBox">${q.exp_en || ''}<br><em>${q.exp_es || ''}</em></div>` : ''}
     </div>
+    ${quizState.showAnswer ? `<button class="btn btn-orange" onclick="nextQuizQuestion()">Next Question →</button>` : ''}
   `;
 }
 
@@ -1443,18 +1418,15 @@ function answerQuiz(i){
   if(quizState.showAnswer) return;
   quizState.selected = i;
   quizState.showAnswer = true;
-  quizState.questionNumber = (quizState.questionNumber||0) + 1;
   const q = quizState.currentQ;
   const correct = i === q.ans;
-  updateDifficulty(correct);
   statsByQuestion[q.id] = statsByQuestion[q.id] || {correct:0, incorrect:0};
   correct ? statsByQuestion[q.id].correct++ : statsByQuestion[q.id].incorrect++;
   renderQuizQuestion();
 }
 
 function nextQuizQuestion(){
-  const basePool = quizPool();
-  const pool = difficultyFilteredPool(basePool).length > 0 ? difficultyFilteredPool(basePool) : basePool;
+  const pool = quizPool();
   quizState.currentQ = weightedPick(pool);
   quizState.showAnswer = false;
   quizState.selected = null;
@@ -1834,261 +1806,201 @@ function updateSimIntro(){
 
 
 /* ============================================================
-   DIFFICULTY SYSTEM — Progressive difficulty in Quiz
+   EXAM 100 — Practice Answer Key
    ============================================================ */
+const EXAM100=[
+{id:1,en:"Which of the following would be best at tracking frequency?",es:"¿Cuál de las siguientes opciones sería mejor para registrar la frecuencia?",opts:["A stopwatch", "Your hand", "Counting in your head", "A clicker counter"],opts_es:["Un cronómetro", "Tu mano", "Contar en tu cabeza", "Un contador de clics"],ans:3,exp_es:"El contador de clics es el mejor instrumento para registrar frecuencia porque permite contar cada ocurrencia de la conducta de forma precisa y sin interrumpir la observación."},
+{id:2,en:"You are recording how long it takes your client to get dressed in the morning. What type of data are you taking?",es:"Estás registrando cuánto tiempo le toma a tu cliente vestirse por la mañana. ¿Qué tipo de datos estás tomando?",opts:["Frequency", "IRT", "Duration", "Latency"],opts_es:["Frecuencia", "TER (Tiempo Entre Respuestas)", "Duración", "Latencia"],ans:2,exp_es:"La duración mide el tiempo que una conducta tarda en completarse desde su inicio hasta su fin. Registrar cuánto tiempo toma vestirse es una medida de duración."},
+{id:3,en:"Billy's mom gave him a list of items to buy at the grocery store while Billy's mom was at work. When she returned home, she checked to make sure Billy had bought all of the items on the list. What type of data collection is this?",es:"La mamá de Billy le dio una lista de artículos para comprar en el supermercado mientras estaba en el trabajo. Cuando regresó, verificó que Billy había comprado todos los artículos. ¿Qué tipo de recolección de datos es esta?",opts:["Permanent Product", "Frequency", "IRT", "Rate"],opts_es:["Producto Permanente", "Frecuencia", "TER", "Tasa"],ans:0,exp_es:"El registro de producto permanente mide el resultado tangible y duradero de una conducta (la lista de compras completada) sin necesidad de observar directamente la conducta."},
+{id:4,en:"Your role in a functional assessment as an RBT is?",es:"¿Cuál es tu rol en una evaluación funcional como RBT?",opts:["To criticize the assessment", "To assist with the assessment", "To conduct the assessment", "To standy by and do nothing"],opts_es:["Criticar la evaluación", "Asistir con la evaluación", "Conducir la evaluación", "Quedarse de pie sin hacer nada"],ans:1,exp_es:"Los RBTs asisten al BCBA durante la evaluación funcional recopilando datos según se les indica. El BCBA es quien diseña y conduce la evaluación."},
+{id:5,en:"What is your primary role as an RBT?",es:"¿Cuál es tu rol principal como RBT?",opts:["Treatment planning", "Preference assessment", "Parent training", "Implementation"],opts_es:["Planificación del tratamiento", "Evaluación de preferencias", "Entrenamiento a padres", "Implementación"],ans:3,exp_es:"El rol principal del RBT es la implementación de los programas diseñados por el BCBA. El RBT no diseña tratamientos, no entrena padres de forma independiente, ni conduce evaluaciones por sí solo."},
+{id:6,en:"Which of the following behaviors is defined in the most observable and measurable terms?",es:"¿Cuál de las siguientes conductas está definida en los términos más observables y medibles?",opts:["Susie snapper her pencil in half after she incorrectly answered the math problem", "Susie was angry so she snapped her pencil in half", "Susie snapped her pencil in half because she has autism", "Susie's anxiety caused her to snap her pencil in half"],opts_es:["Susie rompió su lápiz por la mitad después de contestar mal el problema de matemáticas", "Susie estaba enojada y rompió su lápiz por la mitad", "Susie rompió su lápiz por la mitad porque tiene autismo", "La ansiedad de Susie le causó romper el lápiz"],ans:0,exp_es:"La definición operacional requiere que la conducta sea observable y medible. La opción A describe exactamente qué hizo Susie (rompió el lápiz) y cuándo (después de contestar mal), sin inferencias sobre emociones o causas internas."},
+{id:7,en:"You want to decrease the time it takes your client to eat their meal. You are told to record the length of time in between bites. What kind of data are you collecting?",es:"Quieres reducir el tiempo que le toma a tu cliente comer su comida. Te dicen que registres el tiempo entre mordidas. ¿Qué tipo de datos estás recolectando?",opts:["Duration", "Total task", "IRT", "Latency"],opts_es:["Duración", "Tarea total", "TER (Tiempo Entre Respuestas)", "Latencia"],ans:2,exp_es:"El TER (Inter-Response Time) mide el tiempo entre el final de una respuesta y el inicio de la siguiente. Medir el tiempo entre mordidas es el TER entre cada mordida."},
+{id:8,en:"What is the difference between frequency and rate?",es:"¿Cuál es la diferencia entre frecuencia y tasa?",opts:["Rate is frequency with a time component added", "Rate requires duration data", "There is no difference between the two", "Rate is more accurate than frequency"],opts_es:["La tasa es la frecuencia con un componente de tiempo añadido", "La tasa requiere datos de duración", "No hay diferencia entre los dos", "La tasa es más precisa que la frecuencia"],ans:0,exp_es:"La tasa = frecuencia ÷ tiempo. Permite comparar conductas entre sesiones de diferente duración. La frecuencia es solo el conteo de ocurrencias."},
+{id:9,en:"Before you can start collecting data, what is the first thing that should be done?",es:"Antes de comenzar a recolectar datos, ¿qué es lo primero que debe hacerse?",opts:["Collect your required materials", "Define the target behavior", "Report to your supervisor", "Select a data collection method"],opts_es:["Recopilar los materiales necesarios", "Definir la conducta objetivo", "Reportar al supervisor", "Seleccionar un método de recolección de datos"],ans:1,exp_es:"Definir la conducta objetivo es el primer paso. Sin una definición operacional clara, los datos recopilados no serán confiables ni replicables."},
+{id:10,en:"What type of interval recording underestimates the occurrence of behavior?",es:"¿Qué tipo de registro de intervalo subestima la ocurrencia de la conducta?",opts:["Partial interval", "Whole interval", "Momentary time sampling", "Frequency"],opts_es:["Intervalo parcial", "Intervalo completo", "Muestreo de tiempo momentáneo", "Frecuencia"],ans:1,exp_es:"El intervalo completo (whole interval) registra '+' solo si la conducta ocurre durante TODO el intervalo. Si la conducta se interrumpe aunque sea brevemente, no se registra, subestimando la conducta real."},
+{id:11,en:"Which of the following is a type of discontinuous measurement?",es:"¿Cuál de las siguientes es un tipo de medición discontinua?",opts:["Frequency", "Rate", "Duration", "Partial interval recording"],opts_es:["Frecuencia", "Tasa", "Duración", "Registro de intervalo parcial"],ans:3,exp_es:"Las mediciones discontinuas (intervalo parcial, intervalo completo, muestreo momentáneo) NO registran cada ocurrencia — muestrean la conducta. La frecuencia, tasa y duración son mediciones continuas."},
+{id:12,en:"What is the goal of a preference assessment?",es:"¿Cuál es el objetivo de una evaluación de preferencias?",opts:["Find out what is reinforcing to the client", "Determine punishers for the individual", "Identify stimuli that may be motivating", "Allow the client to choose what they want to work on during session"],opts_es:["Descubrir qué es reforzante para el cliente", "Determinar castigadores para el individuo", "Identificar estímulos que pueden ser motivadores", "Permitir que el cliente elija qué quiere trabajar en la sesión"],ans:2,exp_es:"La evaluación de preferencias identifica estímulos que PUEDEN funcionar como reforzadores. Preferencia no equivale a reforzador — hay que confirmar que el estímulo aumenta la conducta."},
+{id:13,en:"You are teaching your client to say \"bubble.\" Your client says \"b\" and you deliver reinforcement. Next time your client says \"b\" you don't deliver reinforcement. Instead, you wait until your client says \"bub\". You repeat this process and slowly increase the requirements for reinforcement up until your client says \"bubble.\" What are you implementing?",es:"Estás enseñando a tu cliente a decir 'burbuja'. Dices 'b' y refuerzas. Luego solo refuerzas 'bur', después 'burbu', hasta llegar a 'burbuja'. ¿Qué estás implementando?",opts:["Shaping", "Task chaining", "FCT", "Punishment"],opts_es:["Moldeamiento", "Encadenamiento de tarea", "FCT", "Castigo"],ans:0,exp_es:"El moldeamiento (shaping) refuerza aproximaciones sucesivas hacia la conducta objetivo. Cada paso más cercano a 'burbuja' se refuerza; los pasos anteriores se extinguen."},
+{id:14,en:"You are trying to teach your client to wash your hands. Your BCBA instructs you to use backwards chaining to teach this. What step might you teach first?",es:"Estás enseñando a tu cliente a lavarse las manos. Tu BCBA indica usar encadenamiento hacia atrás. ¿Qué paso enseñarías primero?",opts:["Turning the water on", "Putting soap on their hands", "Drying their hands off with a towel", "Entering the bathroom"],opts_es:["Abrir el grifo", "Poner jabón en las manos", "Secarse las manos con la toalla", "Entrar al baño"],ans:2,exp_es:"El encadenamiento hacia atrás enseña el ÚLTIMO paso primero. En lavarse las manos, secarse es el último paso — así el cliente siempre termina la cadena y recibe reforzamiento natural."},
+{id:15,en:"A student stands up and walks around the room at inappropriate times. You decide you are going to deliver reinforcement on a FI-3 reinforcement schedule for the student sitting in their chair. If the student gets up and walks around no reinforcement is delivered. What type of procedure is this?",es:"Un estudiante se para y camina en momentos inapropiados. Decides dar reforzamiento en un programa IF-3 cuando el estudiante está sentado. Si se para, no hay reforzamiento. ¿Qué procedimiento es este?",opts:["DRI", "DRO", "DRA", "DRL"],opts_es:["DRI", "DRO", "DRA", "DRL"],ans:0,exp_es:"El DRI refuerza una conducta que es físicamente INCOMPATIBLE con la conducta problema. Estar sentado es incompatible con caminar — no puedes hacer ambas al mismo tiempo."},
+{id:16,en:"Your client screams for extended periods of time throughout the day. Your BCBA instructs you to deliver reinforcement any time the client is not screaming. What type of procedure is this?",es:"Tu cliente grita durante períodos prolongados. Tu BCBA te indica dar reforzamiento cada vez que el cliente NO está gritando. ¿Qué procedimiento es este?",opts:["DRI", "DRO", "DRA", "DRH"],opts_es:["DRI", "DRO", "DRA", "DRH"],ans:1,exp_es:"El DRO (Reforzamiento Diferencial de Otras Conductas) refuerza la AUSENCIA de la conducta objetivo en un intervalo. No importa qué hace el cliente, siempre que NO esté gritando."},
+{id:17,en:"Linda elopes from the table when presented with a lengthy task. You start functional communication training with Linda in hopes you can teach her to ask for a break. Now, whenever Linda asks for a break when presented with a lengthy task, you provide reinforcement. What type of reinforcement procedure is this?",es:"Linda se escapa de la mesa ante tareas largas. Inicias FCT enseñándole a pedir un descanso. Ahora cuando Linda pide descanso, le das reforzamiento. ¿Qué procedimiento de reforzamiento es este?",opts:["DRI", "DRO", "DRD", "DRA"],opts_es:["DRI", "DRO", "DRD", "DRA"],ans:3,exp_es:"El DRA refuerza una conducta ALTERNATIVA que sirve la misma función (pedir descanso = escape apropiado). Se extingue la conducta problema (escape) y se refuerza la alternativa funcional."},
+{id:18,en:"In this type of teaching there is an antecedent, a behavior, a consequence, and a brief pause before the next antecedent.",es:"En este tipo de enseñanza hay un antecedente, una conducta, una consecuencia y una pausa breve antes del siguiente antecedente.",opts:["NET", "FCT", "Prompting", "DTT"],opts_es:["NET", "FCT", "Instrucción con ayudas", "DTT"],ans:3,exp_es:"El DTT (Enseñanza de Ensayo Discreto) sigue la secuencia: ED → Conducta → Consecuencia → ITI (Intervalo entre ensayos). La pausa breve (ITI) separa cada ensayo del siguiente."},
+{id:19,en:"When should you deliver a prompt?",es:"¿Cuándo debes dar una ayuda (prompt)?",opts:["After the consequence", "Before the SD", "After the response", "After the SD, before the response"],opts_es:["Después de la consecuencia", "Antes del ED", "Después de la respuesta", "Después del ED, antes de la respuesta"],ans:3,exp_es:"La ayuda se da después del ED (estímulo discriminativo) pero antes de que ocurra la respuesta. El orden correcto es: ED → Ayuda → Respuesta → Consecuencia."},
+{id:20,en:"Billy has soccer practice today. When it's time to leave, Billy's dad tells Billy to grab his soccer bag. Billy complies and grabs his stuff. His dad says \"Nice job. Let's load up the car.\" In this scenario, what is the antecedent to Billy grabbing his stuff?",es:"El papá de Billy le dice que agarre su bolsa de fútbol. Billy cumple. Su papá dice 'Muy bien'. ¿Cuál es el antecedente para que Billy agarre su bolsa?",opts:["Billy has soccer practice today", "There is no clear antecedent", "Billy's dad telling Billy to grab his soccer bag", "\"Nice job. Let's load up the car.\""],opts_es:["Billy tiene práctica de fútbol hoy", "No hay antecedente claro", "El papá de Billy diciéndole que agarre la bolsa", "'Muy bien. Vamos al carro.'"],ans:2,exp_es:"El antecedente es el evento que ocurre inmediatamente ANTES de la conducta. El papá diciéndole que agarre la bolsa es el estímulo discriminativo (ED) que señala la disponibilidad del reforzamiento."},
+{id:21,en:"The process of breaking down a skill into smaller, more manageable components by doing the task yourself, or watching someone else do the task, is called?",es:"El proceso de descomponer una habilidad en componentes más pequeños y manejables, haciéndolo uno mismo o viendo a alguien hacerlo, se llama:",opts:["Task analysis", "Task chaining", "Forward Chaining", "DTT"],opts_es:["Análisis de tarea", "Encadenamiento de tarea", "Encadenamiento hacia adelante", "DTT"],ans:0,exp_es:"El análisis de tarea divide habilidades complejas en pasos individuales secuenciales y enseñables. Es el primer paso antes de implementar cualquier procedimiento de encadenamiento."},
+{id:22,en:"You have been working with your client for two years. Your client's mom tells you they are going out with friends tomorrow and offers to pay you to babysit. If you accepted, what would you be violating?",es:"Has trabajado con tu cliente por dos años. La mamá del cliente te ofrece pagar para que cuides al niño mañana. Si aceptas, ¿qué estarías violando?",opts:["Dual relationships", "Respondinga appropriately to feedback", "Legal compliance", "Effective communication"],opts_es:["Relaciones duales", "Responder apropiadamente a la retroalimentación", "Cumplimiento legal", "Comunicación efectiva"],ans:0,exp_es:"Aceptar dinero de la familia del cliente para cuidar al niño crea una RELACIÓN DUAL — combina la relación profesional con una relación personal/laboral, creando conflictos de interés."},
+{id:23,en:"Your session takes place during lunch time each day. The client's parents have started to buy you lunch and requested you eat lunch with them each day. What is the best course of action?",es:"Tu sesión es durante el almuerzo. Los padres han empezado a comprarte almuerzo y quieren que comas con ellos cada día. ¿Cuál es la mejor acción?",opts:["Eat lunch with the family", "Politely decline and inform your supervisor", "Get rid of the client", "Change the session time"],opts_es:["Almorzar con la familia", "Declinar amablemente e informar a tu supervisor", "Deshacerse del cliente", "Cambiar el horario de la sesión"],ans:1,exp_es:"Aceptar regalos regulares y compartir comidas con la familia del cliente puede crear una relación dual. Lo correcto es declinar amablemente e informar al supervisor para orientación."},
+{id:24,en:"During proper discrimination training, reinforcement is available for one response, but not for another. Which of the following is an example of discrimination training?",es:"Durante el entrenamiento de discriminación correcto, el reforzamiento está disponible para una respuesta pero no para otra. ¿Cuál es un ejemplo?",opts:["Shoe tying", "You praise your client when they put on their pants independently", "You tell your client to touch \"blue.\" You deliver reinforcement when your cilent touches", "Your client has started calling all animals \"dogs\""],opts_es:["Atarse los zapatos", "Elogias al cliente cuando se pone los pantalones independientemente", "Le dices 'toca azul', refuerzas cuando toca azul pero no cuando toca verde", "Tu cliente ha empezado a llamar a todos los animales 'perros'"],ans:2,exp_es:"El entrenamiento de discriminación enseña a responder al ED (toca azul = reforzamiento disponible) pero NO al S-delta (verde = no disponible). La opción C es el ejemplo clásico."},
+{id:25,en:"Which of the following is an example of generalization?",es:"¿Cuál es un ejemplo de generalización?",opts:["You teach your client to make purchases at the clinic. Now, your client is able to buy his", "Your client will have a conversation with the math teacher, but not any of his other", "Your client has learned to count to 10", "You ask your client to touch the \"blue\" card. They touch the green card."],opts_es:["Enseñas a tu cliente a hacer compras en la clínica. Ahora puede comprar su almuerzo en la escuela", "Tu cliente puede conversar con el maestro de matemáticas pero con ningún otro", "Tu cliente aprendió a contar hasta 10", "Le pides que toque la tarjeta 'azul' y toca la verde"],ans:0,exp_es:"La generalización ocurre cuando una habilidad aprendida en un contexto se aplica en entornos no entrenados. Comprar en la escuela (no entrenado) después de aprender en la clínica (entrenado) es generalización perfecta."},
+{id:26,en:"When explaining something to parents what should you try and do?",es:"Al explicar algo a los padres, ¿qué debes intentar hacer?",opts:["Use technical language and jargon", "Never explain anything to parents", "Record every conversation you have with parents", "Use terminology that the parent is able to understand"],opts_es:["Usar lenguaje técnico y jerga", "Nunca explicar nada a los padres", "Registrar cada conversación con los padres", "Usar terminología que el padre pueda entender"],ans:3,exp_es:"La comunicación efectiva con las familias requiere usar lenguaje accesible, evitando jerga técnica de ABA. Los padres necesitan entender para participar activamente en la intervención."},
+{id:27,en:"Bobby is working with a client in-home. The client's mom wants the client to be able to prepare their own breakfast. Bobby teaches the client to make scrambled eggs using a task chain procedure. Bobby helps the client by getting out the plate and utensils. The client turns on the stove, heats the pan, puts butter in the pan, cracks the eggs in the pan, scrambles the eggs, puts them on a plate, and turns off the stove. One day, Bobby does not put out the plate. What is he implementing?",es:"Bobby enseña a un cliente a preparar huevos revueltos. Bobby pone el plato y los utensilios; el cliente hace el resto. Un día Bobby no pone el plato. ¿Qué está implementando?",opts:["Forward chaining", "Behavior Chain Interruption Strategy (BCIS)", "Task analysis", "Fading"],opts_es:["Encadenamiento hacia adelante", "Estrategia de Interrupción de Cadena de Conducta (BCIS)", "Análisis de tarea", "Desvanecimiento"],ans:1,exp_es:"El BCIS (Behavior Chain Interruption Strategy) interrumpe deliberadamente la cadena de conducta al omitir un componente, creando una OM para que el cliente genere la respuesta faltante de forma independiente."},
+{id:28,en:"Tangible, automatic, attention, and escape are?",es:"Tangible, automático, atención y escape son:",opts:["Irrelevant to ABA", "Mentalisms", "The four functions of behavior", "A type of punishment"],opts_es:["Irrelevantes para ABA", "Tipos de intervenciones", "Las cuatro funciones de la conducta", "Tipos de reforzamiento"],ans:2,exp_es:"Las cuatro funciones de la conducta (AETA) son: Atención, Escape/Evitación, acceso a Tangibles, y reforzamiento Automático/sensorial. Toda conducta problema se mantiene por una o más de estas funciones."},
+{id:29,en:"Joe is in the kitchen doing a puzzle with his mom. Joe's brother needs help completing his math homework, and asks his mom for assistance. Joe's mom gets up and goes help the brother. Five minutes later, Joe starts banging his fists on the table. Hypothetically, what function might this serve?",es:"Para que el reforzamiento sea más efectivo, debe entregarse:",opts:["Anger", "Escape", "Tangible", "Attention"],opts_es:["Una vez al día", "Solo cuando el cliente se porta bien", "En una cantidad grande", "Inmediatamente después de la conducta"],ans:3,exp_es:"La inmediatez es un principio crítico del reforzamiento. Entre más rápido se entrega después de la conducta, más claramente se establece la conexión conducta-consecuencia."},
+{id:30,en:"Which of the following is a response prompt?",es:"¿Cuál de los siguientes es el mejor ejemplo de un reforzador primario?",opts:["Verbal", "Modeling", "Full physical", "All of the above"],opts_es:["Elogios", "Fichas", "Dinero", "Comida"],ans:3,exp_es:"Los reforzadores primarios (incondicionados) son biológicamente significativos y no requieren condicionamiento previo. La comida, el agua y el refugio son ejemplos primarios. El elogio, las fichas y el dinero son reforzadores secundarios (condicionados)."},
+{id:31,en:"The behavior results in the addition of something that increases the behavior in the future. What does this describe?",es:"¿Cuál de los siguientes es el mejor ejemplo de un reforzador secundario?",opts:["Negative Reinforcement", "Positive Reinforcement", "Positive Punishment", "Negative Punishment"],opts_es:["Agua", "Elogios", "Comida", "Abrigo"],ans:1,exp_es:"Los reforzadores secundarios (condicionados) adquieren su valor a través del aprendizaje, al asociarse repetidamente con reforzadores primarios. El elogio es un reforzador social condicionado."},
+{id:32,en:"Every time Alex yells out in class he is sent to the principal's office. This goes on for two weeks, and Alex's yelling increases. What is happening in this scenario?",es:"¿Cuál de los siguientes es el mejor ejemplo de castigo positivo?",opts:["Alex's behavior is being reinforced", "Alex's behavior is being punished", "It cannot be determined", "Alex's behavior is being put on extinction"],opts_es:["Agregar algo desagradable para reducir la conducta", "Remover algo desagradable para reducir la conducta", "Agregar algo agradable para aumentar la conducta", "Remover algo agradable para reducir la conducta"],ans:0,exp_es:"El castigo positivo agrega (+) un estímulo aversivo después de la conducta para reducirla. 'Positivo' significa agregar, no que sea bueno. Ejemplo: reprimenda verbal, tarea adicional."},
+{id:33,en:"During the night, Joanne gets out of bed to ask mom to get her a snack. In the past, mom has complied and given Joanne a granola bar. For the past week, when Joanne asks for a snack, mom has not given her one. What is Joanne's mom implementing?",es:"¿Cuál de los siguientes es el mejor ejemplo de castigo negativo?",opts:["Extinction", "Negative reinforcement", "Response blocking", "Punishment"],opts_es:["Remover algo deseable para reducir la conducta", "Agregar algo desagradable para reducir la conducta", "Remover algo desagradable para aumentar la conducta", "Agregar algo deseable para aumentar la conducta"],ans:0,exp_es:"El castigo negativo remueve (-) un estímulo positivo después de la conducta para reducirla. Ejemplo: quitar fichas (costo de respuesta) o tiempo fuera del reforzamiento positivo."},
+{id:34,en:"Extinction requires what?",es:"Tu cliente tiene que terminar de cenar antes de poder ver televisión. ¿Qué principio demuestra esto?",opts:["Withholding some reinforcement", "Witholding all reinforcement", "Proper implementation only some of the time", "Punishment"],opts_es:["Principio de Premack", "Extinción", "Castigo", "Reforzamiento negativo"],ans:1,exp_es:"El Principio de Premack (Ley de la Abuela) establece que una conducta de alta preferencia puede usarse para reforzar una conducta de baja preferencia. 'Primero cena (baja pref), luego TV (alta pref).'"},
+{id:35,en:"A BCBA instructs the RBT to put all attention-seeking behavior on extinction. In order to gain attention, the client will tap their pencil on the table. During extinction, the tapping has gotten more intense and is occurring more frequently. Yesterday, the client tapped the pencil so hard that the pencil broke. What is most likely occurring?",es:"¿Cuál de los siguientes es el mejor ejemplo de un operante de escasa probabilidad de respuesta siendo reforzado por un operante de alta probabilidad?",opts:["The RBT is violating the ethical code", "An extinction burst", "The client is angry", "Poor implementation of the procedure"],opts_es:["Dar a un niño un caramelo si termina su tarea", "Dar a un niño tiempo de juego libre si termina su tarea", "Dar a un niño su programa de TV favorito si termina su tarea", "Darle a un niño tiempo extra en clase si termina su tarea"],ans:1,exp_es:"El Principio de Premack usa una conducta de alta probabilidad (juego libre, algo que el niño haría frecuentemente) para reforzar una de baja probabilidad (hacer tarea). El juego libre es el mejor reforzador natural."},
+{id:36,en:"What is the most common graph used in ABA?",es:"El aprendizaje de ensayo discreto (DTT) usualmente ocurre:",opts:["A pie chart", "A histogram", "A line graph", "A scatterplot"],opts_es:["En entornos naturales", "Solo en casa", "En un entorno estructurado, a menudo en una mesa", "Solo en la escuela"],ans:2,exp_es:"El DTT se implementa en entornos controlados y estructurados (mesa, área clínica) que minimizan distracciones y permiten múltiples ensayos consecutivos con datos sistemáticos."},
+{id:37,en:"What is the primary difference between Discrete Trial Training and Incidental Teaching",es:"La enseñanza en entorno natural (NET) ocurre:",opts:["Incidental teaching doesn't use reinforcement", "Incidental teaching occurs in the natural environment", "There is no difference", "DTT is better than incidental teaching"],opts_es:["Solo en la clínica", "En el entorno natural del cliente siguiendo su motivación", "Solo durante DTT", "Solo con adultos"],ans:1,exp_es:"La NET incrusta la instrucción en actividades cotidianas siguiendo la motivación natural del aprendiz. Promueve la generalización porque ocurre en los mismos entornos donde la habilidad se necesita."},
+{id:38,en:"Which of the following describes a contingency?",es:"¿Cuándo utilizarías la extinción?",opts:["Increases behavior", "An if-then statement", "A punishment procedure", "A way to measure how long something takes"],opts_es:["Para aumentar la conducta deseable", "Para reducir o eliminar una conducta no deseada dejando de reforzarla", "Para enseñar nuevas habilidades", "Para medir la frecuencia de la conducta"],ans:1,exp_es:"La extinción consiste en dejar de entregar el reforzador que mantiene la conducta. Sin reforzamiento, la conducta eventualmente disminuye. Es esencial identificar la función antes de implementarla."},
+{id:39,en:"Which of the following reinforcement schedules is based on an average number of correct responses?",es:"¿Cuál de los siguientes programas de reforzamiento se basa en un promedio de número correcto de respuestas?",opts:["FR2", "FI3", "VR3", "DRO"],opts_es:["RF (Razón Fija)", "IV (Intervalo Variable)", "RV (Razón Variable)", "IF (Intervalo Fijo)"],ans:2,exp_es:"La Razón Variable (RV) refuerza después de un número VARIABLE e impredecible de respuestas. Produce las tasas más altas y resistentes a la extinción. Las máquinas tragamonedas son el ejemplo clásico de RV."},
+{id:40,en:"RBTs should record session notes:",es:"¿Cuál de los siguientes programas de reforzamiento produce tasas de respuesta más altas?",opts:["Each session", "Weekly", "Monthly", "Yearly"],opts_es:["Razón Variable", "Razón Fija", "Intervalo Fijo", "Intervalo Variable"],ans:0,exp_es:"La Razón Variable produce las tasas de respuesta más altas y constantes porque el reforzamiento es impredecible. El aprendiz nunca sabe cuándo vendrá el próximo reforzamiento, manteniendo alta la motivación."},
+{id:41,en:"You are struggling with a client. Who is the first person you should contact?",es:"Antes de implementar cualquier procedimiento de castigo, ¿qué se debe haber intentado primero?",opts:["The parent", "Your supervisor/BCBA", "The company's director", "The authorities"],opts_es:["Procedimientos de extinción", "Procedimientos de reforzamiento", "Análisis funcional", "Evaluación de preferencias"],ans:1,exp_es:"Éticamente, los procedimientos basados en reforzamiento siempre deben intentarse antes del castigo. El castigo solo se usa cuando las opciones menos restrictivas han fallado, con aprobación del BCBA y consentimiento del cuidador."},
+{id:42,en:"Which of the following is a requirement for session notes:",es:"¿Cuál de los siguientes no es un componente del análisis de contingencia de tres términos (ABC)?",opts:["The notes are your personal opinion", "The notes are objective", "You document how the client slept last night", "What they client ate for lunch"],opts_es:["Antecedente", "Conducta de línea base", "Conducta", "Consecuencia"],ans:1,exp_es:"El análisis ABC tiene tres componentes: Antecedente (lo que ocurre ANTES), Conducta (lo que hace el cliente) y Consecuencia (lo que ocurre DESPUÉS). 'Conducta de línea base' no es un componente del ABC."},
+{id:43,en:"You are recording the time it takes from the presentation of the demand (SD) to the first instance of behavior. What are you measuring?",es:"¿Cuál de los siguientes es el mejor ejemplo de una definición operacional de conducta?",opts:["Duration", "Frequency", "Latency", "IRT"],opts_es:["Pataleta", "Comportamiento agresivo", "El cliente muerde con los dientes frontales superiores e inferiores en la piel del antebrazo durante 3 segundos o más", "Golpear"],ans:2,exp_es:"Una definición operacional debe ser observable, medible y sin ambigüedad. La opción C especifica qué (morder con qué dientes), dónde (antebrazo) y por cuánto tiempo (3+ segundos), eliminando toda interpretación subjetiva."},
+{id:44,en:"Examples are food, water, sleep",es:"¿Cuál de los siguientes es el mejor ejemplo de una ayuda gestual?",opts:["Secondary reinforcers", "Consequences", "Primary reinforcers", "SD"],opts_es:["Mover físicamente la mano de alguien", "Decirle a alguien qué hacer", "Señalar", "Demostrar la conducta"],ans:2,exp_es:"Las ayudas gestuales son movimientos del cuerpo que dirigen al aprendiz hacia la respuesta correcta, como señalar. Son menos intrusivas que las ayudas físicas pero más que las verbales."},
+{id:45,en:"What comes before the behavior?",es:"¿Cuál de los siguientes es el mejor ejemplo de una ayuda física?",opts:["Consequence", "Response", "Antecedent", "Punishment"],opts_es:["Señalar", "Decirle a alguien qué hacer", "Guiar físicamente la mano de alguien", "Demostrar la conducta"],ans:2,exp_es:"Las ayudas físicas implican contacto físico directo para guiar la respuesta del aprendiz (mano sobre mano). Son las más intrusivas y deben desvanecerse sistemáticamente para evitar dependencia de ayuda."},
+{id:46,en:"Select the best definition for differential reinforcement from the choices below:",es:"¿Cuál es el propósito del desvanecimiento de ayudas?",opts:["A stimulus, that when presented following a bx, causes an overall INCREASE in that bx", "Providing greater reinforcement for better approximations of a target behavior, and", "A stimulus that signals the availability of a reinforcer", "A stimulus that, when presented following a behavior, causes an overall DECREASE in"],opts_es:["Aumentar las ayudas con el tiempo", "Reducir sistemáticamente las ayudas para promover la independencia", "Cambiar el tipo de ayuda", "Eliminar el reforzamiento"],ans:1,exp_es:"El desvanecimiento de ayudas reduce sistemáticamente la intensidad/intrusividad de las ayudas a medida que el aprendiz demuestra competencia, promoviendo respuestas independientes y previniendo la dependencia de ayuda."},
+{id:47,en:"Freezing temperatures and electric shocks are examples of what type of punisher?",es:"¿Cuál es el mejor ejemplo de un estímulo discriminativo (ED)?",opts:["Conditioned", "Positive", "Unconditioned", "Negative"],opts_es:["Reforzamiento", "Una señal que indica que el reforzamiento está disponible", "Castigo", "Una señal que indica que el castigo está disponible"],ans:2,exp_es:"El ED es un estímulo que señala que el reforzamiento ESTÁ disponible para una conducta específica. Es el 'semáforo verde' que indica cuándo responder obtendrá reforzamiento."},
+{id:48,en:"If you believe your client is being abused, which of the following should you do?",es:"¿Cuál es el mejor ejemplo de un S-delta (S∆)?",opts:["Contact relevant authorities", "Follow organization policies", "Consult with your supervisor", "All of the above"],opts_es:["Una señal que indica que el reforzamiento está disponible", "Reforzamiento", "Castigo", "Una señal que indica que el reforzamiento NO está disponible"],ans:3,exp_es:"El S-delta señala que el reforzamiento NO está disponible para la conducta. Responder en presencia del S-delta no produce reforzamiento. El entrenamiento de discriminación enseña a responder al ED pero no al S-delta."},
+{id:49,en:"Which of the following is an antecedent technique?",es:"Estás implementando DRO para la conducta agresiva de un cliente. El cliente es agresivo. ¿Qué haces?",opts:["Prompting", "DRA", "Task Analysis", "Punishment"],opts_es:["Reinicias el temporizador del intervalo", "Entregas reforzamiento", "Implementas extinción", "Implementas castigo"],ans:0,exp_es:"En DRO, el reforzamiento se entrega solo si la conducta objetivo NO ocurrió durante todo el intervalo. Si ocurre agresión, el temporizador se REINICIA y comienza un nuevo intervalo sin reforzamiento."},
+{id:50,en:"A repertoire refers to?",es:"Un repertorio se refiere a:",opts:["The skills a client possesses", "A type of antecdent intervention", "A verbal operant", "The type of measurement you are using"],opts_es:["Las habilidades que posee un cliente", "Las conductas problema del cliente", "El plan de tratamiento", "Los programas de reforzamiento"],ans:0,exp_es:"El repertorio conductual de un cliente incluye todas las habilidades, conductas y respuestas que posee en su vocabulario conductual. La intervención ABA expande el repertorio de habilidades funcionales."},
+{id:51,en:"Another word for request is?",es:"¿Cuál es el propósito de una evaluación funcional de conducta (FBA)?",opts:["Tact", "Intraverbal", "Mand", "Echoic"],opts_es:["Desarrollar un plan de tratamiento", "Identificar reforzadores", "Identificar la función de la conducta problema", "Enseñar nuevas habilidades"],ans:2,exp_es:"La FBA identifica qué variables ambientales (antecedentes y consecuencias) mantienen la conducta problema — es decir, su función. Esto guía el diseño del plan de intervención conductual apropiado."},
+{id:52,en:"Every time you say \"put on your shoes\" your daughter says \"put on your shoes\". What type of verbal operant is this?",es:"¿Cuál de los siguientes es el mejor ejemplo de reforzamiento negativo?",opts:["Mand", "Echoic", "Tact", "Intraverbal"],opts_es:["Agregar algo deseable después de la conducta", "Remover algo desagradable después de la conducta para aumentarla", "Remover algo deseable después de la conducta", "Agregar algo desagradable después de la conducta"],ans:1,exp_es:"El reforzamiento negativo REMUEVE un estímulo aversivo después de la conducta, lo que AUMENTA la probabilidad futura. Ejemplo: tomar analgésico (conducta) → elimina el dolor (estímulo aversivo) → se toma más seguido."},
+{id:53,en:"Susie's family is driving down the road when they pass by a farm. Susie looks out the window and says \"cow.\" How would you describe Susie saying cow?",es:"Después de 3 semanas de implementar extinción, la conducta de tu cliente ha disminuido significativamente. Sin embargo, durante el lunes después de un fin de semana largo, la conducta regresa brevemente. Esto se llama:",opts:["Manding", "Tacting", "Protesting", "Scripting"],opts_es:["Estallido de extinción", "Recuperación espontánea", "Fracaso de la extinción", "Conducta mantenida por atención"],ans:1,exp_es:"La recuperación espontánea es la reaparición temporal de una conducta extinguida después de un período de descanso. Es esperada, predecible y temporal. La solución es continuar implementando la extinción."},
+{id:54,en:"Johnny's teacher says \"OK, class who can tell me what 2+2 is\". Johnny responds with \"4!\" What verbal operant does this describe?",es:"Cuando se implementa la extinción por primera vez, ¿qué puede ocurrir temporalmente?",opts:["Mand", "Intraverbal", "Tact", "Autoclitic"],opts_es:["La conducta disminuye inmediatamente", "Estallido de extinción: aumento temporal en frecuencia/intensidad", "La conducta se elimina permanentemente", "El cliente se vuelve más cooperativo"],ans:1,exp_es:"El estallido de extinción es un aumento temporal en la frecuencia, intensidad o duración de la conducta cuando la extinción se implementa por primera vez. Es predecible y esperado — no es señal de fracaso."},
+{id:55,en:"What are you measuring when you take permanent product data?",es:"¿Cuál de los siguientes es el mejor ejemplo de generalización de respuesta?",opts:["Intensity", "Production", "Length of time", "You aren't measuring anything"],opts_es:["Tu cliente aprende a saludar en entornos nuevos", "Tu cliente aprende múltiples formas de saludar (agitar mano, asentir, decir hola)", "Tu cliente solo saluda en la clínica", "Tu cliente no saluda a extraños"],ans:1,exp_es:"La generalización de respuesta ocurre cuando diferentes topografías de respuesta emergen ante el mismo estímulo. Aprender múltiples formas de saludar es generalización de respuesta (misma función, diferentes formas)."},
+{id:56,en:"At the end of session, Ralph's grandma asks how session went and for updates on progress. Which of the following is an inappropriate way to describe the day?",es:"¿Cuál de los siguientes es el mejor ejemplo de generalización de estímulo?",opts:["\"Ralph only eloped two times today! He was compliant and we were able to hit all his", "\"I don't think it went well. I don't think my BCBA's plan is working.\"", "\"Session went smoothly today. My BCBA said she implemented a task chain for", "\"He is making progress. Today we worked on communication and self-help\""],opts_es:["Tu cliente aprende múltiples formas de pedir", "Tu cliente solo pide en la clínica", "Tu cliente pide en múltiples entornos con diferentes personas y materiales", "Tu cliente pide en la clínica pero no en casa"],ans:1,exp_es:"La generalización de estímulo ocurre cuando la respuesta aprendida se extiende a estímulos similares al ED original: diferentes entornos, personas y materiales no entrenados."},
+{id:57,en:"During session your client's mom asks you to train them on DTT. What is the best response?",es:"¿Cuál de los siguientes es el mejor ejemplo de mantenimiento?",opts:["Inform the parent that you'll let your BCBA know of their desire to be trained as you aren't", "Train the parent yourself", "Explain to the parent that parents aren't allowed to be trained", "Panic"],opts_es:["Tu cliente conserva una habilidad aprendida con el tiempo sin entrenamiento intensivo", "Tu cliente aprende la habilidad rápidamente", "Tu cliente demuestra la habilidad solo con ayudas", "Tu cliente muestra la habilidad en nuevos entornos"],ans:0,exp_es:"El mantenimiento es la demostración de una habilidad aprendida con el tiempo después de que el entrenamiento intensivo ha terminado. Indica que la habilidad se ha incorporado al repertorio duradero del cliente."},
+{id:58,en:"Your 21 year old client smokes cigarettes. Your BCBA decides that smoking is bad for your client and implements a program to decrease smoking without consulting the client first. Is this appropriate?",es:"¿Cuál de los siguientes es el mejor ejemplo de reforzamiento diferencial?",opts:["No, the client is not breaking any laws and has the right to be consulted with before", "Yes, smoking is unhealthy. The BCBA is protecting their client.", "Yes, BCBAs are allowed to make any changes they want without consulting the client", "No, it is unclear if smoking is unhealthy"],opts_es:["Reforzar todas las conductas por igual", "Reforzar una conducta específica mientras se extinguen otras", "Reforzar la conducta problema", "Reforzar al azar"],ans:0,exp_es:"El reforzamiento diferencial refuerza una conducta objetivo específica (alternativa, incompatible, otras, etc.) mientras simultáneamente se extingue la conducta problema. Es la base de DRA, DRI, DRO y DRL."},
+{id:59,en:"Rebecca's BCBA designs a complex behavior plan that involves multiple steps and procedures. During the first session that the behavior plan is implemented, Rebecca reinforces the wrong behavior. What should she do?",es:"¿Cuál de los siguientes es el mejor ejemplo de conducta mantenida por atención?",opts:["Pretend it didn't happen", "She just needs to put it in her notes without telling anyone", "Report herself to the parents", "Tell her supervisor/BCBA immediately and request more training"],opts_es:["El cliente se escapa cuando se le dan tareas difíciles", "El cliente llora cuando los juguetes preferidos se retiran", "El cliente patalea y llora y el maestro le da atención", "El cliente se golpea a sí mismo cuando está solo"],ans:3,exp_es:"La conducta mantenida por atención aumenta porque la consecuencia es atención social (aunque sea negativa). El maestro dando atención (aunque sea para regañar) refuerza la pataleta."},
+{id:60,en:"Which of the following examples would be acceptable in a session note?",es:"¿Cuál de los siguientes es el mejor ejemplo de conducta mantenida por escape?",opts:["\"The client was angry with me today which is why behaviors occured\"", "\"Nothing significant happened today\"", "\"The client became anxious when I told him to grab his cup from the kitchen\"", "\"The client manded 8 times today indendently. The client also tacted \"spoon\" and \"fork\""],opts_es:["El cliente patalea y el maestro le da atención", "El cliente llora y recibe un juguete favorito", "El cliente es agresivo y las personas se van", "El cliente se golpea a sí mismo cuando está solo"],ans:3,exp_es:"La conducta mantenida por escape ocurre cuando la conducta logra que el estímulo aversivo (personas, demandas, situaciones) se retire. Las personas que se van remueven el estímulo aversivo, reforzando la agresión."},
+{id:61,en:"A crisis/emergency situation is:",es:"¿Cuál de los siguientes es el mejor ejemplo de conducta mantenida por tangibles?",opts:["Not a big deal", "A situation where you, the client, or someone else is in danger", "Something you should not report to your supervisor", "Only happens with older clients"],opts_es:["El cliente patalea y el maestro le da atención", "El cliente llora hasta que recibe su juguete favorito", "El cliente es agresivo y las personas se van", "El cliente se golpea a sí mismo cuando está solo"],ans:1,exp_es:"La conducta mantenida por tangibles ocurre cuando la conducta produce acceso a objetos, actividades o comida preferidos. El llanto que produce el juguete es reforzado por el acceso al tangible."},
+{id:62,en:"Which of the following increases or decreases the value of a reinforcer",es:"¿Cuál de los siguientes es el mejor ejemplo de conducta mantenida automáticamente?",opts:["Motivating operation", "Abolishing operation", "Discriminative Stimuli", "SD"],opts_es:["El cliente patalea cuando no obtiene atención", "El cliente golpea su cabeza contra la pared y parece no notar a los demás", "El cliente llora hasta recibir su juguete", "El cliente se escapa cuando se le piden tareas"],ans:0,exp_es:"La conducta mantenida automáticamente (sensorial) ocurre independientemente de consecuencias sociales. El golpeo de cabeza que continúa sin importar la presencia de otros sugiere reforzamiento automático/sensorial."},
+{id:63,en:"You are teaching a child to write their name. You start by having them trace bold, large letters. You then remove the bold and have them trace the letters. You then make the letters normal size and have them trace. You then remove the beginning two letters of their name and have them trace. You then remove all letters and have them write their name independently. What are you doing?",es:"¿Cuál de los siguientes es el mejor ejemplo de una operación motivadora de establecimiento (OE)?",opts:["Prompt fading", "Task chaining", "DTT", "Verbal prompting"],opts_es:["Saciarse de comida reduce el valor del reforzador alimenticio", "Privación de comida aumenta el valor del reforzador alimenticio y aumenta conductas relacionadas", "Proporcionar agua reduce la sed", "Reducir el acceso a juguetes"],ans:0,exp_es:"La Operación de Establecimiento (OE) AUMENTA el valor de un reforzador Y AUMENTA las conductas que producen ese reforzador. La privación de comida aumenta cuánto el cliente quiere comida y las conductas para obtenerla."},
+{id:64,en:"What type of reinforcement system is based on time?",es:"¿Cuál de los siguientes es el mejor ejemplo de una operación motivadora de abolición (OA)?",opts:["Ratio", "DRI", "Interval", "DRA"],opts_es:["Privación de comida aumenta el valor del reforzador alimenticio", "El acceso a comida reduce el valor del reforzador alimenticio", "La comida aumenta la motivación", "La privación de agua aumenta la motivación para beberla"],ans:2,exp_es:"La Operación de Abolición (OA) REDUCE el valor de un reforzador Y REDUCE las conductas relacionadas. Comer (saciedad) reduce cuánto el cliente quiere comida y las conductas para obtenerla."},
+{id:65,en:"Which of the following is not a type of continuous measurement?",es:"¿Cuál de los siguientes describe mejor la jerarquía de ayudas de menos a más?",opts:["Latency", "Duration", "Frequency", "Partial time sampling"],opts_es:["Comenzar con la ayuda más intrusiva y reducirla", "Comenzar con ninguna ayuda e incrementar según sea necesario", "Siempre usar ayuda física", "Siempre usar ayuda verbal"],ans:3,exp_es:"La jerarquía de menos a más (LTM) comienza con la ayuda MENOS intrusiva (ninguna, luego gestual, verbal, modelo, física) e incrementa solo si el aprendiz no responde. Promueve más respuesta independiente."},
+{id:66,en:"Ethically and professionally, you should comply with what? Pick the best answer.",es:"Ética y profesionalmente, ¿con qué debes cumplir? Elige la mejor respuesta.",opts:["You only need to comply with the law", "All legal, regulatory, and workplace requirements", "Company policy", "The ethical code"],opts_es:["Las leyes y reglamentos de ABA", "El código de ética del BACB y las leyes aplicables", "Solo el código de ética del BACB", "Solo las leyes federales"],ans:1,exp_es:"Como RBT certificado, debes cumplir TANTO con el Código de Ética del BACB (RBT Ethics Code 2.0) COMO con todas las leyes y regulaciones aplicables a nivel local, estatal y federal."},
+{id:67,en:"What question should you ask yourself when presented with an ethical dilemma?",es:"¿Cuál de los siguientes es el mejor ejemplo de una relación dual?",opts:["What's the right thing to do?", "What's worth doing?", "What does it mean to be a good RBT?", "All of these"],opts_es:["Trabajar con dos clientes al mismo tiempo", "Tener relaciones tanto profesionales como personales con un cliente", "Trabajar en dos agencias diferentes", "Implementar dos programas diferentes"],ans:3,exp_es:"Una relación dual ocurre cuando el profesional tiene TANTO una relación profesional/clínica COMO una relación personal con el cliente o su familia. Crea conflictos de interés y compromete el juicio clínico."},
+{id:68,en:"You are bitten by a mosquito. The bite starts to itch, so you scratch it. Scratching the itch is what?",es:"Si un padre te pide que hagas algo que no está en el plan de tratamiento, ¿qué debes hacer?",opts:["Negative reinforcement", "Positive reinforcement", "Negative punishment", "Positive punishment"],opts_es:["Hacerlo si parece inofensivo", "Negarte y reportar al supervisor", "Hacerlo si el padre firma un consentimiento", "Hacerlo y documentarlo"],ans:0,exp_es:"Los RBTs solo implementan procedimientos aprobados por el BCBA. Cualquier solicitud de modificación debe reportarse al supervisor. Implementar algo no aprobado, aunque parezca inofensivo, viola el alcance de práctica."},
+{id:69,en:"Which of the following is an example of a prompt?",es:"¿Qué debes hacer si eres testigo de comportamiento poco ético por parte de un colega?",opts:["Turning on your computer", "Writing a note to remind your partner to take out the trash", "Compying with an instruction", "Opening a window when you are hot"],opts_es:["Ignorarlo", "Reportarlo al supervisor correspondiente", "Confrontar al colega públicamente", "Publicarlo en redes sociales"],ans:1,exp_es:"Las preocupaciones éticas se reportan al supervisor apropiado (BCBA). No se toman acciones unilaterales ni públicas. El BCBA investiga y toma las medidas correctivas necesarias siguiendo los protocolos establecidos."},
+{id:70,en:"Every day you put your key in the ignition, turn it, and your car starts. Today, your car doesn't start. You begin to aggressively turn the key, push the gas pedal, and pound the steering wheel. What might be happening?",es:"¿Cuál de los siguientes describe mejor la confidencialidad?",opts:["An extinction burst", "Punishment", "Avoidance behavior", "Tacting"],opts_es:["Compartir información del cliente solo con personas autorizadas", "Compartir información del cliente con cualquiera que pregunte", "Nunca compartir información del cliente con nadie", "Compartir información solo con los padres"],ans:0,exp_es:"La confidencialidad requiere proteger la información personal identificable del cliente (PHI) y compartirla SOLO con personas autorizadas con consentimiento apropiado, según HIPAA y el código de ética del BACB."},
+{id:71,en:"What is the best reinforcement schedule for teaching a new skill?",es:"¿Cuál de los siguientes es el mejor ejemplo de documentación objetiva?",opts:["VR2", "FR1", "FR6", "FI2"],opts_es:["El cliente estaba enojado hoy", "El cliente golpeó la mesa 3 veces con la mano abierta durante las tareas de matemáticas", "El cliente tuvo un mal día", "El cliente parecía frustrado"],ans:1,exp_es:"La documentación objetiva reporta EXACTAMENTE lo que se observó: qué hizo el cliente (golpeó la mesa), cómo (con mano abierta), cuánto (3 veces) y cuándo (durante matemáticas). Sin interpretaciones."},
+{id:72,en:"What reinforcement schedule is the most productive and resistant to extinction?",es:"¿Con qué frecuencia debe un RBT ser supervisado?",opts:["FR", "FI", "VI", "VR"],opts_es:["Mensualmente", "Semanalmente", "Diariamente", "Según los requisitos del BACB (mínimo porcentaje de horas de servicio)"],ans:3,exp_es:"El BACB requiere supervisión mínima equivalente a un porcentaje de las horas de servicio mensuales, incluyendo contacto directo (observación en persona) y reuniones supervisoras. Los requisitos específicos están en el handbook actual."},
+{id:73,en:"What is not an example of discrimination?",es:"¿Cuál de los siguientes es el mejor ejemplo de un reforzador condicionado?",opts:["Identifying different colors in a crayon box", "Calling all women you see \"mom\"", "Ordering coke instead of sprite", "Using a $5 bill instead of a $1 bill"],opts_es:["Comida", "Fichas", "Agua", "Refugio"],ans:1,exp_es:"Los reforzadores condicionados (secundarios) adquieren su valor reforzante a través del condicionamiento — al emparejarse repetidamente con reforzadores primarios. Las fichas solo tienen valor cuando se pueden canjear por algo deseado."},
+{id:74,en:"Reinforcement can be continuous or intermittent. Behavior on what type of schedule is the hardest to extinguish?",es:"¿Cuál de los siguientes es el mejor ejemplo de un reforzador generalizado condicionado?",opts:["Intermittent", "FR1", "Continuous", "Parent designed"],opts_es:["Dinero", "Comida", "Agua", "Refugio"],ans:0,exp_es:"Un reforzador generalizado condicionado se ha emparejado con MÚLTIPLES reforzadores primarios y secundarios, haciéndolo efectivo en muchas situaciones. El dinero puede obtener casi cualquier cosa, por eso es generalizado."},
+{id:75,en:"When we refer to baseline data we are referring to?",es:"¿Cuál de los siguientes es el mejor ejemplo de un programa de reforzamiento de razón fija?",opts:["Data taken after intervention starts", "Data taken before intervention is put in place", "Data taken in the morning", "Data taken by the parent"],opts_es:["Reforzamiento después de tiempo variable", "Reforzamiento después de número fijo de respuestas", "Reforzamiento después de número variable de respuestas", "Reforzamiento después de tiempo fijo"],ans:1,exp_es:"La Razón Fija (RF) refuerza después de un número FIJO y predecible de respuestas. RF5 = reforzamiento cada 5 respuestas exactas. Produce tasas altas con pausa post-reforzamiento."},
+{id:76,en:"A student walks up to the teacher and says \"may I go to the bathroom?\" What type of behavior is this?",es:"¿Cuál de los siguientes es el mejor ejemplo de un programa de intervalo variable?",opts:["A mand", "Polite", "An intraverbal", "Antecedent"],opts_es:["Reforzamiento después de cantidad variable de tiempo", "Reforzamiento después de número fijo de respuestas", "Reforzamiento después de tiempo fijo", "Reforzamiento después de número variable de respuestas"],ans:0,exp_es:"El Intervalo Variable (IV) refuerza la primera respuesta después de un período de tiempo VARIABLE e impredecible. Produce tasas constantes y resistencia moderada a la extinción. Ejemplo: revisar el correo electrónico."},
+{id:77,en:"You just received a new client and are unsure how to run some of the programming. When should you consult with your BCBA?",es:"¿Cuál de los siguientes es el mejor ejemplo de un programa de intervalo fijo?",opts:["Wait until your BCBA comes out and supervises you", "Before you get to your next session", "Don't worry about it, you will figure it out", "Change the program to something you understand better"],opts_es:["Reforzamiento después de número variable de respuestas", "Reforzamiento de la primera respuesta después de tiempo fijo", "Reforzamiento después de número fijo de respuestas", "Reforzamiento después de tiempo variable"],ans:1,exp_es:"El Intervalo Fijo (IF) refuerza la PRIMERA respuesta después de que ha pasado un tiempo FIJO. Produce 'festón de vieira' — pausa después del reforzamiento, luego aceleración antes del siguiente intervalo."},
+{id:78,en:"At your most recent session the client's mom started to ask you about this new diet where you only eat sunflower seeds. The mom said she read about it on the internet and saw a video claiming the diet could help cure autism. The mom asks for your opinion. What is the best course of action?",es:"¿Cuál de los siguientes es el mejor ejemplo de un programa de razón variable?",opts:["Tell her you don't have an opinion on the diet, and refer her to your supervisor.", "Tell her how ridiculous she sounds", "Explain to her that you aren't familiar with that diet, but you know of other diets that could", "Leave the case"],opts_es:["Reforzamiento de la primera respuesta después de tiempo variable", "Reforzamiento de la primera respuesta después de tiempo fijo", "Reforzamiento después de número fijo de respuestas", "Reforzamiento después de número variable de respuestas"],ans:0,exp_es:"La Razón Variable (RV) refuerza después de un número VARIABLE e impredecible de respuestas. Produce tasas más altas y mayor resistencia a la extinción que cualquier otro programa. Ejemplo: máquinas tragamonedas."},
+{id:79,en:"What is the best way to respond to feedback from your BCBA?",es:"¿Cuál es el propósito de la evaluación de preferencias múltiples sin reemplazo (MSWO)?",opts:["Engage in an arguement with your BCBA", "Talk about your BCBA behind their back", "Professionally. Use it to improve yourself, even if you don't agree with it.", "Ignore it. What do they know?"],opts_es:["Identificar un solo reforzador potencial", "Determinar conductas problema", "Crear una jerarquía de preferencias de múltiples estímulos sin reemplazarlos", "Evaluar habilidades del cliente"],ans:2,exp_es:"El MSWO presenta múltiples artículos simultáneamente y retira los seleccionados. Esto crea una jerarquía de preferencias (de mayor a menor) en pocos ensayos, siendo más eficiente que el método de estímulo único."},
+{id:80,en:"What are the three components of good data?",es:"¿Cuál es el mejor ejemplo de una evaluación de preferencias de estímulo único?",opts:["True and verified", "IOA", "Confound", "Reliable, accurate, and valid"],opts_es:["Presentar dos artículos y que el cliente elija uno", "Observar cuáles artículos elige el cliente libremente", "Presentar artículos uno a la vez y registrar si el cliente se acerca o los evita", "Presentar múltiples artículos simultáneamente"],ans:3,exp_es:"La evaluación de estímulo único (SS) presenta UN artículo a la vez y registra si el cliente se acerca (preferencia) o lo evita/ignora (no preferencia). Simple pero requiere muchos ensayos para evaluar múltiples artículos."},
+{id:81,en:"What behavior is the most observable and measurable?",es:"¿Cuál es el mejor ejemplo de una evaluación de operante libre?",opts:["Your client fails a math test due to a lack of effort", "You fall asleep in class because you are tired", "You fall asleep in class", "Your client was stressed out and ate a big bag of cookies"],opts_es:["Presentar artículos uno a la vez", "Presentar artículos en pares", "Observar cuáles artículos elige el cliente en su entorno natural sin restricciones", "Presentar múltiples artículos y retirar los elegidos"],ans:2,exp_es:"La evaluación de operante libre observa cuáles artículos el cliente elige NATURALMENTE en su entorno, sin restricciones ni ensayos estructurados. Refleja mejor las preferencias espontáneas en condiciones naturales."},
+{id:82,en:"What goes on the x-axis of a line graph?",es:"¿Cuál de los siguientes es el mejor ejemplo de una ayuda de modelo?",opts:["Time", "Behavior", "Title", "Client name"],opts_es:["Mover físicamente el brazo de alguien", "Señalar un objeto", "Decirle a alguien qué hacer", "Demostrar la conducta objetivo para que el aprendiz la imite"],ans:0,exp_es:"La ayuda de modelo consiste en DEMOSTRAR la conducta para que el aprendiz la imite. El terapeuta realiza la acción completa (ej: se pone el zapato) y el aprendiz intenta copiarla."},
+{id:83,en:"What goes on the y-axis of a line graph",es:"¿Cuál de los siguientes describe mejor el desvanecimiento de ayudas de más a menos?",opts:["Time", "Behavior", "Title", "Client name"],opts_es:["Comenzar con ninguna ayuda y añadir más según sea necesario", "Comenzar con la ayuda más intrusiva y reducirla sistemáticamente", "Siempre usar el mismo nivel de ayuda", "Eliminar toda ayuda inmediatamente"],ans:1,exp_es:"El desvanecimiento de más a menos (MTL) comienza con la ayuda MÁS intrusiva (generalmente física) para asegurar el éxito, luego la reduce sistemáticamente hacia formas menos intrusivas y finalmente hacia la independencia."},
+{id:84,en:"Your client elopes 5 times per hour. What does this describe?",es:"¿Cuál de los siguientes es el mejor ejemplo de aprendizaje sin errores?",opts:["Frequency", "IRT", "Rate", "Duration"],opts_es:["Permitir que el cliente cometa errores para aprender", "Reforzar solo respuestas correctas", "Proporcionar ayudas intensivas inmediatamente para prevenir errores", "Implementar extinción para respuestas incorrectas"],ans:2,exp_es:"El aprendizaje sin errores proporciona ayudas inmediatas e intensivas (MTL) para PREVENIR errores desde el inicio. El objetivo es que el aprendiz nunca dé una respuesta incorrecta durante el aprendizaje."},
+{id:85,en:"You want to measure the time in between placing orders on amazon. What are you measuring?",es:"¿Cuál de los siguientes es el mejor ejemplo de entrenamiento en comunicación funcional (FCT)?",opts:["Latency", "IRT", "Duration", "Rate"],opts_es:["Enseñar al cliente a hablar más claramente", "Enseñar una respuesta de comunicación alternativa que sirva la misma función que la conducta problema", "Enseñar al cliente a usar señas", "Implementar extinción para todas las conductas comunicativas"],ans:1,exp_es:"El FCT enseña una RESPUESTA COMUNICATIVA ALTERNATIVA que produce el mismo resultado que la conducta problema. Si la agresión produce escape, se enseña 'necesito un descanso' — misma función, forma apropiada."},
+{id:86,en:"A client's mom reports to you that Abby tried 5 new foods since last session. What type of measurement is this?",es:"¿Cuál de los siguientes es el mejor ejemplo de un análisis funcional?",opts:["IRT", "Duration", "Frequency", "Rate"],opts_es:["Entrevistar a los cuidadores sobre la conducta", "Observar la conducta en entornos naturales", "Manipular sistemáticamente antecedentes y consecuencias en condiciones controladas para identificar la función", "Revisar registros históricos de conducta"],ans:2,exp_es:"El Análisis Funcional (FA) manipula experimentalmente condiciones específicas (atención, escape, tangible, solo) para determinar qué variable ambiental mantiene la conducta. Es el método más riguroso pero requiere entrenamiento especializado — solo BCBAs."},
+{id:87,en:"If your client goes an entire week without calling his brother names, he earns a trip to game works. What reinforcement procedure is this?",es:"¿Cuál de los siguientes es el mejor ejemplo de un reporte de incidente?",opts:["DRA", "DRO", "SRd) DRI", ""],opts_es:["Una nota de sesión regular", "Documentación de un evento inusual o preocupante, como una lesión o escapada", "Un plan de tratamiento", "Una evaluación de preferencias"],ans:1,exp_es:"Un reporte de incidente documenta eventos inusuales o de seguridad: lesiones, escapadas, intervenciones físicas, comportamiento auto-lesivo, o cualquier evento que se desvíe del curso normal de la sesión."},
+{id:88,en:"Your client is going on a golf trip to August National and invites you to tag along. Are you allowed to go?",es:"¿Cuál de los siguientes es el mejor ejemplo de confidencialidad?",opts:["Yes, how could you pass that opportunity up?", "Yes, as long as you clear it with your supervisor.", "No, this violates dual relationships and is unethical", "No, you aren't allowed to miss work"],opts_es:["Compartir información del cliente con amigos", "Discutir casos del cliente en lugares públicos", "Proteger la información de identificación personal del cliente y compartirla solo con personas autorizadas", "Publicar sobre los clientes en redes sociales"],ans:2,exp_es:"La confidencialidad protege la Información de Salud Protegida (PHI) del cliente. Solo se comparte con personas autorizadas mediante consentimiento apropiado. Violaciones de confidencialidad tienen consecuencias éticas y legales graves."},
+{id:89,en:"You and a client practice interview questions every session to prepare for his job interview. During the job interview he is able to answer every question and gets the job. What has your client demonstrated?",es:"¿Cuál es el rol del RBT en el proceso de supervisión?",opts:["Maintenance", "Generilization", "Shaping", "Reinforcement"],opts_es:["Supervisar al BCBA", "Participar activamente en la supervisión buscando retroalimentación y implementando directrices", "Evitar la supervisión siempre que sea posible", "Solo documentar sesiones"],ans:1,exp_es:"El RBT debe participar activamente en la supervisión: asistir a reuniones, buscar retroalimentación proactivamente, implementar las directrices del BCBA y reportar preocupaciones. La supervisión protege al cliente y mejora la calidad."},
+{id:90,en:"I want you to provide reinforcement every 5th response. What kind of schedule is this?",es:"Quiero que des reforzamiento cada 5ta respuesta. ¿Qué tipo de programa es este?",opts:["VR5", "FR5", "FR6", "VI1"],opts_es:["RV5", "RF5", "RF6", "IV1"],ans:1,exp_es:"RF5 (Razón Fija 5) significa que el reforzamiento se entrega exactamente después de cada 5 respuestas. 'Fija' indica que el número es constante y predecible, lo que produce pausas post-reforzamiento."},
+{id:91,en:"When Tammy throws a tantrum, mom takes away her Barbie Dolls, and the tantrums decrease. What is happening?",es:"Cuando Tammy tiene una pataleta, la mamá le quita sus muñecas Barbie y las pataletas disminuyen. ¿Qué está ocurriendo?",opts:["Positive Reinforcement", "Negative Reinforcement", "Positive Punishment", "Negative Punishment"],opts_es:["Reforzamiento positivo", "Reforzamiento negativo", "Castigo positivo", "Castigo negativo"],ans:3,exp_es:"El castigo negativo REMUEVE (-) algo deseable (las Barbies) después de la conducta (pataleta) y la conducta DISMINUYE. 'Negativo' = remoción; 'castigo' = disminución de conducta. Ambas definiciones coinciden."},
+{id:92,en:"It took me 2 hours to get home from work today due to traffic. I also stopped and picked up food on the way home, and went to the bank. What type of measurement did I use to measure my car ride?",es:"Me tomó 2 horas llegar a casa del trabajo por el tráfico. También paré a comprar comida y fui al banco. ¿Qué tipo de medición usé para medir mi viaje en carro?",opts:["Duration", "Frequency", "IRT", "Rate"],opts_es:["Duración", "Frecuencia", "TER", "Tasa"],ans:0,exp_es:"La duración mide cuánto tiempo dura una conducta/evento de inicio a fin. Medir '2 horas' para llegar a casa es una medida de duración del evento (el viaje en carro)."},
+{id:93,en:"At dinner, you make your Bumble date choose their favorite food: seafood or steak. What type of preference assessment did you conduct?",es:"En una cena, haces que tu cita elija su comida favorita: mariscos o bistec. ¿Qué tipo de evaluación de preferencias realizaste?",opts:["Forced choice", "Multiple stimulus with replacement", "Multiple sitmulus without replacement", "Natural assessment"],opts_es:["Elección forzada (Estímulo Pareado)", "Estímulo múltiple con reemplazo", "Estímulo múltiple sin reemplazo", "Evaluación natural"],ans:0,exp_es:"La evaluación de elección forzada (estímulo pareado/PS) presenta DOS artículos simultáneamente y registra cuál elige el cliente. Se repite en diferentes combinaciones de pares hasta evaluar todas las posibilidades."},
+{id:94,en:"Your session lasts 3 hours, but your BCBA asks you take data on one specific behavior for only two 20 minute intervals per day. What type of measurement is this?",es:"Tu sesión dura 3 horas, pero tu BCBA te pide tomar datos de una conducta específica solo durante dos intervalos de 20 minutos por día. ¿Qué tipo de medición es esta?",opts:["Continuous", "Discontinuous", "Duration", "Frequency"],opts_es:["Continua", "Discontinua", "Duración", "Frecuencia"],ans:1,exp_es:"La medición discontinua NO registra cada ocurrencia de la conducta. Solo se observa durante intervalos de muestra predefinidos, no durante toda la sesión. Es práctica cuando no se puede observar continuamente."},
+{id:95,en:"It's nap time and I have 10 students in my class. Every 8 minutes I look up from my desk to see who isn't sleeping. What type of measurement?",es:"Es hora de la siesta y tengo 10 estudiantes. Cada 8 minutos miro hacia arriba para ver quién no está dormido. ¿Qué tipo de medición es?",opts:["Momentary time sampling", "Whole interval", "Partial interval", "Frequency"],opts_es:["Muestreo de tiempo momentáneo", "Intervalo completo", "Intervalo parcial", "Frecuencia"],ans:0,exp_es:"El Muestreo de Tiempo Momentáneo (MTS) registra si la conducta está ocurriendo en el MOMENTO EXACTO en que se observa (cada 8 minutos). No importa lo que pasó entre observaciones — solo el momento exacto cuenta."},
+{id:96,en:"Your daughter gets home from art class and you ask her if she learned anything. She shows you a beautiful painting of a house. What type of measurement are you using?",es:"Tu hija regresa de clases de arte y le preguntas si aprendió algo. Te muestra una hermosa pintura de una casa. ¿Qué tipo de medición estás usando?",opts:["Duration", "IRT", "Permanent Product", "Latency"],opts_es:["Duración", "TER", "Producto Permanente", "Latencia"],ans:2,exp_es:"El Producto Permanente mide el resultado tangible y duradero de una conducta (la pintura) sin observar directamente la conducta (el proceso de pintar). La pintura es evidencia física de que la habilidad ocurrió."},
+{id:97,en:"During session, your client falls and bumps their head. A knot forms and the client needs to see a doctor. What do you do?",es:"Durante la sesión, tu cliente se cae y se golpea la cabeza. Se forma un chichón y el cliente necesita ver a un médico. ¿Qué haces?",opts:["Resign from your position", "Inform your BCBA and follow company protocols", "Try to hide the knot from the parents", "Nothing. It wasn't your fault."],opts_es:["Renunciar a tu posición", "Informar a tu BCBA y seguir los protocolos de la empresa", "Intentar ocultar el chichón de los padres", "Nada. No fue tu culpa."],ans:1,exp_es:"Cualquier lesión durante la sesión requiere: (1) asegurar la seguridad inmediata, (2) informar al BCBA, (3) seguir los protocolos de la agencia (reporte de incidente), y (4) notificar a los padres. La transparencia es obligatoria."},
+{id:98,en:"I'm teaching my client to count to 10. I start by teaching them to count to 3, and reinforcing. Then I reinforce only when they count to 7. Finally, I reinforce only when they get all the way to 10. What am I doing?",es:"Estoy enseñando a mi cliente a contar hasta 10. Empiezo reforzando hasta 3, luego solo hasta 7, y finalmente solo hasta 10. ¿Qué estoy haciendo?",opts:["Chaining", "Shaping", "Measurement", "NET"],opts_es:["Encadenamiento", "Moldeamiento", "Medición", "NET"],ans:1,exp_es:"El moldeamiento refuerza aproximaciones sucesivas hacia la conducta objetivo (contar hasta 10). Cada nivel más cercano al objetivo se refuerza; los niveles anteriores se extinguen. Las metas cambian progresivamente."},
+{id:99,en:"NET is the same as?",es:"NET es lo mismo que:",opts:["Naturalistic teaching", "DTT", "Table time", "Contrived teaching"],opts_es:["Enseñanza naturalista", "DTT", "Tiempo en la mesa", "Enseñanza contrived (artificial)"],ans:0,exp_es:"NET (Natural Environment Teaching = Enseñanza en Entorno Natural) es equivalente a la enseñanza naturalista. Incrusta la instrucción en actividades cotidianas siguiendo la motivación del aprendiz en entornos naturales."},
+{id:100,en:"While your supervisor is out of town, she asks you to conduct a functional analysis on your client. What should you do?",es:"Mientras tu supervisora está fuera de la ciudad, te pide que conduzcas un análisis funcional con tu cliente. ¿Qué debes hacer?",opts:["Do the functional analysis. You are well trained.", "Report your BCBA to the board.", "Quit your job.", "Decline to do the functional analysis. You are not suited to do an FA alone as an RBT."],opts_es:["Hacer el análisis funcional. Estás bien entrenado.", "Reportar a tu BCBA al consejo.", "Renunciar a tu trabajo.", "Negarte a hacer el análisis funcional. Como RBT, no debes hacer un FA solo."],ans:3,exp_es:"Los análisis funcionales son procedimientos especializados que solo pueden diseñar y supervisar los BCBAs. Están fuera del alcance de práctica del RBT, independientemente del entrenamiento recibido. Negarse es la respuesta ética y correcta."}
+];
 
-function initDifficultySystem(){
-  quizState.difficulty = 1;       // 1=basic, 2=intermediate, 3=advanced
-  quizState.correctStreak = 0;    // consecutive correct answers
-  quizState.questionNumber = 0;
+let e100={pool:[],idx:0,correct:0,wrong:0,ans:false,sel:null};
+
+function startExam100(){
+  e100={pool:[...EXAM100],idx:0,correct:0,wrong:0,ans:false,sel:null};
+  document.getElementById('e100startBtn').style.display='none';
+  document.getElementById('e100stats').style.display='flex';
+  document.getElementById('e100prog').style.display='block';
+  renderE100();
 }
 
-function updateDifficulty(correct){
-  if(correct){
-    quizState.correctStreak = (quizState.correctStreak || 0) + 1;
-    if(quizState.correctStreak >= 3 && quizState.difficulty < 3){
-      quizState.difficulty++;
-      quizState.correctStreak = 0;
-      showDifficultyBump();
-    }
-  } else {
-    quizState.correctStreak = 0;
-    if(quizState.difficulty > 1){
-      quizState.difficulty = Math.max(1, quizState.difficulty - 0.5 | 0);
-    }
+function updE100(){
+  document.getElementById('e100c').textContent=e100.correct;
+  document.getElementById('e100w').textContent=e100.wrong;
+  document.getElementById('e100n').textContent=e100.pool.length-e100.idx;
+  const t=e100.correct+e100.wrong;
+  document.getElementById('e100p').textContent=t>0?Math.round(e100.correct/t*100)+'%':'—';
+  document.getElementById('e100fill').style.width=(e100.idx/e100.pool.length*100)+'%';
+}
+
+function renderE100(){
+  const area=document.getElementById('e100area');
+  if(e100.idx>=e100.pool.length){
+    const pct=Math.round(e100.correct/e100.pool.length*100);
+    const passed=pct>=80;
+    area.innerHTML=`<div class="card" style="text-align:center;padding:24px;">
+      <div class="scoreCircle ${passed?'pass':'fail'}" style="margin:0 auto 16px;">
+        <div class="pct">${pct}%</div><div class="pf">${passed?'PASS':'FAIL'}</div>
+      </div>
+      <h2 style="font-size:18px;margin-bottom:8px;">${passed?'¡Aprobado!':'Sigue practicando'}</h2>
+      <p style="color:var(--text-light);margin-bottom:16px;">${e100.correct} correctas de 100</p>
+      <button class="btn btn-orange" onclick="restartE100()">↺ Reiniciar</button>
+    </div>`;
+    return;
   }
-}
-
-function showDifficultyBump(){
-  const labels = {2:'🟡 Intermediate / Intermedio', 3:'🔴 Advanced / Avanzado'};
-  const label = labels[quizState.difficulty] || '';
-  const bump = document.createElement('div');
-  bump.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;z-index:999;transition:opacity .5s;';
-  bump.textContent = '⬆ Level up! ' + label;
-  document.body.appendChild(bump);
-  setTimeout(() => { bump.style.opacity='0'; setTimeout(()=>bump.remove(),500); }, 2000);
-}
-
-/* Pool filtered by difficulty:
-   difficulty 1 = all questions
-   difficulty 2 = questions with lower accuracy (harder for user)
-   difficulty 3 = most missed questions only */
-function difficultyFilteredPool(pool){
-  const d = quizState.difficulty || 1;
-  if(d === 1) return pool;
-  return pool.filter(q => {
-    const s = statsByQuestion[q.id];
-    if(!s || (s.correct+s.incorrect) === 0) return true; // unseen always included
-    const acc = s.correct / (s.correct + s.incorrect);
-    if(d === 2) return acc < 0.8;   // intermediate: include questions below 80%
-    if(d === 3) return acc < 0.6;   // advanced: only questions below 60%
-    return true;
-  });
-}
-
-/* ============================================================
-   CASES AREA INIT
-   ============================================================ */
-
-
-
-/* ============================================================
-   PATIENT GRAPH CASES
-   ============================================================ */
-const PATIENT_CASES = {
-  1: {
-    name: "Marco", age: 7, behavior: "Self-injurious behavior (head-hitting)",
-    function: "Escape-maintained",
-    en: "Marco, 7 y/o. Head-hitting maintained by escape from demands.",
-    es: "Marco, 7 años. Golpes en la cabeza mantenidos por escape de demandas.",
-    baseline: [8,9,7,10,8,9],
-    intervention: [6,4,3,2,1,1,0,0,1,0],
-    phases: ["Baseline (A)", "DRA + Extinction (B)"],
-    question_en: "The graph shows a decreasing trend in the intervention phase. What does this suggest?",
-    question_es: "La gráfica muestra tendencia descendente en la fase de intervención. ¿Qué sugiere esto?",
-    opts: ["The intervention is not working","The behavior is increasing","The intervention appears to be reducing the behavior","Spontaneous recovery occurred"],
-    opts_es: ["La intervención no funciona","La conducta está aumentando","La intervención parece reducir la conducta","Ocurrió recuperación espontánea"],
-    ans: 2
-  },
-  2: {
-    name: "Sofia", age: 5, behavior: "Tantrums",
-    function: "Attention-maintained",
-    en: "Sofia, 5 y/o. Tantrums maintained by caregiver attention.",
-    es: "Sofía, 5 años. Rabietas mantenidas por atención del cuidador.",
-    baseline: [12,14,11,13,15,12],
-    intervention: [10,7,5,3,2,1,0,1,0,0],
-    phases: ["Baseline (A)", "NCR + Extinction (B)"],
-    question_en: "What happened in sessions 7-10 where data drops to 0-1?",
-    question_es: "¿Qué ocurrió en las sesiones 7-10 donde los datos bajan a 0-1?",
-    opts: ["Extinction burst","Spontaneous recovery","Behavior is being successfully reduced by intervention","Data collection error"],
-    opts_es: ["Estallido de extinción","Recuperación espontánea","La conducta se reduce exitosamente por la intervención","Error en recolección de datos"],
-    ans: 2
-  },
-  3: {
-    name: "Diego", age: 9, behavior: "Off-task behavior",
-    function: "Automatic reinforcement",
-    en: "Diego, 9 y/o. Off-task behavior (self-stimulatory) — automatic function.",
-    es: "Diego, 9 años. Conducta fuera de tarea (autoestimulatoria) — función automática.",
-    baseline: [45,48,42,50,47],
-    intervention: [40,35,28,22,18,15,12,10,8,9],
-    phases: ["Baseline (A)", "RIRD + Enriched Environment (B)"],
-    question_en: "The baseline shows values around 42-50%. What does a stable baseline indicate?",
-    question_es: "La línea base muestra valores alrededor de 42-50%. ¿Qué indica una línea base estable?",
-    opts: ["The behavior is improving before intervention","A consistent level that allows comparison with intervention effects","Data collection is unreliable","The behavior function changed"],
-    opts_es: ["La conducta mejora antes de la intervención","Un nivel consistente que permite comparar con los efectos de la intervención","La recolección de datos no es confiable","La función de la conducta cambió"],
-    ans: 1
-  },
-  4: {
-    name: "Ana", age: 6, behavior: "Aggression (hitting)",
-    function: "Tangible-maintained",
-    en: "Ana, 6 y/o. Aggression maintained by access to preferred items.",
-    es: "Ana, 6 años. Agresión mantenida por acceso a artículos preferidos.",
-    baseline: [5,7,6,8,5,7],
-    intervention: [9,11,7,5,4,3,2,1,0,1],
-    phases: ["Baseline (A)", "DRA + Extinction (B)"],
-    question_en: "Sessions 1-2 of intervention show HIGHER values than baseline. This is called:",
-    question_es: "Las sesiones 1-2 de intervención muestran valores MÁS ALTOS que la línea base. Esto se llama:",
-    opts: ["Treatment failure","Spontaneous recovery","Extinction burst — expected temporary increase","Data entry error"],
-    opts_es: ["Fracaso del tratamiento","Recuperación espontánea","Estallido de extinción — aumento temporal esperado","Error de ingreso de datos"],
-    ans: 2
-  },
-  5: {
-    name: "Luis", age: 8, behavior: "Elopement",
-    function: "Escape-maintained",
-    en: "Luis, 8 y/o. Elopement (running away) maintained by escape from tasks.",
-    es: "Luis, 8 años. Escapismo (huir) mantenido por escape de tareas.",
-    baseline: [4,5,3,4,5,4],
-    intervention: [3,2,2,1,0,0,0,1,0,0],
-    phases: ["Baseline (A)", "FCT + Escape Extinction (B)"],
-    question_en: "The cumulative record for Luis would show a flat line starting session 7. What does a flat line on a cumulative record mean?",
-    question_es: "El registro acumulativo de Luis mostraría una línea plana desde la sesión 7. ¿Qué significa una línea plana en un registro acumulativo?",
-    opts: ["Behavior is increasing rapidly","The behavior DID NOT occur — zero responses","Data was not collected","The graph resets to zero"],
-    opts_es: ["La conducta aumenta rápidamente","La conducta NO ocurrió — cero respuestas","Los datos no fueron recolectados","La gráfica regresa a cero"],
-    ans: 1
-  }
-};
-
-function renderPatientGraph(){
-  const sel = document.getElementById('patientSelect');
-  const id = sel ? sel.value : '1';
-  const pc = PATIENT_CASES[id];
-  if(!pc) return;
-
-  const svg = document.getElementById('svgPatient');
-  const info = document.getElementById('patientGraphInfo');
-  const quiz = document.getElementById('patientQuiz');
-
-  // Update info
-  info.innerHTML = `<strong>${pc.name}</strong> · ${pc.en}<br><em>${pc.es}</em><br>
-    <span style="background:#fef3c7;padding:2px 6px;border-radius:4px;font-size:11px;margin-top:4px;display:inline-block;">
-      Function: ${pc.function}
-    </span>`;
-
-  // Draw graph
-  const allData = [...pc.baseline, ...pc.intervention];
-  const maxVal = Math.max(...allData) + 2;
-  const blLen = pc.baseline.length;
-  const totalLen = allData.length;
-  const W = 320, H = 200;
-  const pL = 35, pR = 10, pT = 20, pB = 30;
-  const gW = W - pL - pR, gH = H - pT - pB;
-
-  const tX = i => pL + (i / (totalLen - 1)) * gW;
-  const tY = v => pT + gH * (1 - v / maxVal);
-
-  let svgStr = '';
-
-  // Grid lines
-  for(let i = 0; i <= 4; i++){
-    const y = pT + gH * (1 - i/4);
-    const val = Math.round(maxVal * i / 4);
-    svgStr += `<line x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}" stroke="#e5e7eb" stroke-width="1"/>`;
-    svgStr += `<text x="${pL-4}" y="${y+4}" text-anchor="end" font-size="9" fill="#9ca3af">${val}</text>`;
-  }
-
-  // Phase change line
-  const phaseX = tX(blLen - 0.5);
-  svgStr += `<line x1="${phaseX}" y1="${pT}" x2="${phaseX}" y2="${H-pB}" stroke="#374151" stroke-width="1.5" stroke-dasharray="4,3"/>`;
-  svgStr += `<text x="${pL + (phaseX-pL)/2}" y="${pT-4}" text-anchor="middle" font-size="8" fill="#6b7280">Baseline</text>`;
-  svgStr += `<text x="${phaseX + (W-pR-phaseX)/2}" y="${pT-4}" text-anchor="middle" font-size="8" fill="#6b7280">Intervention</text>`;
-
-  // Baseline line (dark)
-  let path = '';
-  pc.baseline.forEach((v, i) => {
-    path += (i === 0 ? 'M' : 'L') + tX(i) + ',' + tY(v);
-  });
-  svgStr += `<path d="${path}" fill="none" stroke="#1e3a5f" stroke-width="2"/>`;
-  pc.baseline.forEach((v, i) => {
-    svgStr += `<circle cx="${tX(i)}" cy="${tY(v)}" r="4" fill="#1e3a5f"/>`;
-  });
-
-  // Intervention line (orange/red)
-  let path2 = '';
-  pc.intervention.forEach((v, i) => {
-    const xi = i + blLen;
-    path2 += (i === 0 ? 'M' : 'L') + tX(xi) + ',' + tY(v);
-  });
-  svgStr += `<path d="${path2}" fill="none" stroke="#e07a30" stroke-width="2"/>`;
-  pc.intervention.forEach((v, i) => {
-    const xi = i + blLen;
-    svgStr += `<circle cx="${tX(xi)}" cy="${tY(v)}" r="4" fill="#e07a30"/>`;
-  });
-
-  // X axis labels
-  allData.forEach((_, i) => {
-    svgStr += `<text x="${tX(i)}" y="${H-pB+14}" text-anchor="middle" font-size="8" fill="#9ca3af">${i+1}</text>`;
-  });
-  svgStr += `<text x="${W/2}" y="${H}" text-anchor="middle" font-size="8" fill="#6b7280">Session / Sesión</text>`;
-
-  svg.innerHTML = svgStr;
-
-  // Render quiz question
-  quiz.innerHTML = `
-    <p style="font-size:12px;font-weight:600;margin-bottom:8px;">${pc.question_en}<br><em style="font-weight:400;color:var(--text-light)">${pc.question_es}</em></p>
-    ${pc.opts.map((opt, i) => `
-      <button class="optionBtn" onclick="answerPatientQuiz(${id},${i},this)" style="text-align:left;">
+  const q=e100.pool[e100.idx];
+  area.innerHTML=`<div class="card">
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+      <span style="font-size:12px;color:var(--text-light);font-weight:600;">Q${e100.idx+1}/100</span>
+      <span style="font-size:11px;background:#f0f4ff;padding:3px 8px;border-radius:20px;">📝 Examen Práctica</span>
+    </div>
+    <p class="qStem" style="font-size:15px;font-weight:600;margin-bottom:6px;">${q.en}</p>
+    <p style="font-size:13px;color:var(--text-light);font-style:italic;margin-bottom:14px;padding-bottom:10px;border-bottom:1px dashed var(--border);">${q.es}</p>
+    <div id="e100opts">${q.opts.map((opt,i)=>{
+      let cls='';
+      if(e100.ans){if(i===q.ans)cls='correct';else if(i===e100.sel)cls='incorrect';}
+      const esOpt=q.opts_es[i]||'';
+      return `<button class="optionBtn ${cls}" ${e100.ans?'disabled':''} onclick="ansE100(${i})" style="text-align:left;">
         <span class="optLetter">${String.fromCharCode(65+i)}</span>
         <span style="display:flex;flex-direction:column;">
-          <span>${opt}</span>
-          <span style="font-size:11px;color:var(--text-light);font-style:italic;">${pc.opts_es[i]}</span>
+          <span style="font-weight:500;">${opt}</span>
+          <span style="font-size:11px;color:var(--text-light);font-style:italic;">${esOpt!==opt?esOpt:''}</span>
         </span>
-      </button>
-    `).join('')}
-    <div id="patientAns" style="display:none;" class="explainBox"></div>
-  `;
+      </button>`;
+    }).join('')}</div>
+    ${e100.ans?`
+      <div style="background:#d1fae5;border-radius:8px;padding:10px 12px;margin:10px 0;font-size:13px;">
+        <strong>✓ Respuesta correcta / Correct answer:</strong><br>
+        <span style="font-weight:600;">${q.opts[q.ans]}</span><br>
+        <span style="font-style:italic;color:#155724;">${q.opts_es[q.ans]||''}</span>
+      </div>
+      <div class="explainBox"><strong>Explicación:</strong> ${q.exp_es}</div>
+      <button class="btn btn-orange" style="margin-top:10px;width:100%;" onclick="nextE100()">
+        ${e100.idx+1<e100.pool.length?'Siguiente →':'Ver resultados'}
+      </button>`:''}
+  </div>`;
+  updE100();
 }
 
-function answerPatientQuiz(caseId, selected, btn){
-  const pc = PATIENT_CASES[caseId];
-  const correct = selected === pc.ans;
-  document.querySelectorAll('#patientQuiz .optionBtn').forEach((b,i) => {
-    b.disabled = true;
-    if(i === pc.ans) b.classList.add('correct');
-    else if(i === selected) b.classList.add('incorrect');
-  });
-  const ansDiv = document.getElementById('patientAns');
-  ansDiv.style.display = 'block';
-  ansDiv.innerHTML = (correct ? '✓ Correct! / ¡Correcto! ' : '✗ Incorrect / Incorrecto. ') +
-    'The correct answer is <strong>' + String.fromCharCode(65+pc.ans) + '</strong>. ' + pc.opts[pc.ans] + ' / ' + pc.opts_es[pc.ans];
+function ansE100(i){
+  if(e100.ans)return;
+  e100.sel=i;e100.ans=true;
+  const q=e100.pool[e100.idx];
+  if(i===q.ans)e100.correct++;else e100.wrong++;
+  renderE100();
 }
-
-// Auto-render first patient graph when tab opens
-const _origSetGraphTab = typeof setGraphTab === 'function' ? setGraphTab : null;
-function setGraphTab(btn, tab){
-  document.querySelectorAll('.graphPanel').forEach(p => p.classList.add('hidden'));
-  document.getElementById('graphPanel-' + tab).classList.remove('hidden');
-  document.querySelectorAll('.graphTabs button').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  if(tab === 'patient') renderPatientGraph();
+function nextE100(){e100.idx++;e100.ans=false;e100.sel=null;renderE100();}
+function restartE100(){
+  e100={pool:[...EXAM100],idx:0,correct:0,wrong:0,ans:false,sel:null};
+  document.getElementById('e100c').textContent='0';
+  document.getElementById('e100w').textContent='0';
+  document.getElementById('e100n').textContent='100';
+  document.getElementById('e100p').textContent='—';
+  document.getElementById('e100fill').style.width='0%';
+  renderE100();
 }
 
 document.addEventListener('DOMContentLoaded', function(){
   renderStaticGraphs();
   renderProgress();
   updateSimIntro();
-  renderQuizArea();
-  renderCasesArea();
-  initDifficultySystem();
 });
 </script>
 </body>
