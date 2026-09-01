@@ -1910,7 +1910,8 @@ const EXAM100=[
 ];
 let e100={pool:[],idx:0,correct:0,wrong:0,ans:false,sel:null};
 function startExam100(){
-  e100={pool:[...EXAM100],idx:0,correct:0,wrong:0,ans:false,sel:null};
+  const shuffled=[...EXAM100].sort(()=>Math.random()-.5);
+  e100={pool:shuffled,idx:0,correct:0,wrong:0,ans:false,sel:null};
   document.getElementById('e100startBtn').style.display='none';
   document.getElementById('e100stats').style.display='flex';
   document.getElementById('e100prog').style.display='block';
