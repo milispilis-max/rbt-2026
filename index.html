@@ -2539,9 +2539,9 @@ function renderSimQuestion(){
       <span class="badge ${DOMAIN_CLASS[q.domain]}">${q.domain} · ${DOMAIN_NAMES[q.domain]}</span>
       <p class="qStem" style="margin-top:10px;">${q.en}</p>
       <div id="simOptions">
-        ${(q.opts_es||q.opts).map((opt,i) => `
+        ${q.opts.map((opt,i) => `
           <button class="optionBtn ${selected===i?'selected':''}" onclick="selectSimAnswer(${i})">
-            <span class="optLetter">${String.fromCharCode(65+i)}</span><span>${trOpt(opt)}</span>
+            <span class="optLetter">${String.fromCharCode(65+i)}</span><span>${opt}</span>
           </button>`).join('')}
       </div>
     </div>
@@ -2606,11 +2606,12 @@ function submitSimulator(){
       <div class="card">
         <span class="badge ${DOMAIN_CLASS[q.domain]}">${q.domain}</span>
         <p class="qStem" style="margin-top:8px;">${q.en}</p>
-        ${(q.opts_es||q.opts).map((opt,oi) => `
+        ${q.opts.map((opt,oi) => `
           <div class="optionBtn ${oi===q.ans?'correct':(oi===sel?'incorrect':'')}" style="pointer-events:none;">
-            <span class="optLetter">${String.fromCharCode(65+oi)}</span><span>${trOpt(opt)}</span>
+            <span class="optLetter">${String.fromCharCode(65+oi)}</span>
+            <span>${opt}${oi===q.ans && q.opts_es ? `<em style="font-size:11px;color:var(--dim);display:block;margin-top:2px;">✓ ${q.opts_es[oi]}</em>` : ''}</span>
           </div>`).join('')}
-        <div class="explainBox">${q.exp_en || ''}</div>
+        <div class="explainBox">${q.exp_en || ''}${q.exp_es ? `<br><em>${q.exp_es}</em>` : ''}</div>
       </div>`;
   }).join('');
 }
@@ -2678,14 +2679,16 @@ function renderQuizQuestion(){
       <p class="qStem" style="margin-top:10px;">${q.es||q.en}</p>
       <p style="font-size:12px;color:var(--dim);font-style:italic;margin-bottom:12px;">${q.es?q.en:''}</p>
       <div id="quizOptions">
-        ${(q.opts_es||q.opts).map((opt,i) => {
+        ${q.opts.map((opt,i) => {
           let cls = '';
           if(quizState.showAnswer){
             if(i===q.ans) cls='correct';
             else if(i===quizState.selected) cls='incorrect';
           } else if(i===quizState.selected) cls='selected';
+          const esLabel = quizState.showAnswer && i===q.ans && q.opts_es
+            ? `<em style="font-size:11px;color:var(--dim);display:block;margin-top:2px;">✓ ${q.opts_es[i]}</em>` : '';
           return `<button class="optionBtn ${cls}" ${quizState.showAnswer?'disabled':''} onclick="answerQuiz(${i})">
-            <span class="optLetter">${String.fromCharCode(65+i)}</span><span>${trOpt(opt)}</span>
+            <span class="optLetter">${String.fromCharCode(65+i)}</span><span>${opt}${esLabel}</span>
           </button>`;
         }).join('')}
       </div>
