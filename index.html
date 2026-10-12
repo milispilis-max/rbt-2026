@@ -754,18 +754,133 @@ svg.graphSvg {
     <!-- GRAPHS -->
     <section id="view-graphs" class="view">
       <h1 class="viewTitle">Gráficas ABA</h1>
-      <p class="viewSub">Tipos de gráficas · calculadora IOA</p>
+      <p class="viewSub">Tipos de gráficas · cómo construirlas · calculadora IOA</p>
       <div class="graphTabs">
         <button class="active" onclick="setGraphTab(this,'line')">Línea</button>
         <button onclick="setGraphTab(this,'bar')">Barras</button>
         <button onclick="setGraphTab(this,'cumulative')">Acumulativo</button>
+        <button onclick="setGraphTab(this,'scatter')">Dispersión</button>
         <button onclick="setGraphTab(this,'ioa')">IOA</button>
       </div>
-      <div id="graphPanel-line"       class="graphPanel card"><p style="font-size:13px;margin-bottom:10px;color:var(--dim);">Diseño de reversión A-B-A-B de ejemplo</p><svg id="svgLine" class="graphSvg" viewBox="0 0 320 180"></svg></div>
-      <div id="graphPanel-bar"        class="graphPanel card hidden"><p style="font-size:13px;margin-bottom:10px;color:var(--dim);">Frecuencia por sesión</p><svg id="svgBar" class="graphSvg" viewBox="0 0 320 180"></svg></div>
-      <div id="graphPanel-cumulative" class="graphPanel card hidden"><p style="font-size:13px;margin-bottom:10px;color:var(--dim);">Registro acumulativo de ejemplo</p><svg id="svgCumulative" class="graphSvg" viewBox="0 0 320 180"></svg></div>
-      <div id="graphPanel-ioa"        class="graphPanel card hidden">
-        <p style="font-size:13px;margin-bottom:6px;color:var(--dim);">Acuerdo entre observadores (IOA) — método conteo total</p>
+
+      <!-- LINE GRAPH -->
+      <div id="graphPanel-line" class="graphPanel card">
+        <div style="margin-bottom:10px;">
+          <p style="font-weight:700;font-size:15px;margin:0 0 4px;">Gráfica de Línea (Line Graph)</p>
+          <p style="font-size:12px;color:var(--dim);margin:0 0 6px;">La gráfica estándar en ABA · diseño de reversión A-B-A-B de ejemplo</p>
+        </div>
+        <svg id="svgLine" class="graphSvg" viewBox="0 0 320 180"></svg>
+        <div style="margin-top:12px;font-size:12px;line-height:1.6;">
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">¿Qué es?</p>
+          <p style="margin:0 0 6px;">Conecta puntos de datos en orden secuencial (sesión a sesión). Es la gráfica más usada en ABA para mostrar cambio de conducta a lo largo del tiempo.</p>
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">Ejes</p>
+          <p style="margin:0 0 6px;"><strong>Eje X (horizontal):</strong> sesiones o tiempo &nbsp;·&nbsp; <strong>Eje Y (vertical):</strong> medida de la conducta (frecuencia, %, duración)</p>
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">Cómo construirla</p>
+          <p style="margin:0 0 6px;">1) Dibuja eje X (sesiones) y eje Y (medida). 2) Grafica cada dato como punto. 3) Conecta puntos dentro de cada fase con una línea continua. 4) Añade línea de cambio de fase (línea vertical punteada) cuando cambie la condición. 5) <strong>No conectes</strong> puntos de fases diferentes.</p>
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">Lo que se analiza</p>
+          <p style="margin:0;"><strong>Nivel</strong> — magnitud de los datos en una fase &nbsp;·&nbsp; <strong>Tendencia</strong> — dirección (↑ ascendente, ↓ descendente, → estable) &nbsp;·&nbsp; <strong>Variabilidad</strong> — cuánto fluctúan los datos</p>
+        </div>
+      </div>
+
+      <!-- BAR GRAPH -->
+      <div id="graphPanel-bar" class="graphPanel card hidden">
+        <div style="margin-bottom:10px;">
+          <p style="font-weight:700;font-size:15px;margin:0 0 4px;">Gráfica de Barras (Bar Graph)</p>
+          <p style="font-size:12px;color:var(--dim);margin:0 0 6px;">Comparación de categorías discretas · frecuencia por condición</p>
+        </div>
+        <svg id="svgBar" class="graphSvg" viewBox="0 0 320 180"></svg>
+        <div style="margin-top:12px;font-size:12px;line-height:1.6;">
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">¿Qué es?</p>
+          <p style="margin:0 0 6px;">Usa columnas (barras) para comparar cantidades entre categorías discretas. NO conecta puntos porque las categorías no son una secuencia continua.</p>
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">¿Cuándo usarla?</p>
+          <p style="margin:0 0 6px;">Cuando comparas promedios entre condiciones (Línea Base vs. Intervención), conductas por día de la semana, o totales por configuración (casa vs. escuela). <strong>No se usa</strong> para tendencias sesión por sesión.</p>
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">Cómo construirla</p>
+          <p style="margin:0 0 6px;">1) Dibuja eje X con las categorías (nombres, no números). 2) Eje Y con la escala numérica. 3) Dibuja una barra por categoría hasta su valor. 4) Las barras NO se conectan entre sí.</p>
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">Dato clave en el examen</p>
+          <p style="margin:0;">Si el examen te dice que necesitas comparar "promedios por condición" o "totales por categoría" → respuesta = gráfica de barras.</p>
+        </div>
+      </div>
+
+      <!-- CUMULATIVE GRAPH -->
+      <div id="graphPanel-cumulative" class="graphPanel card hidden">
+        <div style="margin-bottom:10px;">
+          <p style="font-weight:700;font-size:15px;margin:0 0 4px;">Gráfica Acumulativa (Cumulative Record)</p>
+          <p style="font-size:12px;color:var(--dim);margin:0 0 6px;">Total acumulado de respuestas · solo sube o se mantiene plana</p>
+        </div>
+        <svg id="svgCumulative" class="graphSvg" viewBox="0 0 320 180"></svg>
+        <div style="margin-top:12px;font-size:12px;line-height:1.6;">
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">¿Qué es?</p>
+          <p style="margin:0 0 6px;">Registra el total <em>acumulado</em> de respuestas. Cada sesión se suma al total anterior. La línea <strong>nunca puede bajar</strong> — solo sube o se queda plana.</p>
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">Cómo leerla</p>
+          <p style="margin:0 0 6px;"><strong>Línea plana (horizontal):</strong> cero respuestas en esa sesión. &nbsp;·&nbsp; <strong>Línea empinada:</strong> alta tasa de respuesta. &nbsp;·&nbsp; <strong>Línea gradual:</strong> tasa baja.</p>
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">Cómo construirla</p>
+          <p style="margin:0 0 6px;">1) Anota el total acumulado: sesión 1 = 5, sesión 2 = 5+7=12, sesión 3 = 12+0=12, sesión 4 = 12+8=20... 2) Grafica esos totales como puntos y conéctalos.</p>
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">Dato clave en el examen</p>
+          <p style="margin:0;">Una línea plana NO significa disminución — significa que no hubo respuesta. Este es el error más común en el examen.</p>
+        </div>
+      </div>
+
+      <!-- SCATTER PLOT -->
+      <div id="graphPanel-scatter" class="graphPanel card hidden">
+        <div style="margin-bottom:10px;">
+          <p style="font-weight:700;font-size:15px;margin:0 0 4px;">Diagrama de Dispersión (Scatterplot)</p>
+          <p style="font-size:12px;color:var(--dim);margin:0 0 6px;">Patrones de conducta por hora/día · guía para evaluación funcional</p>
+        </div>
+        <table style="border-collapse:collapse;font-size:12px;margin:8px auto;width:100%;max-width:300px;">
+          <thead><tr style="background:#1a1a1a;color:#c6f135;">
+            <th style="border:1px solid #444;padding:4px 6px;">Hora</th>
+            <th style="border:1px solid #444;padding:4px 6px;">Lun</th>
+            <th style="border:1px solid #444;padding:4px 6px;">Mar</th>
+            <th style="border:1px solid #444;padding:4px 6px;">Mié</th>
+            <th style="border:1px solid #444;padding:4px 6px;">Jue</th>
+            <th style="border:1px solid #444;padding:4px 6px;">Vie</th>
+          </tr></thead>
+          <tbody>
+            <tr><td style="border:1px solid #444;padding:4px 6px;font-weight:bold;">8–10 AM</td>
+            <td style="border:1px solid #444;padding:4px 6px;text-align:center;color:#c6f135;">●</td>
+            <td style="border:1px solid #444;padding:4px 6px;text-align:center;color:#c6f135;">●</td>
+            <td style="border:1px solid #444;padding:4px 6px;text-align:center;color:#c6f135;">●</td>
+            <td style="border:1px solid #444;padding:4px 6px;text-align:center;color:#c6f135;">●</td>
+            <td style="border:1px solid #444;padding:4px 6px;text-align:center;color:#c6f135;">●</td></tr>
+            <tr style="background:#111;"><td style="border:1px solid #444;padding:4px 6px;font-weight:bold;">12–2 PM</td>
+            <td style="border:1px solid #444;padding:4px 6px;"></td>
+            <td style="border:1px solid #444;padding:4px 6px;"></td>
+            <td style="border:1px solid #444;padding:4px 6px;"></td>
+            <td style="border:1px solid #444;padding:4px 6px;"></td>
+            <td style="border:1px solid #444;padding:4px 6px;"></td></tr>
+            <tr><td style="border:1px solid #444;padding:4px 6px;font-weight:bold;">3–5 PM</td>
+            <td style="border:1px solid #444;padding:4px 6px;text-align:center;color:#c6f135;">●</td>
+            <td style="border:1px solid #444;padding:4px 6px;text-align:center;color:#c6f135;">●</td>
+            <td style="border:1px solid #444;padding:4px 6px;"></td>
+            <td style="border:1px solid #444;padding:4px 6px;text-align:center;color:#c6f135;">●</td>
+            <td style="border:1px solid #444;padding:4px 6px;text-align:center;color:#c6f135;">●</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:12px;font-size:12px;line-height:1.6;">
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">¿Qué es?</p>
+          <p style="margin:0 0 6px;">Una cuadrícula que muestra <em>cuándo</em> ocurre la conducta (hora del día × día de la semana). Se marca ● si la conducta ocurrió en ese bloque.</p>
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">¿Para qué sirve?</p>
+          <p style="margin:0 0 6px;">Identifica patrones temporales. Si la conducta siempre ocurre a la misma hora, sugiere que hay un desencadenante ambiental específico. Se usa para <strong>guiar la evaluación funcional</strong>.</p>
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">Cómo leerlo</p>
+          <p style="margin:0 0 6px;">Busca bloques donde los ● estén concentrados. En el ejemplo: conducta siempre en la mañana y tarde, <strong>nunca al mediodía</strong> → posible antecedente relacionado con las actividades de mediodía.</p>
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">Dato clave en el examen</p>
+          <p style="margin:0;">Scatterplot → identifica CUÁNDO ocurre la conducta → informa evaluación funcional. No se usa para mostrar tendencia ni nivel.</p>
+        </div>
+      </div>
+
+      <!-- IOA CALCULATOR -->
+      <div id="graphPanel-ioa" class="graphPanel card hidden">
+        <p style="font-weight:700;font-size:15px;margin:0 0 4px;">IOA — Acuerdo Entre Observadores</p>
+        <p style="font-size:12px;color:var(--dim);margin:0 0 10px;">Interobserver Agreement (IOA) · umbral aceptable: ≥80%</p>
+        <div style="font-size:12px;line-height:1.6;margin-bottom:12px;">
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">Método: Conteo Total (Total Count IOA)</p>
+          <p style="margin:0 0 6px;">Fórmula: <strong>Menor ÷ Mayor × 100</strong>. Compara el total de respuestas de dos observadores. Rápido pero no detecta si los acuerdos ocurren en los mismos momentos.</p>
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">Método: Intervalo por Intervalo</p>
+          <p style="margin:0 0 6px;">Fórmula: <strong>(Acuerdos ÷ Total de intervalos) × 100</strong>. Compara si cada intervalo individual fue registrado igual por ambos observadores. Más preciso que conteo total.</p>
+          <p style="font-weight:700;color:var(--acc);margin:0 0 4px;">¿Cuándo se usa IOA?</p>
+          <p style="margin:0 0 6px;">Para verificar la <strong>confiabilidad de los datos</strong> — asegura que dos observadores entrenados registran la misma conducta de la misma manera. Si IOA &lt;80%, revisar la definición de conducta o re-entrenar a los observadores.</p>
+        </div>
+        <p style="font-size:12px;font-weight:700;color:var(--dim);margin:0 0 6px;">Calculadora — Método Conteo Total</p>
         <div class="ioaGrid">
           <div><label>Observador A</label><input type="text" inputmode="numeric" id="ioaA" placeholder="ej. 15" oninput="calcIOA()"></div>
           <div><label>Observador B</label><input type="text" inputmode="numeric" id="ioaB" placeholder="ej. 13" oninput="calcIOA()"></div>
@@ -1652,6 +1767,426 @@ opts_es:["100% — acuerdo perfecto; los datos son muy confiables","80% — acep
 ans:0,
 exp_en:"All 9 intervals match exactly: Y/Y, N/N, Y/Y, N/N, Y/Y, Y/Y, N/N, Y/Y, N/N = 9/9 agreements = 100%. Perfect IOA means the behavior is clearly and consistently defined — both observers are seeing the same thing every time.",
 exp_es:"Los 9 intervalos coinciden exactamente: S/S, N/N, S/S, N/N, S/S, S/S, N/N, S/S, N/N = 9/9 acuerdos = 100%. Un IOA perfecto significa que la conducta está clara y consistentemente definida — ambos observadores ven lo mismo en todo momento."},
+
+,
+
+// Graph interpretation questions with embedded SVG/table visuals — IDs 2119-2126
+
+{id:2119,domain:"A",weight:17,
+en:`A supervisor shows you this data table from two sessions. Which graph type would BEST display this comparison?<br><br>
+<table style="border-collapse:collapse;font-size:13px;margin:8px auto;">
+  <thead><tr style="background:#1a1a1a;color:#c6f135;">
+    <th style="border:1px solid #444;padding:4px 10px;">Condition</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Avg Tantrums/Session</th>
+  </tr></thead>
+  <tbody>
+    <tr><td style="border:1px solid #444;padding:4px 10px;">Baseline (A)</td><td style="border:1px solid #444;padding:4px 10px;text-align:center;">8.4</td></tr>
+    <tr style="background:#111;"><td style="border:1px solid #444;padding:4px 10px;">Intervention (B)</td><td style="border:1px solid #444;padding:4px 10px;text-align:center;">2.1</td></tr>
+  </tbody>
+</table><br>You need to show the BCBA the average per condition — not session-by-session trends.`,
+es:`Un supervisor te muestra esta tabla de datos de dos sesiones. ¿Qué tipo de gráfica mostraría MEJOR esta comparación?<br><br>
+<table style="border-collapse:collapse;font-size:13px;margin:8px auto;">
+  <thead><tr style="background:#1a1a1a;color:#c6f135;">
+    <th style="border:1px solid #444;padding:4px 10px;">Condición</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Prom. Rabietas/Sesión</th>
+  </tr></thead>
+  <tbody>
+    <tr><td style="border:1px solid #444;padding:4px 10px;">Línea base (A)</td><td style="border:1px solid #444;padding:4px 10px;text-align:center;">8.4</td></tr>
+    <tr style="background:#111;"><td style="border:1px solid #444;padding:4px 10px;">Intervención (B)</td><td style="border:1px solid #444;padding:4px 10px;text-align:center;">2.1</td></tr>
+  </tbody>
+</table><br>Necesitas mostrar al BCBA el promedio por condición — no las tendencias sesión por sesión.`,
+opts:["Line graph — shows session-by-session trends","Bar graph — compares discrete category averages","Cumulative graph — shows running totals","Scatterplot — shows correlations between two variables"],
+opts_es:["Gráfica de línea — muestra tendencias sesión por sesión","Gráfica de barras — compara promedios de categorías discretas","Gráfica acumulativa — muestra totales continuos","Diagrama de dispersión — muestra correlaciones entre dos variables"],
+ans:1,
+exp_en:"Bar graphs are used to compare discrete categories (here: Baseline vs. Intervention averages). A line graph would imply a continuous sequence. A bar graph makes the comparison immediate and visually clear.",
+exp_es:"Las gráficas de barras se usan para comparar categorías discretas (aquí: promedios de Línea Base vs. Intervención). Una gráfica de línea implicaría una secuencia continua. La gráfica de barras hace la comparación inmediata y visualmente clara."},
+
+{id:2120,domain:"A",weight:17,
+en:`Look at this partial line graph data. Identify the trend in Phase B (Intervention).<br><br>
+<table style="border-collapse:collapse;font-size:13px;margin:8px auto;">
+  <thead><tr style="background:#1a1a1a;color:#c6f135;">
+    <th style="border:1px solid #444;padding:4px 8px;">Session</th>
+    <th style="border:1px solid #444;padding:4px 8px;">1</th>
+    <th style="border:1px solid #444;padding:4px 8px;">2</th>
+    <th style="border:1px solid #444;padding:4px 8px;">3</th>
+    <th style="border:1px solid #444;padding:4px 8px;">4</th>
+    <th style="border:1px solid #444;padding:4px 8px;">| B |</th>
+    <th style="border:1px solid #444;padding:4px 8px;">5</th>
+    <th style="border:1px solid #444;padding:4px 8px;">6</th>
+    <th style="border:1px solid #444;padding:4px 8px;">7</th>
+    <th style="border:1px solid #444;padding:4px 8px;">8</th>
+  </tr></thead>
+  <tbody>
+    <tr><td style="border:1px solid #444;padding:4px 8px;font-weight:bold;">Frequency</td>
+    <td style="border:1px solid #444;padding:4px 8px;">10</td>
+    <td style="border:1px solid #444;padding:4px 8px;">11</td>
+    <td style="border:1px solid #444;padding:4px 8px;">9</td>
+    <td style="border:1px solid #444;padding:4px 8px;">10</td>
+    <td style="border:1px solid #444;padding:4px 8px;background:#333;">—</td>
+    <td style="border:1px solid #444;padding:4px 8px;">7</td>
+    <td style="border:1px solid #444;padding:4px 8px;">5</td>
+    <td style="border:1px solid #444;padding:4px 8px;">3</td>
+    <td style="border:1px solid #444;padding:4px 8px;">1</td>
+    </tr>
+  </tbody>
+</table><br>The vertical bar (| B |) marks the phase change line.`,
+es:`Mira este gráfico de línea parcial. Identifica la tendencia en la Fase B (Intervención).<br><br>
+<table style="border-collapse:collapse;font-size:13px;margin:8px auto;">
+  <thead><tr style="background:#1a1a1a;color:#c6f135;">
+    <th style="border:1px solid #444;padding:4px 8px;">Sesión</th>
+    <th style="border:1px solid #444;padding:4px 8px;">1</th>
+    <th style="border:1px solid #444;padding:4px 8px;">2</th>
+    <th style="border:1px solid #444;padding:4px 8px;">3</th>
+    <th style="border:1px solid #444;padding:4px 8px;">4</th>
+    <th style="border:1px solid #444;padding:4px 8px;">| B |</th>
+    <th style="border:1px solid #444;padding:4px 8px;">5</th>
+    <th style="border:1px solid #444;padding:4px 8px;">6</th>
+    <th style="border:1px solid #444;padding:4px 8px;">7</th>
+    <th style="border:1px solid #444;padding:4px 8px;">8</th>
+  </tr></thead>
+  <tbody>
+    <tr><td style="border:1px solid #444;padding:4px 8px;font-weight:bold;">Frecuencia</td>
+    <td style="border:1px solid #444;padding:4px 8px;">10</td>
+    <td style="border:1px solid #444;padding:4px 8px;">11</td>
+    <td style="border:1px solid #444;padding:4px 8px;">9</td>
+    <td style="border:1px solid #444;padding:4px 8px;">10</td>
+    <td style="border:1px solid #444;padding:4px 8px;background:#333;">—</td>
+    <td style="border:1px solid #444;padding:4px 8px;">7</td>
+    <td style="border:1px solid #444;padding:4px 8px;">5</td>
+    <td style="border:1px solid #444;padding:4px 8px;">3</td>
+    <td style="border:1px solid #444;padding:4px 8px;">1</td>
+    </tr>
+  </tbody>
+</table><br>La barra vertical (| B |) marca la línea de cambio de fase.`,
+opts:["Increasing trend — behavior is getting worse","Stable trend — behavior is not changing","Decreasing trend — behavior is improving","Variable trend — no clear direction"],
+opts_es:["Tendencia ascendente — la conducta empeora","Tendencia estable — la conducta no cambia","Tendencia descendente — la conducta mejora","Tendencia variable — sin dirección clara"],
+ans:2,
+exp_en:"Phase B shows 10→7→5→3→1: a clear decreasing trend. In the context of problem behavior, this means the intervention is working — the behavior is reducing each session. Phase A (baseline: 10,11,9,10) was stable.",
+exp_es:"La Fase B muestra 10→7→5→3→1: clara tendencia descendente. En el contexto de conducta problema, significa que la intervención funciona — la conducta se reduce cada sesión. La Fase A (línea base: 10,11,9,10) fue estable."},
+
+{id:2121,domain:"A",weight:17,
+en:`A cumulative graph shows these running totals across 6 sessions:<br><br>
+<table style="border-collapse:collapse;font-size:13px;margin:8px auto;">
+  <thead><tr style="background:#1a1a1a;color:#c6f135;">
+    <th style="border:1px solid #444;padding:4px 8px;">Session</th>
+    <th style="border:1px solid #444;padding:4px 8px;">1</th>
+    <th style="border:1px solid #444;padding:4px 8px;">2</th>
+    <th style="border:1px solid #444;padding:4px 8px;">3</th>
+    <th style="border:1px solid #444;padding:4px 8px;">4</th>
+    <th style="border:1px solid #444;padding:4px 8px;">5</th>
+    <th style="border:1px solid #444;padding:4px 8px;">6</th>
+  </tr></thead>
+  <tbody>
+    <tr><td style="border:1px solid #444;padding:4px 8px;font-weight:bold;">Cumulative Total</td>
+    <td style="border:1px solid #444;padding:4px 8px;">5</td>
+    <td style="border:1px solid #444;padding:4px 8px;">12</td>
+    <td style="border:1px solid #444;padding:4px 8px;">12</td>
+    <td style="border:1px solid #444;padding:4px 8px;">19</td>
+    <td style="border:1px solid #444;padding:4px 8px;">26</td>
+    <td style="border:1px solid #444;padding:4px 8px;">26</td>
+    </tr>
+  </tbody>
+</table><br>What happened during sessions 3 and 6?`,
+es:`Una gráfica acumulativa muestra estos totales continuos en 6 sesiones:<br><br>
+<table style="border-collapse:collapse;font-size:13px;margin:8px auto;">
+  <thead><tr style="background:#1a1a1a;color:#c6f135;">
+    <th style="border:1px solid #444;padding:4px 8px;">Sesión</th>
+    <th style="border:1px solid #444;padding:4px 8px;">1</th>
+    <th style="border:1px solid #444;padding:4px 8px;">2</th>
+    <th style="border:1px solid #444;padding:4px 8px;">3</th>
+    <th style="border:1px solid #444;padding:4px 8px;">4</th>
+    <th style="border:1px solid #444;padding:4px 8px;">5</th>
+    <th style="border:1px solid #444;padding:4px 8px;">6</th>
+  </tr></thead>
+  <tbody>
+    <tr><td style="border:1px solid #444;padding:4px 8px;font-weight:bold;">Total Acumulado</td>
+    <td style="border:1px solid #444;padding:4px 8px;">5</td>
+    <td style="border:1px solid #444;padding:4px 8px;">12</td>
+    <td style="border:1px solid #444;padding:4px 8px;">12</td>
+    <td style="border:1px solid #444;padding:4px 8px;">19</td>
+    <td style="border:1px solid #444;padding:4px 8px;">26</td>
+    <td style="border:1px solid #444;padding:4px 8px;">26</td>
+    </tr>
+  </tbody>
+</table><br>¿Qué ocurrió durante las sesiones 3 y 6?`,
+opts:["The behavior decreased during those sessions","No responses occurred — the graph flatlined (zero responding)","The cumulative total reset to zero","Data was recorded incorrectly"],
+opts_es:["La conducta disminuyó durante esas sesiones","No hubo respuestas — la gráfica se aplanó (cero respuestas)","El total acumulado se reinició a cero","Los datos se registraron incorrectamente"],
+ans:1,
+exp_en:"Sessions 3 and 6 show no change in the cumulative total (12→12 and 26→26). A flat line on a cumulative graph always means ZERO responses during that session — no new responses were added. It never means a decrease.",
+exp_es:"Las sesiones 3 y 6 no muestran cambio en el total acumulado (12→12 y 26→26). Una línea plana en una gráfica acumulativa siempre significa CERO respuestas durante esa sesión — no se añadieron nuevas respuestas. Nunca significa disminución."},
+
+{id:2122,domain:"A",weight:17,
+en:`An RBT collected the following raw data across 7 sessions. Which graph type should she use to display session-by-session behavior change for clinical decision-making?<br><br>
+<table style="border-collapse:collapse;font-size:13px;margin:8px auto;">
+  <thead><tr style="background:#1a1a1a;color:#c6f135;">
+    <th style="border:1px solid #444;padding:4px 8px;">Session</th>
+    <th style="border:1px solid #444;padding:4px 8px;">1</th>
+    <th style="border:1px solid #444;padding:4px 8px;">2</th>
+    <th style="border:1px solid #444;padding:4px 8px;">3</th>
+    <th style="border:1px solid #444;padding:4px 8px;">4</th>
+    <th style="border:1px solid #444;padding:4px 8px;">5</th>
+    <th style="border:1px solid #444;padding:4px 8px;">6</th>
+    <th style="border:1px solid #444;padding:4px 8px;">7</th>
+  </tr></thead>
+  <tbody>
+    <tr><td style="border:1px solid #444;padding:4px 8px;font-weight:bold;">Frequency</td>
+    <td style="border:1px solid #444;padding:4px 8px;">8</td>
+    <td style="border:1px solid #444;padding:4px 8px;">9</td>
+    <td style="border:1px solid #444;padding:4px 8px;">7</td>
+    <td style="border:1px solid #444;padding:4px 8px;">10</td>
+    <td style="border:1px solid #444;padding:4px 8px;">6</td>
+    <td style="border:1px solid #444;padding:4px 8px;">4</td>
+    <td style="border:1px solid #444;padding:4px 8px;">2</td>
+    </tr>
+  </tbody>
+</table>`,
+es:`Una RBT recopiló los siguientes datos en 7 sesiones. ¿Qué tipo de gráfica debe usar para mostrar el cambio de conducta sesión por sesión para la toma de decisiones clínicas?<br><br>
+<table style="border-collapse:collapse;font-size:13px;margin:8px auto;">
+  <thead><tr style="background:#1a1a1a;color:#c6f135;">
+    <th style="border:1px solid #444;padding:4px 8px;">Sesión</th>
+    <th style="border:1px solid #444;padding:4px 8px;">1</th>
+    <th style="border:1px solid #444;padding:4px 8px;">2</th>
+    <th style="border:1px solid #444;padding:4px 8px;">3</th>
+    <th style="border:1px solid #444;padding:4px 8px;">4</th>
+    <th style="border:1px solid #444;padding:4px 8px;">5</th>
+    <th style="border:1px solid #444;padding:4px 8px;">6</th>
+    <th style="border:1px solid #444;padding:4px 8px;">7</th>
+  </tr></thead>
+  <tbody>
+    <tr><td style="border:1px solid #444;padding:4px 8px;font-weight:bold;">Frecuencia</td>
+    <td style="border:1px solid #444;padding:4px 8px;">8</td>
+    <td style="border:1px solid #444;padding:4px 8px;">9</td>
+    <td style="border:1px solid #444;padding:4px 8px;">7</td>
+    <td style="border:1px solid #444;padding:4px 8px;">10</td>
+    <td style="border:1px solid #444;padding:4px 8px;">6</td>
+    <td style="border:1px solid #444;padding:4px 8px;">4</td>
+    <td style="border:1px solid #444;padding:4px 8px;">2</td>
+    </tr>
+  </tbody>
+</table>`,
+opts:["Bar graph — best for showing each session as a separate category","Line graph — the standard ABA graph; shows trend, level, and variability across sessions","Cumulative graph — adds up all responses for a running total","Pie chart — shows proportion of each session's behavior"],
+opts_es:["Gráfica de barras — mejor para mostrar cada sesión como categoría separada","Gráfica de línea — la gráfica ABA estándar; muestra tendencia, nivel y variabilidad entre sesiones","Gráfica acumulativa — suma todas las respuestas para un total continuo","Gráfica circular — muestra la proporción de la conducta en cada sesión"],
+ans:1,
+exp_en:"The line graph is the standard tool in ABA for displaying session-by-session behavior data. It connects data points sequentially and allows visual analysis of trend (direction), level (magnitude), and variability (how much the data fluctuate). The phase-change line can be added to mark intervention changes.",
+exp_es:"La gráfica de línea es la herramienta estándar en ABA para mostrar datos de conducta sesión por sesión. Conecta los puntos de datos secuencialmente y permite el análisis visual de tendencia (dirección), nivel (magnitud) y variabilidad (cuánto fluctúan los datos). Se puede añadir la línea de cambio de fase para marcar cambios de intervención."},
+
+{id:2123,domain:"A",weight:17,
+en:`Review the A-B design data below. What is the LEVEL of behavior in Phase A (Baseline)?<br><br>
+<table style="border-collapse:collapse;font-size:13px;margin:8px auto;">
+  <thead><tr style="background:#1a1a1a;color:#c6f135;">
+    <th style="border:1px solid #444;padding:4px 8px;">Phase A (Baseline)</th>
+    <th style="border:1px solid #444;padding:4px 8px;">S1</th>
+    <th style="border:1px solid #444;padding:4px 8px;">S2</th>
+    <th style="border:1px solid #444;padding:4px 8px;">S3</th>
+    <th style="border:1px solid #444;padding:4px 8px;">S4</th>
+  </tr></thead>
+  <tbody>
+    <tr><td style="border:1px solid #444;padding:4px 8px;font-weight:bold;">% Correct</td>
+    <td style="border:1px solid #444;padding:4px 8px;">20%</td>
+    <td style="border:1px solid #444;padding:4px 8px;">25%</td>
+    <td style="border:1px solid #444;padding:4px 8px;">20%</td>
+    <td style="border:1px solid #444;padding:4px 8px;">15%</td>
+    </tr>
+  </tbody>
+</table><br>"Level" refers to the approximate mean or median value of data in a phase.`,
+es:`Revisa los datos del diseño A-B a continuación. ¿Cuál es el NIVEL de conducta en la Fase A (Línea Base)?<br><br>
+<table style="border-collapse:collapse;font-size:13px;margin:8px auto;">
+  <thead><tr style="background:#1a1a1a;color:#c6f135;">
+    <th style="border:1px solid #444;padding:4px 8px;">Fase A (Línea Base)</th>
+    <th style="border:1px solid #444;padding:4px 8px;">S1</th>
+    <th style="border:1px solid #444;padding:4px 8px;">S2</th>
+    <th style="border:1px solid #444;padding:4px 8px;">S3</th>
+    <th style="border:1px solid #444;padding:4px 8px;">S4</th>
+  </tr></thead>
+  <tbody>
+    <tr><td style="border:1px solid #444;padding:4px 8px;font-weight:bold;">% Correcto</td>
+    <td style="border:1px solid #444;padding:4px 8px;">20%</td>
+    <td style="border:1px solid #444;padding:4px 8px;">25%</td>
+    <td style="border:1px solid #444;padding:4px 8px;">20%</td>
+    <td style="border:1px solid #444;padding:4px 8px;">15%</td>
+    </tr>
+  </tbody>
+</table><br>"Nivel" se refiere al valor aproximado de la media o mediana de los datos en una fase.`,
+opts:["The data are too variable to determine a level","Approximately 20% — the mean/median of the phase data","25% — the highest data point","15% — the lowest data point"],
+opts_es:["Los datos son demasiado variables para determinar un nivel","Aproximadamente 20% — la media/mediana de los datos de la fase","25% — el punto de datos más alto","15% — el punto de datos más bajo"],
+ans:1,
+exp_en:"Level is the overall magnitude of data in a phase, described by the mean or median. Here: (20+25+20+15)/4 = 80/4 = 20%. The data show low variability around 20%, making it a stable baseline at approximately 20% correct.",
+exp_es:"El nivel es la magnitud general de los datos en una fase, descrita por la media o mediana. Aquí: (20+25+20+15)/4 = 80/4 = 20%. Los datos muestran poca variabilidad alrededor del 20%, lo que lo convierte en una línea base estable de aproximadamente 20% correcto."},
+
+{id:2124,domain:"A",weight:17,
+en:`An RBT records the following % independent responses. Which term BEST describes the data pattern in Phase B?<br><br>
+<table style="border-collapse:collapse;font-size:13px;margin:8px auto;">
+  <thead><tr style="background:#1a1a1a;color:#c6f135;">
+    <th style="border:1px solid #444;padding:4px 8px;">Session</th>
+    <th style="border:1px solid #444;padding:4px 8px;">5</th>
+    <th style="border:1px solid #444;padding:4px 8px;">6</th>
+    <th style="border:1px solid #444;padding:4px 8px;">7</th>
+    <th style="border:1px solid #444;padding:4px 8px;">8</th>
+    <th style="border:1px solid #444;padding:4px 8px;">9</th>
+    <th style="border:1px solid #444;padding:4px 8px;">10</th>
+  </tr></thead>
+  <tbody>
+    <tr><td style="border:1px solid #444;padding:4px 8px;font-weight:bold;">% Independent</td>
+    <td style="border:1px solid #444;padding:4px 8px;">30%</td>
+    <td style="border:1px solid #444;padding:4px 8px;">60%</td>
+    <td style="border:1px solid #444;padding:4px 8px;">25%</td>
+    <td style="border:1px solid #444;padding:4px 8px;">70%</td>
+    <td style="border:1px solid #444;padding:4px 8px;">20%</td>
+    <td style="border:1px solid #444;padding:4px 8px;">75%</td>
+    </tr>
+  </tbody>
+</table>`,
+es:`Una RBT registra los siguientes porcentajes de respuestas independientes. ¿Qué término describe MEJOR el patrón de datos en la Fase B?<br><br>
+<table style="border-collapse:collapse;font-size:13px;margin:8px auto;">
+  <thead><tr style="background:#1a1a1a;color:#c6f135;">
+    <th style="border:1px solid #444;padding:4px 8px;">Sesión</th>
+    <th style="border:1px solid #444;padding:4px 8px;">5</th>
+    <th style="border:1px solid #444;padding:4px 8px;">6</th>
+    <th style="border:1px solid #444;padding:4px 8px;">7</th>
+    <th style="border:1px solid #444;padding:4px 8px;">8</th>
+    <th style="border:1px solid #444;padding:4px 8px;">9</th>
+    <th style="border:1px solid #444;padding:4px 8px;">10</th>
+  </tr></thead>
+  <tbody>
+    <tr><td style="border:1px solid #444;padding:4px 8px;font-weight:bold;">% Independiente</td>
+    <td style="border:1px solid #444;padding:4px 8px;">30%</td>
+    <td style="border:1px solid #444;padding:4px 8px;">60%</td>
+    <td style="border:1px solid #444;padding:4px 8px;">25%</td>
+    <td style="border:1px solid #444;padding:4px 8px;">70%</td>
+    <td style="border:1px solid #444;padding:4px 8px;">20%</td>
+    <td style="border:1px solid #444;padding:4px 8px;">75%</td>
+    </tr>
+  </tbody>
+</table>`,
+opts:["Stable trend — data are consistent around 50%","Increasing trend — clear upward movement","High variability — data bounce widely with no clear direction","Decreasing trend — behavior is declining"],
+opts_es:["Tendencia estable — datos consistentes alrededor del 50%","Tendencia ascendente — movimiento claramente hacia arriba","Alta variabilidad — datos que fluctúan ampliamente sin dirección clara","Tendencia descendente — la conducta disminuye"],
+ans:2,
+exp_en:"The data oscillate widely: 30, 60, 25, 70, 20, 75 — alternating low and high with a 45-50 point spread. This is high variability. There is no clear trend. High variability suggests the behavior is not yet under consistent stimulus control. The BCBA should be informed.",
+exp_es:"Los datos oscilan ampliamente: 30, 60, 25, 70, 20, 75 — alternando bajo y alto con una diferencia de 45-50 puntos. Esto es alta variabilidad. No hay tendencia clara. La alta variabilidad sugiere que la conducta aún no está bajo control de estímulo consistente. Se debe informar al BCBA."},
+
+{id:2125,domain:"A",weight:17,
+en:`A scatterplot in ABA is used to:<br><br>
+<table style="border-collapse:collapse;font-size:13px;margin:8px auto;">
+  <thead><tr style="background:#1a1a1a;color:#c6f135;">
+    <th style="border:1px solid #444;padding:4px 10px;">Time Block</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Mon</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Tue</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Wed</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Thu</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Fri</th>
+  </tr></thead>
+  <tbody>
+    <tr><td style="border:1px solid #444;padding:4px 10px;font-weight:bold;">8–9 AM</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    </tr>
+    <tr style="background:#111;"><td style="border:1px solid #444;padding:4px 10px;font-weight:bold;">12–1 PM</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;"> </td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;"> </td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;"> </td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;"> </td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;"> </td>
+    </tr>
+    <tr><td style="border:1px solid #444;padding:4px 10px;font-weight:bold;">3–4 PM</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;"> </td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    </tr>
+  </tbody>
+</table><br>● = behavior occurred. What does this scatterplot suggest?`,
+es:`Un diagrama de dispersión (scatterplot) en ABA se utiliza para:<br><br>
+<table style="border-collapse:collapse;font-size:13px;margin:8px auto;">
+  <thead><tr style="background:#1a1a1a;color:#c6f135;">
+    <th style="border:1px solid #444;padding:4px 10px;">Bloque Horario</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Lun</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Mar</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Mié</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Jue</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Vie</th>
+  </tr></thead>
+  <tbody>
+    <tr><td style="border:1px solid #444;padding:4px 10px;font-weight:bold;">8–9 AM</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    </tr>
+    <tr style="background:#111;"><td style="border:1px solid #444;padding:4px 10px;font-weight:bold;">12–1 PM</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;"> </td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;"> </td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;"> </td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;"> </td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;"> </td>
+    </tr>
+    <tr><td style="border:1px solid #444;padding:4px 10px;font-weight:bold;">3–4 PM</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;"> </td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">●</td>
+    </tr>
+  </tbody>
+</table><br>● = la conducta ocurrió. ¿Qué sugiere este diagrama de dispersión?`,
+opts:["The behavior occurs equally throughout the day","The behavior is most likely maintained by automatic reinforcement","The behavior clusters in the morning and afternoon, not at noon — suggests environmental triggers","The behavior is decreasing over the week"],
+opts_es:["La conducta ocurre igualmente durante el día","La conducta probablemente es mantenida por reforzamiento automático","La conducta se agrupa en la mañana y tarde, no al mediodía — sugiere desencadenantes ambientales","La conducta está disminuyendo durante la semana"],
+ans:2,
+exp_en:"The scatterplot shows behavior occurs every morning and most afternoons, but NEVER at noon. This pattern suggests specific environmental conditions (like transitions, tasks, or staffing) trigger the behavior. This information is used to guide functional assessment — the BCBA can investigate what is different at noon vs. morning/afternoon.",
+exp_es:"El diagrama de dispersión muestra que la conducta ocurre cada mañana y la mayoría de las tardes, pero NUNCA al mediodía. Este patrón sugiere que condiciones ambientales específicas (como transiciones, tareas, o personal) desencadenan la conducta. Esta información se usa para guiar la evaluación funcional — el BCBA puede investigar qué es diferente al mediodía vs. mañana/tarde."},
+
+{id:2126,domain:"A",weight:17,
+en:`The graph panel shows these two data comparisons. What does an A-B design allow you to conclude?<br><br>
+<table style="border-collapse:collapse;font-size:13px;margin:8px auto;">
+  <thead><tr style="background:#1a1a1a;color:#c6f135;">
+    <th style="border:1px solid #444;padding:4px 10px;">Phase</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Sessions</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Avg Tantrums</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Trend</th>
+  </tr></thead>
+  <tbody>
+    <tr><td style="border:1px solid #444;padding:4px 10px;font-weight:bold;">A — Baseline</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">1–5</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">9.2</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">Stable</td>
+    </tr>
+    <tr style="background:#111;"><td style="border:1px solid #444;padding:4px 10px;font-weight:bold;">B — Intervention</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">6–12</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">2.8</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">Decreasing</td>
+    </tr>
+  </tbody>
+</table>`,
+es:`El panel de gráfica muestra estas dos comparaciones de datos. ¿Qué permite concluir un diseño A-B?<br><br>
+<table style="border-collapse:collapse;font-size:13px;margin:8px auto;">
+  <thead><tr style="background:#1a1a1a;color:#c6f135;">
+    <th style="border:1px solid #444;padding:4px 10px;">Fase</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Sesiones</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Prom. Rabietas</th>
+    <th style="border:1px solid #444;padding:4px 10px;">Tendencia</th>
+  </tr></thead>
+  <tbody>
+    <tr><td style="border:1px solid #444;padding:4px 10px;font-weight:bold;">A — Línea Base</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">1–5</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">9.2</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">Estable</td>
+    </tr>
+    <tr style="background:#111;"><td style="border:1px solid #444;padding:4px 10px;font-weight:bold;">B — Intervención</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">6–12</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">2.8</td>
+    <td style="border:1px solid #444;padding:4px 10px;text-align:center;">Descendente</td>
+    </tr>
+  </tbody>
+</table>`,
+opts:["The intervention caused the behavior change — this design establishes experimental control","The data suggest the intervention may be correlated with improvement, but an A-B design alone cannot prove causation","The behavior would have decreased on its own without the intervention","The data are insufficient to draw any conclusion"],
+opts_es:["La intervención causó el cambio de conducta — este diseño establece control experimental","Los datos sugieren que la intervención puede estar correlacionada con la mejora, pero un diseño A-B solo no puede probar causalidad","La conducta habría disminuido sola sin la intervención","Los datos son insuficientes para sacar cualquier conclusión"],
+ans:1,
+exp_en:"An A-B design shows correlation, not causation. The improvement could be due to the intervention OR to other variables (maturation, other changes in the environment). To establish experimental control (causation), you need an A-B-A or A-B-A-B reversal design, or a multiple baseline. The A-B design is descriptive, not experimental.",
+exp_es:"Un diseño A-B muestra correlación, no causalidad. La mejora podría deberse a la intervención O a otras variables (maduración, otros cambios en el ambiente). Para establecer control experimental (causalidad), necesitas un diseño de reversión A-B-A o A-B-A-B, o una línea base múltiple. El diseño A-B es descriptivo, no experimental."}
 
 ];   // {id, domain, weight, en, es, opts:[4], ans, exp_en, exp_es}
 let CASES = [
